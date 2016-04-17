@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace WarframeMarketClient.GUI
 {
@@ -14,11 +15,14 @@ namespace WarframeMarketClient.GUI
     {
         private Border StatusPanel;
         private Label StatusLabel;
+        private TaskbarIcon tbi = new TaskbarIcon();
+        public  bool toTray = false;
 
         public MainWindow()
         {
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
+            tbi.TrayMouseDoubleClick += new RoutedEventHandler(onTrayClick);
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)
@@ -116,5 +120,34 @@ namespace WarframeMarketClient.GUI
         }
 
         private bool mRestoreForDragMove;
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+
+            //Rect rect = new Rect(Application.Current.MainWindow.Left, Application.Current.MainWindow.Top, Application.Current.MainWindow.ActualWidth, Application.Current.MainWindow.ActualHeight);
+
+            if(window.WindowState == WindowState.Minimized&&this.IsMouseOver&&SharedValues.toTray)
+            {
+                Hide();
+                tbi.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                tbi.Visibility = Visibility.Hidden;
+            }
+
+        }
+
+        private void onTrayClick(object o, RoutedEventArgs args)
+        {
+            Show();
+            window.Activate();
+            window.WindowState = WindowState.Normal;
+        }
+
+
+
+
+
     }
 }
