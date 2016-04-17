@@ -11,6 +11,11 @@ namespace WarframeMarketClient.GUI
 {
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Partially copied from http://nf2p.com/how-to/a-basic-borderless-wpf-window-with-bad-drop-shadow/
+        /// </summary>
+
+
         enum BorderPosition
         {
             Left = 61441,

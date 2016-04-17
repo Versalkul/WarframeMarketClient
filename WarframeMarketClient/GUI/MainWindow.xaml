@@ -15,7 +15,10 @@
         <Color x:Key="BorderColor">#CCC</Color>
         <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
 
-
+        <!-- Code according to
+            https://3water.wordpress.com/2013/02/16/metro-style-window-in-wpf/
+            With minor modifications
+        -->
         <Style x:Key="MetroWindowStyle" TargetType="{x:Type Window}">
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
             <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>

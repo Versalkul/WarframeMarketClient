@@ -8,6 +8,11 @@ namespace WarframeMarketClient.GUI
     {
         public static class WindowSizing
         {
+            /// <summary>
+            /// Code from https://codekong.wordpress.com/2010/11/10/custom-window-style-and-accounting-for-the-taskbar/
+            /// </summary>
+
+
             const int MONITOR_DEFAULTTONEAREST = 0x00000002;
 
             #region DLLImports
