@@ -56,7 +56,7 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
 
-        private void closeChat()
+        private void closeChat(object sender, MouseEventArgs e)
         {
 
         }
