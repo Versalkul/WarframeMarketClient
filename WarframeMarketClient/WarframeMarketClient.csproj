@@ -76,6 +76,19 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Logic\AfkStateChangedArgs.cs" />
+    <Compile Include="Logic\GameStateChangedArgs.cs" />
+    <Compile Include="Logic\ItemTypeMap.cs" />
+    <Compile Include="Logic\MarketController.cs" />
+    <Compile Include="Logic\OnlineManager.cs" />
+    <Compile Include="Logic\PmArgs.cs" />
+    <Compile Include="Logic\PmJson.cs" />
+    <Compile Include="Logic\RunsGameChecker.cs" />
+    <Compile Include="Logic\SaveLoadFile.cs" />
+    <Compile Include="Logic\SocketMessage.cs" />
+    <Compile Include="Logic\SocketMessagePM.cs" />
+    <Compile Include="Logic\WarframeItem.cs" />
+    <Compile Include="Logic\Webhelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
