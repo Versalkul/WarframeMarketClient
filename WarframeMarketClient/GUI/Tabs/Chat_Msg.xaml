@@ -6,12 +6,12 @@
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Margin="10">
+    <Grid Margin="10,1">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="Time" HorizontalAlignment="Left" Text="00:00" VerticalAlignment="Top" FontSize="8" Foreground="Gray"/>
+        <TextBlock x:Name="Time" HorizontalAlignment="Left" Text="00:00" VerticalAlignment="Top" FontSize="7" Foreground="#999" Margin="0,0,0,-2"/>
         <TextBlock x:Name="Message" HorizontalAlignment="Left" TextWrapping="Wrap" Text="Blabla" VerticalAlignment="Top" Grid.Row="1"/>
 
     </Grid>

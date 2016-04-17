@@ -21,5 +21,11 @@ namespace WarframeMarketClient.Logic
         public string send_minute;
     }
 
+    public class PmData
+    {
+        public string message;
+        public string time;
+        public bool fromMe;
+    }
     
 }

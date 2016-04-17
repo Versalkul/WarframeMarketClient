@@ -22,7 +22,7 @@
 
         <Border BorderThickness="1" BorderBrush="Gray">
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel x:Name="ChatView" VerticalAlignment="Bottom"/>
+                <StackPanel x:Name="ChatView" VerticalAlignment="Bottom" Margin="10,0,0,10"/>
             </ScrollViewer>
         </Border>
 

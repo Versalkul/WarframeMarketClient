@@ -24,7 +24,20 @@ namespace WarframeMarketClient.GUI.Tabs
         public Chat()
         {
             InitializeComponent();
-            showMessages(new List<PmJson> { new PmJson() { message = "Test", send_hour = "22", send_minute="15" } });
+            showMessages(new List<PmData> {
+                new PmData() { message = "Test", time="20:15", fromMe=false },
+                new PmData() { message = "Passt", time="20:16", fromMe=true },
+                new PmData() { message = "Nice!", time="20:17", fromMe=false },
+                new PmData() { message = "Test", time="20:15", fromMe=false },
+                new PmData() { message = "Passt", time="20:16", fromMe=true },
+                new PmData() { message = "Nice!", time="20:17", fromMe=false },
+                new PmData() { message = "Test", time="20:15", fromMe=false },
+                new PmData() { message = "Passt", time="20:16", fromMe=true },
+                new PmData() { message = "Nice!", time="20:17", fromMe=false },
+                new PmData() { message = "Test", time="20:15", fromMe=false },
+                new PmData() { message = "Passt", time="20:16", fromMe=true },
+                new PmData() { message = "Nice!", time="20:17", fromMe=false },
+            });
         }
 
 
@@ -40,15 +53,15 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
 
-        void showMessages(List<PmJson> PMs)
+        void showMessages(List<PmData> PMs)
         {
             ChatView.Children.Clear();
-            foreach (PmJson PM in PMs)
+            foreach (PmData PM in PMs)
                 addMessage(PM);
         }
-        void addMessage(PmJson PM)
+        void addMessage(PmData PM)
         {
-            ChatView.Children.Add(new Chat_Msg((PM.send_hour + ":" + PM.send_minute), PM.message));
+            ChatView.Children.Add(new Chat_Msg(PM));
         }
     }
 }

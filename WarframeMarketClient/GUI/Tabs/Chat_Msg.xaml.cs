@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -20,11 +21,16 @@ namespace WarframeMarketClient.GUI.Tabs
     /// </summary>
     public partial class Chat_Msg : UserControl
     {
-        public Chat_Msg(String time, String msg)
+        public Chat_Msg(PmData PM)
         {
             InitializeComponent();
-            Time.Text = time;
-            Message.Text = msg;
+            Time.Text = PM.time;
+            Message.Text = PM.message;
+
+            if (PM.fromMe)
+            {
+                Time.HorizontalAlignment = Message.HorizontalAlignment = HorizontalAlignment.Right;
+            }
         }
     }
 }
