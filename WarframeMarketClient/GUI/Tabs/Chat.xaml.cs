@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -23,6 +24,7 @@ namespace WarframeMarketClient.GUI.Tabs
         public Chat()
         {
             InitializeComponent();
+            showMessages(new List<PmJson> { new PmJson() { message = "Test", send_hour = "22", send_minute="15" } });
         }
 
 
@@ -35,6 +37,18 @@ namespace WarframeMarketClient.GUI.Tabs
                     InputText.CaretIndex = caretIndex+1;
                 }
             }
+        }
+
+
+        void showMessages(List<PmJson> PMs)
+        {
+            ChatView.Children.Clear();
+            foreach (PmJson PM in PMs)
+                addMessage(PM);
+        }
+        void addMessage(PmJson PM)
+        {
+            ChatView.Children.Add(new Chat_Msg((PM.send_hour + ":" + PM.send_minute), PM.message));
         }
     }
 }

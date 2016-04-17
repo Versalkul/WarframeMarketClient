@@ -6,16 +6,26 @@
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" x:Key="Me">
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+        </Style>
+        <Style TargetType="TextBlock" x:Key="Other">
+            <Setter Property="HorizontalAlignment" Value="Left"></Setter>
+        </Style>
+    </UserControl.Resources>
+        <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="1*" MinHeight="25"/>
         </Grid.RowDefinitions>
 
         <Border BorderThickness="1" BorderBrush="Gray">
-            <TextBlock Grid.Row="0" x:Name="textBlock" TextWrapping="Wrap" Text="TextBlock" Padding="10"/>
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <StackPanel x:Name="ChatView" VerticalAlignment="Bottom"/>
+            </ScrollViewer>
         </Border>
 
-        <TextBox Grid.Row="1" x:Name="InputText" TextWrapping="Wrap" Text="TextBox" KeyDown="Input_KeyDown"  />
+        <TextBox Grid.Row="1" x:Name="InputText" TextWrapping="Wrap" KeyDown="Input_KeyDown"  />
     </Grid>
 </UserControl>

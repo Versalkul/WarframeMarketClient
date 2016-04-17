@@ -11,6 +11,9 @@
             <TabItem Header="+">
                 <local:Chat_New/>
             </TabItem>
+            <TabItem Header="Person1">
+                <local:Chat/>
+            </TabItem>
         </TabControl>
     </Grid>
 </UserControl>

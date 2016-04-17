@@ -71,6 +71,9 @@
     <Compile Include="GUI\Tabs\Chat.xaml.cs">
       <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Tabs\Chat_Msg.xaml.cs">
+      <DependentUpon>Chat_Msg.xaml</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Tabs\Chat_New.xaml.cs">
       <DependentUpon>Chat_New.xaml</DependentUpon>
     </Compile>
@@ -80,7 +83,7 @@
     <Compile Include="GUI\Tabs\Tab_Items.xaml.cs">
       <DependentUpon>Tab_Items.xaml</DependentUpon>
     </Compile>
-	<Compile Include="GUI\SharedValues.cs" />
+    <Compile Include="GUI\SharedValues.cs" />
     <Compile Include="GUI\Tabs\Tab_Settings.xaml.cs">
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
@@ -97,6 +100,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="GUI\Tabs\Chat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="GUI\Tabs\Chat_Msg.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
