@@ -12,7 +12,9 @@ namespace WarframeMarketClient.Logic
         RunsGameChecker checker;
         bool running = false;
         public event EventHandler<GameStateChangedArgs> changedStatus;
-        public bool ingame { get; private set; }
+        public event EventHandler<PmArgs> pmRecieved { add { setter.recievedPM += value; }  remove { setter.recievedPM -= value; } }
+        bool ingame;
+        public bool stayOnline = false;
 
         public MarketController(string session)
         {
@@ -27,6 +29,22 @@ namespace WarframeMarketClient.Logic
             running = true;
             checker.gameChanged += new EventHandler<GameStateChangedArgs>(gameStateChanged);
             checker.afkChanged += new EventHandler<AfkStateChangedArgs>(afkStateChenged);
+        }
+
+        public void sendMessage(string message,string user)
+        {
+            setter.sendMessage(user, message);
+        }
+        public void closeChat(string user)
+        {
+            setter.closeChat(user);
+        }
+
+        public List<PmData> getMsg(string user)
+        {
+
+            return setter.getMessages(user).Select(x=> new PmData() { message = x.message, time = x.send_hour.ToString()+':'+x.send_minute, fromMe = setter.username==user }).ToList();
+
         }
 
         public void disableController()
@@ -48,7 +66,8 @@ namespace WarframeMarketClient.Logic
             }
             else
             {
-                setter.setOffline();
+                if (stayOnline) setter.setOnline();
+                else setter.setOffline();
             }
 
             if (changedStatus != null) changedStatus.Invoke(this, new GameStateChangedArgs(args.newGamestate));
