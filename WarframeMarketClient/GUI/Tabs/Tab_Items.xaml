@@ -1,0 +1,105 @@
+﻿<UserControl x:Class="WarframeMarketClient.GUI.Tabs.Tab_Items"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+
+        <!--<ListView HorizontalAlignment="Stretch"
+          Behaviours:GridViewColumnResize.Enabled="True">
+            <ListViewItem></ListViewItem>
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn  Header="Column *"
+                                   Behaviours:GridViewColumnResize.Width="*" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn  Header="Column 2*" 
+                          Behaviours:GridViewColumnResize.Width="2*" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn  Header="Column Auto" Width="Auto"  >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn  Header="50 S"
+                                   Behaviours:GridViewColumnResize.Width="50" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox HorizontalAlignment="Stretch" Text="E" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn  Header="50" Width="50" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox HorizontalAlignment="Stretch" Text="E" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+        <!-- <ListView Grid.ColumnSpan="5" Margin="10" Name="list" Grid.IsSharedSizeScope="True">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <WrapPanel>
+                        <TextBlock Grid.Column="0" Text="{Binding Category}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" />
+                        <TextBlock Grid.Column="2" Text="{Binding Price}" />
+                        <TextBlock Grid.Column="3" Text="{Binding Count}" />
+                        <TextBlock Grid.Column="4" Text="{Binding Rank}" />
+                        <TextBlock Grid.Column="5" Text="{Binding Buttons}" Background="Blue" />
+                    </WrapPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            <ListView.View>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="10"/>
+                    <ColumnDefinition Width="20"/>
+                    <ColumnDefinition Width="30"/>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+            </ListView.View>
+            
+            
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="Category" Width="Auto" DisplayMemberBinding="{Binding Category}" />
+                    <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Price" Width="Auto" DisplayMemberBinding="{Binding Price}" />
+                    <GridViewColumn Header="Count" Width="Auto" DisplayMemberBinding="{Binding Count}" />
+                    <GridViewColumn Header="Rank" Width="Auto" DisplayMemberBinding="{Binding Rank}" />
+                    <GridViewColumn Width="Auto">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="IdColumn"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Buttons}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>-->
+
+    </Grid>
+</UserControl>
