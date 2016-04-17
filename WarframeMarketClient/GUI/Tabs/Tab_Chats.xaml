@@ -7,12 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TabControl x:Name="tabControl" TabStripPlacement="Left">
+        <TabControl x:Name="chatTabs" TabStripPlacement="Left">
             <TabItem Header="+">
                 <local:Chat_New/>
-            </TabItem>
-            <TabItem Header="Person1">
-                <local:Chat/>
             </TabItem>
         </TabControl>
     </Grid>

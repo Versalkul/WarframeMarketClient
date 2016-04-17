@@ -21,8 +21,11 @@ namespace WarframeMarketClient.GUI.Tabs
     /// </summary>
     public partial class Chat : UserControl
     {
-        public Chat()
+        public User user { get; private set; }
+
+        public Chat(User us)
         {
+            user = us;
             InitializeComponent();
             showMessages(new List<PmData> {
                 new PmData() { message = "Test", time="20:15", fromMe=false },
@@ -50,6 +53,12 @@ namespace WarframeMarketClient.GUI.Tabs
                     InputText.CaretIndex = caretIndex+1;
                 }
             }
+        }
+
+
+        private void closeChat()
+        {
+
         }
 
 

@@ -24,5 +24,13 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             InitializeComponent();
         }
+
+        private void Input_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+
+            }
+        }
     }
 }

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -23,6 +24,23 @@ namespace WarframeMarketClient.GUI.Tabs
         public Tab_Chats()
         {
             InitializeComponent();
+        }
+
+
+        void addChat(User user)
+        {
+            Chat chat = new Chat(user);
+
+            TabItem tab = new TabItem();
+            tab.Header = user.Name;
+            tab.Content = chat;
+
+            chatTabs.Items.Add(tab);
+        }
+
+        void closeChat(Chat chat)
+        {
+            chatTabs.Items.Remove(chat.Parent);
         }
     }
 }

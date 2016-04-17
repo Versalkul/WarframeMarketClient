@@ -14,18 +14,24 @@
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         </Style>
     </UserControl.Resources>
-        <Grid>
+    <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
             <RowDefinition Height="10*"/>
             <RowDefinition Height="1*" MinHeight="25"/>
         </Grid.RowDefinitions>
 
-        <Border BorderThickness="1" BorderBrush="Gray">
+
+
+        <Label Grid.Row="0" Padding="0" x:Name="Status" Content="In Game" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#FF00AA00" FontWeight="Bold"/>
+        <Label Grid.Row="0" Padding="0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
+
+        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
             <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                 <StackPanel x:Name="ChatView" VerticalAlignment="Bottom" Margin="10,0,0,10"/>
             </ScrollViewer>
         </Border>
 
-        <TextBox Grid.Row="1" x:Name="InputText" TextWrapping="Wrap" KeyDown="Input_KeyDown"  />
+        <TextBox Grid.Row="2" x:Name="InputText" TextWrapping="Wrap" KeyDown="Input_KeyDown"  />
     </Grid>
 </UserControl>
