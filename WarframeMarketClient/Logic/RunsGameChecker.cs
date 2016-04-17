@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace WarframeMarketOnlineController
 {
@@ -23,7 +17,6 @@ namespace WarframeMarketOnlineController
 
         private Thread worker;
         DateTime lastMovedMouse = DateTime.Now;
-        Point lastMousePos = Cursor.Position;
 
         #region pinvoke
 

@@ -3,18 +3,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Xml.Serialization;
+using System.Windows;
 
 namespace WarframeMarketOnlineController
 {
     class SaveLoadFile
     {
+        private static String IDENTIFIER = "WarframeMarketClient";
 
         #region dataclass
 
@@ -138,10 +134,10 @@ namespace WarframeMarketOnlineController
             if (!File.Exists(FilePath)) return;
             try
             {
-            GZipStream ReadStream = new GZipStream(new FileStream(FilePath, FileMode.Open), CompressionMode.Decompress);
-            BinaryFormatter Loader = new BinaryFormatter();
-            dat = (Data)Loader.Deserialize(ReadStream);
-            ReadStream.Close();
+                GZipStream ReadStream = new GZipStream(new FileStream(FilePath, FileMode.Open), CompressionMode.Decompress);
+                BinaryFormatter Loader = new BinaryFormatter();
+                dat = (Data)Loader.Deserialize(ReadStream);
+                ReadStream.Close();
             }
             catch(EndOfStreamException e)
             {
@@ -164,11 +160,11 @@ namespace WarframeMarketOnlineController
         {
             if (set)
             {
-                autoReg.SetValue("WarframeOnlineChecker", Application.ExecutablePath);
+                autoReg.SetValue(IDENTIFIER, Application.ExecutablePath);
             }
             else
             {
-                autoReg.DeleteValue("WarframeOnlineChecker");
+                autoReg.DeleteValue(IDENTIFIER);
             }
         }
 
@@ -179,10 +175,7 @@ namespace WarframeMarketOnlineController
         /// <returns></returns>
         public bool isAutostart()
         {
-
-            return ((string)autoReg.GetValue("WarframeOnlineChecker") == Application.ExecutablePath);
-
-
+            return ((string)autoReg.GetValue(IDENTIFIER) == Application.ExecutablePath);
         }
 
 
@@ -191,14 +184,12 @@ namespace WarframeMarketOnlineController
         /// </summary>
         public void updateAutostart()
         {
-
-            if ((string)autoReg.GetValue("WarframeOnlineChecker") != null && (string)autoReg.GetValue("WarframeOnlineChecker") != Application.ExecutablePath)
+            if ((string)autoReg.GetValue(IDENTIFIER) != null
+                && (string)autoReg.GetValue(IDENTIFIER) != Application.ExecutablePath)
             {
                 autostart(false);
                 autostart(true);
-
             }
-
         }
 
         #endregion autostart
