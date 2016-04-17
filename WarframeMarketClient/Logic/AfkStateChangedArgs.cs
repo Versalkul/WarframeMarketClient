@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WarframeMarketOnlineController
+namespace WarframeMarketClient.Logic
 {
     public enum AfkState { Afk, Available }
     class AfkStateChangedArgs:EventArgs

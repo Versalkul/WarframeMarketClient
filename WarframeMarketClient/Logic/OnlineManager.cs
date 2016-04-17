@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 using WebSocket4Net;
 
-namespace WarframeMarketOnlineController
+namespace WarframeMarketClient.Logic
 {
 
 

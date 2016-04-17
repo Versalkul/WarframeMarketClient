@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
 
-namespace WarframeMarketOnlineController
+namespace WarframeMarketClient.Logic
 {
     class SaveLoadFile
     {
@@ -160,7 +161,7 @@ namespace WarframeMarketOnlineController
         {
             if (set)
             {
-                autoReg.SetValue(IDENTIFIER, Application.ExecutablePath);
+                autoReg.SetValue(IDENTIFIER, Assembly.GetEntryAssembly().Location);
             }
             else
             {
@@ -175,7 +176,7 @@ namespace WarframeMarketOnlineController
         /// <returns></returns>
         public bool isAutostart()
         {
-            return ((string)autoReg.GetValue(IDENTIFIER) == Application.ExecutablePath);
+            return ((string)autoReg.GetValue(IDENTIFIER) == Assembly.GetEntryAssembly().Location);
         }
 
 
@@ -185,7 +186,7 @@ namespace WarframeMarketOnlineController
         public void updateAutostart()
         {
             if ((string)autoReg.GetValue(IDENTIFIER) != null
-                && (string)autoReg.GetValue(IDENTIFIER) != Application.ExecutablePath)
+                && (string)autoReg.GetValue(IDENTIFIER) != Assembly.GetEntryAssembly().Location)
             {
                 autostart(false);
                 autostart(true);
