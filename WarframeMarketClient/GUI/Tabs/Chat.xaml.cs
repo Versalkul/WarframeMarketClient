@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WarframeMarketClient.Logic;
+using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -23,24 +25,29 @@ namespace WarframeMarketClient.GUI.Tabs
     {
         public User user { get; private set; }
 
+        public ObservableCollection<ChatMessage> ChatMessages { get; set; }
+
         public Chat(User us)
         {
             user = us;
             InitializeComponent();
-            showMessages(new List<PmData> {
-                new PmData() { message = "Test", time="20:15", fromMe=false },
-                new PmData() { message = "Passt", time="20:16", fromMe=true },
-                new PmData() { message = "Nice!", time="20:17", fromMe=false },
-                new PmData() { message = "Test", time="20:15", fromMe=false },
-                new PmData() { message = "Passt", time="20:16", fromMe=true },
-                new PmData() { message = "Nice!", time="20:17", fromMe=false },
-                new PmData() { message = "Test", time="20:15", fromMe=false },
-                new PmData() { message = "Passt", time="20:16", fromMe=true },
-                new PmData() { message = "Nice!", time="20:17", fromMe=false },
-                new PmData() { message = "Test", time="20:15", fromMe=false },
-                new PmData() { message = "Passt", time="20:16", fromMe=true },
-                new PmData() { message = "Nice!", time="20:17", fromMe=false },
-            });
+            this.DataContext = this;
+
+            ChatMessages = new ObservableCollection<ChatMessage>()
+            {
+                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
+                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
+                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
+                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
+                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
+                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
+                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
+                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
+            };
         }
 
 
@@ -61,16 +68,6 @@ namespace WarframeMarketClient.GUI.Tabs
 
         }
 
-
-        void showMessages(List<PmData> PMs)
-        {
-            ChatView.Children.Clear();
-            foreach (PmData PM in PMs)
-                addMessage(PM);
-        }
-        void addMessage(PmData PM)
-        {
-            ChatView.Children.Add(new Chat_Msg(PM));
-        }
+        
     }
 }

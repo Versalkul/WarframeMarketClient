@@ -66,8 +66,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GUI\MainWindow.xaml.Border.cs" />
-    <Compile Include="GUI\MainWindow.xaml.WindowSizing.cs" />
+    <Compile Include="GUI\Converter\FromMeToAlignmentConverter.cs" />
+    <Compile Include="GUI\MainWindow.Border.cs" />
+    <Compile Include="GUI\MainWindow.WindowSizing.cs" />
     <Compile Include="GUI\Tabs\Chat.xaml.cs">
       <DependentUpon>Chat.xaml</DependentUpon>
     </Compile>
@@ -99,6 +100,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="GUI\Styles\ChatStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\Tabs\Chat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -139,6 +144,9 @@
     <Compile Include="Logic\User.cs" />
     <Compile Include="Logic\WarframeItem.cs" />
     <Compile Include="Logic\Webhelper.cs" />
+    <Compile Include="Model\ApplicationState.cs" />
+    <Compile Include="Model\ChatMessage.cs" />
+    <Compile Include="Model\OnlineState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

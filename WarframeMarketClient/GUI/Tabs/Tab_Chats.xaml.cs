@@ -24,6 +24,7 @@ namespace WarframeMarketClient.GUI.Tabs
         public Tab_Chats()
         {
             InitializeComponent();
+            addChat(new User() {Name="Blablub"});
         }
 
 

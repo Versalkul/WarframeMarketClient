@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WarframeMarketClient.GUI.Styles"
+                    xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter">
+
+
+    <!-- Control Templates -->
+    <DataTemplate x:Key="ChatItemTemplate">
+        <DataTemplate.Resources>
+            <converter:FromMeToAlignmentConverter x:Key="FromMeToAlignmentConverter"/>
+        </DataTemplate.Resources>
+        <Grid Margin="10,1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="Time" TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}" Text="{Binding TimeString}" VerticalAlignment="Top" FontSize="7" Foreground="#999" Margin="0,0,0,-2"/>
+            <TextBlock x:Name="Message" TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}" TextWrapping="Wrap" Text="{Binding Message}" VerticalAlignment="Top" Grid.Row="1"/>
+        </Grid>
+    </DataTemplate>
+
+</ResourceDictionary>

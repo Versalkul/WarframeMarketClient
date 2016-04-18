@@ -2,8 +2,14 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:WarframeMarketClient"
+             xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              StartupUri="GUI/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <!-- conv:IEnumerableToStringConverter x:Key="IEnumerableToStringConverter" /-->
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="GUI/Styles/ChatStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

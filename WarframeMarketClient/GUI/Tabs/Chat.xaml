@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
+             xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
@@ -27,9 +28,13 @@
         <Label Grid.Row="0" Padding="0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
 
         <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
-            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                <StackPanel x:Name="ChatView" VerticalAlignment="Bottom" Margin="10,0,0,10"/>
-            </ScrollViewer>
+            <ListView Grid.Row="0" ItemsSource="{Binding ChatMessages}" ItemTemplate="{StaticResource ChatItemTemplate}" HorizontalContentAlignment="Stretch">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Focusable" Value="False"></Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
         </Border>
 
         <TextBox Grid.Row="2" x:Name="InputText" TextWrapping="Wrap" KeyDown="Input_KeyDown"  />
