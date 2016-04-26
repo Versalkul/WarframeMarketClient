@@ -32,7 +32,7 @@ namespace WarframeMarketClient.Model
 
         public string SessionToken { get; set; }
 
-        public string Username { get { return "A"; } set { } }
+        public string Username { get; set; }
 
         public OnlineState OnlineState { get; set; }
 
