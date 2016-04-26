@@ -8,13 +8,15 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using WarframeMarketClient.Model;
+
 namespace WarframeMarketClient.Logic
 {
     class Webhelper
     {
         static string csrfToken="";
 
-        public static HttpWebResponse getPage (string url,string session)
+        public static HttpWebResponse GetPage (string url)
         {
             
             for(int i = 0; i < 10; i++)
@@ -22,7 +24,7 @@ namespace WarframeMarketClient.Logic
 
                 HttpWebRequest page = HttpWebRequest.CreateHttp(url);
                 page.CookieContainer = new CookieContainer();
-                page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", session));
+                page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
                 page.Timeout = 10000;
                 page.UserAgent = "C# Warframe Market Client";
                 page.AllowAutoRedirect = false;
@@ -53,12 +55,12 @@ namespace WarframeMarketClient.Logic
 
 
 
-        public static HttpWebResponse postPage(string url,string session,string postData)
+        public static HttpWebResponse PostPage(string url,string postData)
         {
             Console.WriteLine("Posting " +postData);
             if (csrfToken.Length < 5)
             {
-                getCsrfToken(session);
+                getCsrfToken();
             }
 
             byte[] data = Encoding.UTF8.GetBytes(postData);
@@ -67,7 +69,7 @@ namespace WarframeMarketClient.Logic
 
                 HttpWebRequest page = HttpWebRequest.CreateHttp(url);
                 page.CookieContainer = new CookieContainer();
-                page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", session));
+                page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
                 page.UserAgent = "C# Warframe Market Client";
                 page.Method = "POST";
                 page.ContentType = "application/x-www-form-urlencoded";
@@ -87,7 +89,7 @@ namespace WarframeMarketClient.Logic
                 }
                 catch(Exception ex)
                 {
-                    getCsrfToken(session);
+                    getCsrfToken();
                     Thread.Sleep(10000);
 
 
@@ -97,10 +99,10 @@ namespace WarframeMarketClient.Logic
             return null;
         }
 
-        private static void getCsrfToken(string session)
+        private static void getCsrfToken()
         {
             Console.WriteLine("CSRF Token was:"+csrfToken );
-            using (HttpWebResponse response = getPage("http://warframe.market/orders", session))
+            using (HttpWebResponse response = GetPage("http://warframe.market/orders"))
             {
 
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
