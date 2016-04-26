@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WarframeMarketClient.GUI.Tabs
+namespace WarframeMarketClient.GUI.Tabs.Chat
 {
     /// <summary>
     /// Interaktionslogik für Chat_New.xaml
     /// </summary>
-    public partial class Chat_New : UserControl
+    public partial class ChatNewView : UserControl
     {
-        public Chat_New()
+        public ChatNewView()
         {
             InitializeComponent();
         }

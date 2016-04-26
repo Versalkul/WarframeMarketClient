@@ -16,18 +16,18 @@ using System.Windows.Shapes;
 using WarframeMarketClient.Logic;
 using WarframeMarketClient.Model;
 
-namespace WarframeMarketClient.GUI.Tabs
+namespace WarframeMarketClient.GUI.Tabs.Chat
 {
     /// <summary>
     /// Interaktionslogik für Chat.xaml
     /// </summary>
-    public partial class Chat : UserControl
+    public partial class ChatView : UserControl
     {
         public User user { get; private set; }
 
         public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 
-        public Chat(User us)
+        public ChatView(User us)
         {
             user = us;
             InitializeComponent();

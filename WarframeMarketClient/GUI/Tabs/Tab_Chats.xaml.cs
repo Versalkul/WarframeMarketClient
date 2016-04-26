@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WarframeMarketClient.Logic;
+using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -21,27 +23,15 @@ namespace WarframeMarketClient.GUI.Tabs
     /// </summary>
     public partial class Tab_Chats : UserControl
     {
+
+        public ObservableCollection<ChatTabContentViewModel> Chats;
+
         public Tab_Chats()
         {
             InitializeComponent();
-            addChat(new User() {Name="Blablub"});
+            Chats = new ObservableCollection<ChatTabContentViewModel>();
+            Chats.Add(new ChatNewViewModel());
         }
 
-
-        void addChat(User user)
-        {
-            Chat chat = new Chat(user);
-
-            TabItem tab = new TabItem();
-            tab.Header = user.Name;
-            tab.Content = chat;
-
-            chatTabs.Items.Add(tab);
-        }
-
-        void closeChat(Chat chat)
-        {
-            chatTabs.Items.Remove(chat.Parent);
-        }
     }
 }
