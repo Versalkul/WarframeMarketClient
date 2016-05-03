@@ -102,6 +102,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="GUI\Styles\GeneralStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="GUI\Tabs\Chat\ChatView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -135,7 +139,7 @@
     <Compile Include="Logic\SocketManager.cs" />
     <Compile Include="Logic\SocketMessage.cs" />
     <Compile Include="Logic\SocketMessagePM.cs" />
-    <Compile Include="Logic\User.cs" />
+    <Compile Include="Model\User.cs" />
     <Compile Include="Model\WarframeItem.cs" />
     <Compile Include="Logic\Webhelper.cs" />
     <Compile Include="Model\ApplicationState.cs" />

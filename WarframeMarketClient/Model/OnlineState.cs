@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    enum OnlineState {
+    public enum OnlineState {
         OFFLINE,
         ONLINE,
         INGAME

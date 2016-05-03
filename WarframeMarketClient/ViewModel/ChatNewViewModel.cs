@@ -8,5 +8,10 @@ namespace WarframeMarketClient.ViewModel
 {
     public class ChatNewViewModel : ChatTabContentViewModel
     {
+
+        public string Status { get; set; }
+
+        public string User { get; set; }
+
     }
 }

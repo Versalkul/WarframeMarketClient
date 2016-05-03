@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WarframeMarketClient.Logic
+namespace WarframeMarketClient.Model
 {
     public class User
     {
-        public String Name;
+        public String Name { get; set; }
+
+        public OnlineState State { get; set; }
     }
 }
