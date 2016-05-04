@@ -184,48 +184,14 @@
 
 
 
-        
 
-        <Style x:Key="MainTabs" TargetType="TabControl">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="Template">
+
+        <Style x:Key="MainTabsStyle" TargetType="local:FancyTabControl" BasedOn="{StaticResource {x:Type local:FancyTabControl}}">
+            <Setter Property="BelowTabsContent">
                 <Setter.Value>
-                    <ControlTemplate TargetType="TabControl">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!-- Tabs -->
-                            <Border Background="{StaticResource TabItemPanel_BackgroundBrush}" Padding="0,0">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*" />
-                                        <RowDefinition Height="30" />
-                                    </Grid.RowDefinitions>
-
-                                    <TabPanel IsItemsHost="True"/>
-                                    <Border Loaded="LoadStatusPanel" Grid.Row="1" x:Name="Status" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,1,0" Background="#afa" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
-                                        <Label x:Name="StatusText" Content="In Game" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#BF000000" Margin="0"/>
-                                    </Border>
-                                </Grid>
-                            </Border>
-
-                            <!-- Content -->
-                            <Border BorderThickness="0,1,1,1"
-                                         Grid.Column="1"
-                                         BorderBrush="White"
-                                         Background="White">
-                                <!-- This is the first/outer Border drawn on the TabPage -->
-                                <Border BorderThickness="1"
-                                            BorderBrush="White"
-                                            Margin="8">
-                                    <ContentPresenter ContentSource="SelectedContent" Margin="0"/>
-                                </Border>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
+                    <Border x:Name="Status" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,1,0" Background="#afa" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
+                        <Label x:Name="StatusText" Content="In Game" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#BF000000" Margin="0"/>
+                    </Border>
                 </Setter.Value>
             </Setter>
         </Style>
@@ -237,7 +203,7 @@
     
     
     <Grid>
-        <TabControl x:Name="tabControl" >
+        <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}">
 
             <TabItem Header="Settings">
                 <tabs:Tab_Settings/>
@@ -251,7 +217,7 @@
             <TabItem Header="Chats">
                 <tabs:Tab_Chats/>
             </TabItem>
-        </TabControl>
+        </local:FancyTabControl>
 
     </Grid>
 </Window>

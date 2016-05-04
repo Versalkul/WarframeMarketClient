@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:local="clr-namespace:WarframeMarketClient.GUI.Styles">
+                    xmlns:local="clr-namespace:WarframeMarketClient.GUI.Styles"
+                    xmlns:gui="clr-namespace:WarframeMarketClient.GUI">
 
     <Color x:Key="BorderColor">#CCC</Color>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
@@ -13,45 +14,50 @@
     </LinearGradientBrush>
 
 
+    
 
-    <Style TargetType="TabItem">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="TabItem">
-                    <Grid Name="Panel" Margin="0">
-                        <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0,0,0,0" SnapsToDevicePixels="True" Padding="10,5">
-                            <ContentPresenter x:Name="ContentSite"
+    <Style TargetType="gui:FancyTabControl">
+        <Style.Resources>
+            <Style TargetType="TabItem">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="TabItem">
+                            <Grid Name="Panel" Margin="0">
+                                <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0,0,0,0" SnapsToDevicePixels="True" Padding="10,5">
+                                    <ContentPresenter x:Name="ContentSite"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Left"
                                             ContentSource="Header"
                                             Margin="20,2"/>
-                        </Border>
-                        <Path Name="BorderPath" Margin="0,0,-1,0" Stroke="{StaticResource BorderBrush}" Fill="White" StrokeThickness="1" Data="M0,0 L-10,10 0,20" HorizontalAlignment="Right" Visibility="Hidden" VerticalAlignment="Center" />
-                    </Grid>
-                    <ControlTemplate.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="AntiqueWhite" />
-                            <Setter TargetName="BorderPath" Property="Visibility" Value="Visible" />
-                        </Trigger>
-                        <MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="Border.IsMouseOver" Value="True"/>
-                                <Condition Property="IsSelected" Value="False"/>
-                            </MultiTrigger.Conditions>
-                            <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
-                        </MultiTrigger>
-                    </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="TabControl">
+                                </Border>
+                                <Path Name="BorderPath" Margin="0,0,-1,0" Stroke="{StaticResource BorderBrush}" Fill="White" StrokeThickness="1" Data="M0,0 L-10,10 0,20" HorizontalAlignment="Right" Visibility="Hidden" VerticalAlignment="Center" />
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="Border" Property="Background" Value="AntiqueWhite" />
+                                    <Setter TargetName="BorderPath" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <MultiTrigger>
+                                    <MultiTrigger.Conditions>
+                                        <Condition Property="Border.IsMouseOver" Value="True"/>
+                                        <Condition Property="IsSelected" Value="False"/>
+                                    </MultiTrigger.Conditions>
+                                    <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                </MultiTrigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </Style.Resources>
+        
+        
+        
         <Setter Property="SnapsToDevicePixels" Value="true"/>
         <Setter Property="TabStripPlacement" Value="Left"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="TabControl">
+                <ControlTemplate TargetType="gui:FancyTabControl">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -67,10 +73,8 @@
                                 </Grid.RowDefinitions>
 
                                 <TabPanel IsItemsHost="True"/>
-                                
-                                <!--<Border Loaded="LoadStatusPanel" Grid.Row="1" x:Name="Status" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,1,0" Background="#afa" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Height="Auto">
-                                    <Label x:Name="StatusText" Content="In Game" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="12" Foreground="#BF000000" Margin="0"/>
-                                </Border>-->
+
+                                <ContentPresenter ContentSource="BelowTabsContent" Grid.Row="1" Margin="0"/>
                             </Grid>
                         </Border>
 
@@ -79,7 +83,6 @@
                                          Grid.Column="1"
                                          BorderBrush="White"
                                          Background="White">
-                            <!-- This is the first/outer Border drawn on the TabPage -->
                             <Border BorderThickness="1"
                                             BorderBrush="White"
                                             Margin="8">
@@ -91,7 +94,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-
+    
 
 </ResourceDictionary>
