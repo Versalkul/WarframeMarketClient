@@ -5,30 +5,49 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WarframeMarketClient.Model;
+using Timer=System.Timers.Timer;
 
 namespace WarframeMarketClient.Logic
 {
-    class MarketManager
+    class MarketManager :IDisposable
     {
 
         SocketManager socket;
         Dictionary<string, string> nameTypeMap = new Dictionary<string, string>(1000);
+        Timer onlineChecker;
+
 
         public MarketManager()
         {
             nameTypeMap = getTypeMap();
+            (new Thread(refreshCoockie)).Start();
+            onlineChecker = new Timer();
+            onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
+            onlineChecker.Start();
+
 
         }
 
-        private OnlineState getStatusOnSite()
+        // add coockie refresh
+
+        #region ThreadStuff
+
+        public OnlineState getStatusOnSite(string username)
         {
-            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/person/" + ApplicationState.getInstance().Username))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"[\"username\"]"))
             {
+                if (response == null) return OnlineState.OFFLINE;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    return reader.ReadToEnd().Contains("Online in Game") ? OnlineState.INGAME : OnlineState.OFFLINE;
+                    
+                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<OnlineInfo>>(reader.ReadToEnd()).response;
+
+                    if (info.Ingame) return OnlineState.INGAME;
+                    return info.Online?OnlineState.ONLINE:OnlineState.OFFLINE;
+
 
                 }
 
@@ -36,6 +55,40 @@ namespace WarframeMarketClient.Logic
             }
         }
 
+
+        public void forceUserState(object o, EventArgs args)
+        {
+
+            if (getStatusOnSite(ApplicationState.getInstance().Username) != ApplicationState.getInstance().OnlineState)
+            {
+                switch (ApplicationState.getInstance().OnlineState)
+                {
+                    case OnlineState.OFFLINE:
+                        setOffline();
+                        break;
+                    case OnlineState.ONLINE:
+                        setOnline();
+                        break;
+                    case OnlineState.INGAME:
+                        setIngame();
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+
+
+        private void refreshCoockie()
+        {
+            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/"))
+            {
+            }
+
+        }
+
+        #endregion
 
         #region onlineOffline
 
@@ -63,11 +116,16 @@ namespace WarframeMarketClient.Logic
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/api/messages/" + user))
             {
 
-                string json = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+                if (response == null) return new List<ChatMessage>();
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string json = reader.ReadToEnd();
+                    if (!json.Contains("200")) return new List<ChatMessage>();
+                    return JsonConvert.DeserializeObject<List<ChatMessage>>(json);
 
-                if (!json.Contains("200")) return new List<ChatMessage>();
+                }
 
-                return JsonConvert.DeserializeObject<List<ChatMessage>>(json);
+
 
             }
 
@@ -107,8 +165,8 @@ namespace WarframeMarketClient.Logic
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/remove_order", $"id={item.id}&count={item.count}"))
             {
-
-                return (new StreamReader(response.GetResponseStream())).ReadToEnd().Contains("200");
+                if (response == null) return false;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
             }
 
         }
@@ -117,8 +175,8 @@ namespace WarframeMarketClient.Logic
         {
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/bs_order", $"id={item.id}&count={item.count}"))
             {
-
-                return (new StreamReader(response.GetResponseStream())).ReadToEnd().Contains("200");
+                if (response == null) return false;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
             }
         }
 
@@ -126,8 +184,8 @@ namespace WarframeMarketClient.Logic
         {
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/edit_order", $"id={item.id}&new_count={item.count}&new_price={item.price}"))
             {
-
-                return (new StreamReader(response.GetResponseStream())).ReadToEnd().Contains("200");
+                if (response == null) return false;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
             }
         }
 
@@ -142,7 +200,8 @@ namespace WarframeMarketClient.Logic
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/place_order", postData))
             {
 
-                return (new StreamReader(response.GetResponseStream())).ReadToEnd().Contains("200");
+                if (response == null) return false;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
             }
 
         }
@@ -171,5 +230,9 @@ namespace WarframeMarketClient.Logic
             return map;
         }
 
+        public void Dispose()
+        {
+            onlineChecker.Dispose();
+        }
     }
 }
