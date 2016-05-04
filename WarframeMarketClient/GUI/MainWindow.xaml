@@ -8,8 +8,8 @@
         mc:Ignorable="d"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
         Title="WarframeMarket Client" Height="350" Width="525" WindowStartupLocation="CenterScreen" Style="{DynamicResource MetroWindowStyle}" AllowsTransparency="True" StateChanged="Window_StateChanged">
-    
-    
+
+
 
 
 
@@ -18,8 +18,6 @@
         <SolidColorBrush x:Key="WindowBorderBrush" Color="{StaticResource WindowBorderColor}"/>
         <SolidColorBrush x:Key="WindowResizeBorderBrush" Color="Transparent"/>
         <GridLength x:Key="WindowBorderSize">5</GridLength>
-        <Color x:Key="BorderColor">#CCC</Color>
-        <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
 
         <!-- Code according to
             https://3water.wordpress.com/2013/02/16/metro-style-window-in-wpf/
@@ -185,88 +183,8 @@
         </Style>
 
 
+
         
-        
-        
-        
-        
-
-        <LinearGradientBrush x:Key="TabItemPanel_BackgroundBrush" StartPoint="0,0" EndPoint="1,0">
-            <LinearGradientBrush.GradientStops>
-                <GradientStop Offset="0.99" Color="Transparent"/>
-                <GradientStop Offset="0.995" Color="{StaticResource BorderColor}"/>
-            </LinearGradientBrush.GradientStops>
-        </LinearGradientBrush>
-
-
-
-        <Style TargetType="TabItem">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TabItem">
-                        <Grid Name="Panel" Margin="0">
-                            <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0,0,0,0" SnapsToDevicePixels="True" Padding="10,5">
-                                <ContentPresenter x:Name="ContentSite"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Left"
-                                            ContentSource="Header"
-                                            Margin="20,2"/>
-                            </Border>
-                            <Path Name="BorderPath" Margin="0,0,-1,0" Stroke="{StaticResource BorderBrush}" Fill="White" StrokeThickness="1" Data="M0,0 L-10,10 0,20" HorizontalAlignment="Right" Visibility="Hidden" VerticalAlignment="Center" />
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="Border" Property="Background" Value="AntiqueWhite" />
-                                <Setter TargetName="BorderPath" Property="Visibility" Value="Visible" />
-                            </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="Border.IsMouseOver" Value="True"/>
-                                    <Condition Property="IsSelected" Value="False"/>
-                                </MultiTrigger.Conditions>
-                                <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
-                            </MultiTrigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style TargetType="TabControl">
-            <Setter Property="SnapsToDevicePixels" Value="true"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="TabControl">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <!-- Tabs -->
-                            <Border Background="{StaticResource TabItemPanel_BackgroundBrush}" Padding="0,0">
-                                <Grid>
-                                    <TabPanel IsItemsHost="True"/>
-                                </Grid>
-                            </Border>
-
-                            <!-- Content -->
-                            <Border BorderThickness="0,1,1,1"
-                                         Grid.Column="1"
-                                         BorderBrush="White"
-                                         Background="White">
-                                <!-- This is the first/outer Border drawn on the TabPage -->
-                                <Border BorderThickness="1"
-                                            BorderBrush="White"
-                                            Margin="8">
-                                    <ContentPresenter ContentSource="SelectedContent" Margin="0"/>
-                                </Border>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
 
         <Style x:Key="MainTabs" TargetType="TabControl">
             <Setter Property="SnapsToDevicePixels" Value="true"/>
@@ -319,7 +237,7 @@
     
     
     <Grid>
-        <TabControl x:Name="tabControl" TabStripPlacement="Left" Style="{StaticResource MainTabs}" >
+        <TabControl x:Name="tabControl" >
 
             <TabItem Header="Settings">
                 <tabs:Tab_Settings/>

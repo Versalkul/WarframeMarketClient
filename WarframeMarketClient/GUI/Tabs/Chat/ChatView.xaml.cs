@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WarframeMarketClient.Logic;
 using WarframeMarketClient.Model;
+using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.GUI.Tabs.Chat
 {
@@ -23,15 +24,11 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
     /// </summary>
     public partial class ChatView : UserControl
     {
-        public User user { get; private set; }
-
         public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 
-        public ChatView(User us)
+        public ChatView()
         {
-            user = us;
             InitializeComponent();
-            this.DataContext = this;
 
             ChatMessages = new ObservableCollection<ChatMessage>()
             {
@@ -58,6 +55,9 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
                     int caretIndex = InputText.CaretIndex;
                     InputText.Text = InputText.Text.Insert(InputText.CaretIndex, "\r\n");
                     InputText.CaretIndex = caretIndex+1;
+                }else
+                {
+                    ((ChatViewModel) this.DataContext).sendMessage();
                 }
             }
         }
@@ -67,7 +67,5 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
         {
 
         }
-
-        
     }
 }

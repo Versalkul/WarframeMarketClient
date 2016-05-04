@@ -9,6 +9,7 @@
             <!-- conv:IEnumerableToStringConverter x:Key="IEnumerableToStringConverter" /-->
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="GUI/Styles/ChatStyles.xaml" />
+                <ResourceDictionary Source="GUI/Styles/GeneralStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
