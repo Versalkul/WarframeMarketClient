@@ -86,6 +86,8 @@
     <Compile Include="GUI\Tabs\Tab_Settings.xaml.cs">
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\JsonFrame.cs" />
+    <Compile Include="Logic\OnlineInfo.cs" />
     <Compile Include="ViewModel\ChatTabContentViewModel.cs" />
     <Page Include="GUI\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

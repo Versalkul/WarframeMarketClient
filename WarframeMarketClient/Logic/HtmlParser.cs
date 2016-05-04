@@ -12,7 +12,7 @@ namespace WarframeMarketClient.Logic
     class HtmlParser
     {
 
-        public static Tuple<bool,string> verifyToken()
+        public static Tuple<bool,string> verifyToken() // worked and username
         {
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/account"))
             {
@@ -42,6 +42,7 @@ namespace WarframeMarketClient.Logic
         {
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/orders"))
             {
+                if (response == null) return new List<WarframeItem>();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
 
@@ -117,6 +118,7 @@ namespace WarframeMarketClient.Logic
         {
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/messages"))
             {
+                if (response == null) return new List<string>();
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
 
