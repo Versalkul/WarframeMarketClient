@@ -4,14 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:chat="clr-namespace:WarframeMarketClient.GUI.Tabs.Chat"
+             xmlns:gui="clr-namespace:WarframeMarketClient.GUI"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TabControl x:Name="chatTabs" TabStripPlacement="Left" ItemsSource="{Binding Chats}">
+        <gui:FancyTabControl x:Name="chatTabs" ItemsSource="{Binding Chats}">
             <TabItem Header="+">
                 <chat:ChatNewView/>
             </TabItem>
-        </TabControl>
+        </gui:FancyTabControl>
     </Grid>
 </UserControl>

@@ -13,8 +13,6 @@ namespace WarframeMarketClient.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Border StatusPanel;
-        private Label StatusLabel;
         private TaskbarIcon tbi = new TaskbarIcon();
         public  bool toTray = false;
 
@@ -28,25 +26,6 @@ namespace WarframeMarketClient.GUI
         void Window1_SourceInitialized(object sender, EventArgs e)
         {
             WindowSizing.WindowInitialized(this);
-        }
-
-
-
-        public void setStatus()
-        {
-            if (StatusPanel == null) return;
-            BrushConverter bc = new BrushConverter();
-
-            if (true){
-                StatusPanel.Background = (Brush) bc.ConvertFrom("#afa");
-                StatusLabel.Content = "InGame";
-            }
-        }
-
-        private void LoadStatusPanel(object sender, RoutedEventArgs e)
-        {
-            StatusPanel = (Border)sender;
-            StatusLabel = (Label)StatusPanel.FindName("StatusText");
         }
 
 
