@@ -29,5 +29,17 @@ namespace WarframeMarketClient.GUI
 
 
 
+        public Thickness ContentMargin
+        {
+            get { return (Thickness)GetValue(ContentMarginProperty); }
+            set { SetValue(ContentMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ContentMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ContentMarginProperty =
+            DependencyProperty.Register("ContentMargin", typeof(Thickness), typeof(FancyTabControl), new PropertyMetadata(null));
+
+
+
     }
 }

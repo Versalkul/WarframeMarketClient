@@ -8,5 +8,6 @@ namespace WarframeMarketClient.ViewModel
 {
     public abstract class ChatTabContentViewModel
     {
+        public abstract string DisplayName { get; }
     }
 }

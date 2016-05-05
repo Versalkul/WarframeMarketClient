@@ -8,11 +8,15 @@
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <DataTemplate x:Key="ChatTabItemTemplate">
+            <ContentPresenter 
+                Content="{Binding Path=DisplayName}" 
+                VerticalAlignment="Center" 
+                />  
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
-        <gui:FancyTabControl x:Name="chatTabs" ItemsSource="{Binding Chats}">
-            <TabItem Header="+">
-                <chat:ChatNewView/>
-            </TabItem>
-        </gui:FancyTabControl>
+        <gui:FancyTabControl x:Name="chatTabs" ItemsSource="{Binding Chats}" ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
     </Grid>
 </UserControl>

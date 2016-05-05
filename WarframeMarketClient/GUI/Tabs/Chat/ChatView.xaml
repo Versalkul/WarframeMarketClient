@@ -13,29 +13,46 @@
         <Style TargetType="TextBlock" x:Key="Other">
             <Setter Property="HorizontalAlignment" Value="Left"></Setter>
         </Style>
+        <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="20"/>
             <RowDefinition Height="10*"/>
-            <RowDefinition Height="1*" MinHeight="25"/>
+            <RowDefinition Height="Auto" MinHeight="25"/>
         </Grid.RowDefinitions>
 
 
 
-        <Label Grid.Row="0" Padding="0" x:Name="State" Content="{Binding User.State}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="#FF00AA00" FontWeight="Bold"/>
-        <Label Grid.Row="0" Padding="0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
+        <Label Grid.Row="0" Padding="0" x:Name="State" Content="{Binding User.State}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="{Binding User.State, Converter={StaticResource OnlineStateToColorConverter}}" FontWeight="Bold"/>
+        <Label Grid.Row="0" Padding="10,0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
 
-        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray">
-            <ListView Grid.Row="0" ItemsSource="{Binding ChatMessages}" ItemTemplate="{StaticResource ChatItemTemplate}" HorizontalContentAlignment="Stretch">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Focusable" Value="False"></Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-        </Border>
+        <ListView
+            Grid.Row="1"
+            ItemsSource="{Binding ChatMessages}"
+            ItemTemplate="{StaticResource ChatItemTemplate}"
+            HorizontalContentAlignment="Stretch"
+            Margin="0,7,0,10"
+            BorderThickness="0,1,0,0"
+            BorderBrush="{StaticResource BorderBrush}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="False"></Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
 
-        <TextBox Grid.Row="2" x:Name="InputText" TextWrapping="Wrap" KeyDown="Input_KeyDown"  />
+        <TextBox
+            Grid.Row="2"
+            MaxHeight="100"
+            x:Name="InputText"
+            Text="{Binding NewMessage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            TextWrapping="Wrap"
+            KeyDown="Input_KeyDown"
+            VerticalScrollBarVisibility="Auto"
+            BorderThickness="0,1,0,0"
+            BorderBrush="{StaticResource BorderBrush}"
+            Margin="0"
+            Padding="10"/>
     </Grid>
 </UserControl>

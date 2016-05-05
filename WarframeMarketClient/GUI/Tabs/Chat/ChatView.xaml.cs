@@ -65,7 +65,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
 
         private void closeChat(object sender, MouseEventArgs e)
         {
-
+            ((ChatViewModel)this.DataContext).closeChat();
         }
     }
 }

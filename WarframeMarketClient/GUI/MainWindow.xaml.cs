@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Hardcodet.Wpf.TaskbarNotification;
+using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.GUI
 {
@@ -14,13 +15,15 @@ namespace WarframeMarketClient.GUI
     public partial class MainWindow : Window
     {
         private TaskbarIcon tbi = new TaskbarIcon();
-        public  bool toTray = false;
+        public bool toTray = false;
 
         public MainWindow()
         {
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
             tbi.TrayMouseDoubleClick += new RoutedEventHandler(onTrayClick);
+
+            this.DataContext = ApplicationState.getInstance();
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)

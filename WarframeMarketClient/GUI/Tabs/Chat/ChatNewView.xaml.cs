@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.GUI.Tabs.Chat
 {
@@ -29,7 +30,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
         {
             if (e.Key == Key.Return)
             {
-
+                ((ChatNewViewModel)this.DataContext).openChat();
             }
         }
     }

@@ -79,15 +79,10 @@
                         </Border>
 
                         <!-- Content -->
-                        <Border BorderThickness="0,1,1,1"
-                                         Grid.Column="1"
-                                         BorderBrush="White"
-                                         Background="White">
-                            <Border BorderThickness="1"
-                                            BorderBrush="White"
-                                            Margin="8">
-                                <ContentPresenter ContentSource="SelectedContent" Margin="0"/>
-                            </Border>
+                        <Border BorderThickness="0"
+                                Grid.Column="1"
+                                Margin="{TemplateBinding ContentMargin}">
+                            <ContentPresenter ContentSource="SelectedContent" Margin="0"/>
                         </Border>
                     </Grid>
                 </ControlTemplate>

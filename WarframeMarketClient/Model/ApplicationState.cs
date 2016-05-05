@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    class ApplicationState
+    public class ApplicationState
     {
         #region Singleton
 
@@ -21,7 +21,9 @@ namespace WarframeMarketClient.Model
 
         private ApplicationState()
         {
-
+            Username = "";
+            SessionToken = "";
+            OnlineState = OnlineState.OFFLINE;
         }
 
         #endregion
