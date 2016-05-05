@@ -38,7 +38,9 @@ namespace WarframeMarketClient.Model
 
         public OnlineState OnlineState { get; set; }
 
-
+        public OnlineState AfkState { get; set; }
+        
+        public OnlineState DefaultState { get; set; }
         #endregion
 
     }

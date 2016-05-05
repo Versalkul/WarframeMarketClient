@@ -26,6 +26,8 @@ namespace WarframeMarketClient.Logic
             (new Thread(refreshCoockie)).Start();
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
+            onlineChecker.Interval = 60000;
+            onlineChecker.AutoReset = true;
             onlineChecker.Start();
 
 
