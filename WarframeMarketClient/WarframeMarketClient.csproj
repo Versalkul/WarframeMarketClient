@@ -66,6 +66,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GUI\Converter\OnlineStateToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\OnlineStateToColorConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToAlignmentConverter.cs" />
     <Compile Include="GUI\FancyTabControl.cs" />

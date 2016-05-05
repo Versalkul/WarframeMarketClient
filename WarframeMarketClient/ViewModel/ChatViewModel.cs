@@ -16,6 +16,8 @@ namespace WarframeMarketClient.ViewModel
         public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 
         public override string DisplayName { get { return User.Name; } }
+        
+        public override OnlineState? OnlineStateInfo { get { return User.State; } }
 
 
         private string newMessage;

@@ -41,5 +41,18 @@ namespace WarframeMarketClient.GUI
 
 
 
+
+        public Thickness TabNameMargin
+        {
+            get { return (Thickness)GetValue(TabNameMarginProperty); }
+            set { SetValue(TabNameMarginProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for TabNameMargin.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty TabNameMarginProperty =
+            DependencyProperty.Register("TabNameMargin", typeof(Thickness), typeof(FancyTabControl), new PropertyMetadata(null));
+
+
+
     }
 }

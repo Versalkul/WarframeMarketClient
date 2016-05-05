@@ -9,14 +9,39 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
+        <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
+        <converter:OnlineStateToVisibilityConverter x:Key="OnlineStateToVisibilityConverter"/>
         <DataTemplate x:Key="ChatTabItemTemplate">
-            <ContentPresenter 
-                Content="{Binding Path=DisplayName}" 
-                VerticalAlignment="Center" 
-                />  
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Border
+                    BorderBrush="{StaticResource BorderBrush}"
+                    BorderThickness="1"
+                    Width="15"
+                    Height="15"
+                    Margin="0,0,10,0"
+                    Padding="0"
+                    Visibility="{Binding Path=OnlineStateInfo, Converter={StaticResource OnlineStateToVisibilityConverter}}"
+                    Background="{Binding Path=OnlineStateInfo, Converter={StaticResource OnlineStateToColorConverter}}"/>
+
+                <ContentPresenter 
+                    Grid.Column="1"
+                    Content="{Binding Path=DisplayName}" 
+                    VerticalAlignment="Center" 
+                    />
+                
+            </Grid>
         </DataTemplate>
     </UserControl.Resources>
     <Grid>
-        <gui:FancyTabControl x:Name="chatTabs" ItemsSource="{Binding Chats}" ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
+        <gui:FancyTabControl
+            x:Name="chatTabs"
+            ItemsSource="{Binding Chats}"
+            TabNameMargin="2,2,5,2"
+            ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
     </Grid>
 </UserControl>
