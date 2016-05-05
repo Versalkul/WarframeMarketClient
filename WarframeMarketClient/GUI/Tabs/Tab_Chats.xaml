@@ -40,7 +40,7 @@
     <Grid>
         <gui:FancyTabControl
             x:Name="chatTabs"
-            ItemsSource="{Binding Chats}"
+            ItemsSource="{Binding Tabs}"
             TabNameMargin="2,2,5,2"
             ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
     </Grid>
