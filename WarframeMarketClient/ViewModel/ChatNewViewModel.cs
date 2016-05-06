@@ -7,11 +7,13 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.ViewModel
 {
-    public class ChatNewViewModel : ChatTabContentViewModel, INotifyPropertyChanged
+    public class ChatNewViewModel : ChatTabContentViewModel
     {
-
+        #region TabProperties
         public override string DisplayName { get { return "+";} }
+        #endregion
 
+        #region Properties
         public string Status { get; set; }
 
         private string user;
@@ -21,23 +23,11 @@ namespace WarframeMarketClient.ViewModel
             get { return user; }
             set { user = value; OnPropertyChanged("User"); }
         }
+        #endregion
 
         public void openChat()
         {
             Console.WriteLine("Open Chat with: "+User);
-        }
-
-
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string property)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(property));
         }
     }
 }

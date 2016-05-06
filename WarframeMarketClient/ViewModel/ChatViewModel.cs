@@ -9,17 +9,19 @@ using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
 {
-    public class ChatViewModel : ChatTabContentViewModel, INotifyPropertyChanged
+    public class ChatViewModel : ChatTabContentViewModel
     {
+        #region TabProperties
+        public override string DisplayName { get { return User.Name; } }
+        public override OnlineState? OnlineStateInfo { get { return User.State; } }
+        #endregion
+
+        #region Properties
         public User User { get; private set; }
 
         public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 
-        public override string DisplayName { get { return User.Name; } }
         
-        public override OnlineState? OnlineStateInfo { get { return User.State; } }
-
-
         private string newMessage;
 
         public string NewMessage
@@ -27,28 +29,12 @@ namespace WarframeMarketClient.ViewModel
             get { return newMessage; }
             set { newMessage = value; OnPropertyChanged("NewMessage"); }
         }
-
-
-
+        #endregion
+        
 
         public ChatViewModel(User u)
         {
             User = u;
-            ChatMessages = new ObservableCollection<ChatMessage>
-            {
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-            };
         }
 
 
@@ -60,17 +46,6 @@ namespace WarframeMarketClient.ViewModel
         public void closeChat()
         {
             Console.WriteLine("Close Chat with "+User.Name);
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        private void OnPropertyChanged(string property)
-        {
-            var handler = PropertyChanged;
-            if (handler != null)
-                handler(this, new PropertyChangedEventArgs(property));
         }
     }
 }

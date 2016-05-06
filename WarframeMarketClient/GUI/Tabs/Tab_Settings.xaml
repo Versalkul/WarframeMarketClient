@@ -9,12 +9,12 @@
     <Grid>
 
 
-        <TextBox x:Name="tokenBox" Text="Enter Session Token" VerticalAlignment="Bottom" Margin="10,0,10,40"/>
-        <Button x:Name="saveButton" Content="Save" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="25"/>
         <CheckBox x:Name="autostartBox" Content="Autostart" Margin="10,16,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <CheckBox x:Name="minimizeBox" Content="Minimize to Tray" HorizontalAlignment="Left" Margin="8,46,0,0" VerticalAlignment="Top" Click="minimizeBox_Click"/>
 
 
+        <TextBox x:Name="tokenBox" Text="Enter Session Token" VerticalAlignment="Bottom" Margin="10,0,10,40"/>
+        <Button x:Name="saveButton" Content="Save" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="25"/>
 
 
     </Grid>

@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:WarframeMarketClient.GUI.Styles"
+                    xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
                     xmlns:gui="clr-namespace:WarframeMarketClient.GUI">
 
     <Color x:Key="BorderColor">#CCC</Color>
@@ -18,6 +19,7 @@
 
     <Style TargetType="gui:FancyTabControl">
         <Style.Resources>
+            <converter:TabInfoToHasInfoConverter x:Key="TabInfoToHasInfoConverter"/>
             <Style TargetType="TabItem">
                 <Setter Property="Template">
                     <Setter.Value>
@@ -27,6 +29,7 @@
                                     <ContentPresenter x:Name="ContentSite"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Stretch"
+                                            MinWidth="50"
                                             ContentSource="Header"
                                             Margin="{Binding RelativeSource={RelativeSource AncestorType=gui:FancyTabControl}, Path=TabNameMargin}"/>
                                 </Border>
@@ -44,6 +47,15 @@
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
                                 </MultiTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content, Converter={StaticResource TabInfoToHasInfoConverter}}" Value="True">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard Storyboard.TargetName="Border" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="Background.Color">
+                                                <ColorAnimation To="AntiqueWhite" AutoReverse="True" Duration="0:0:2" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                </DataTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
