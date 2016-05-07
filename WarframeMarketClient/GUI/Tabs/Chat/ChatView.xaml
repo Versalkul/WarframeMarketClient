@@ -24,7 +24,15 @@
 
 
 
-        <Label Grid.Row="0" Padding="0" x:Name="State" Content="{Binding User.State}" HorizontalAlignment="Center" VerticalAlignment="Bottom" Foreground="{Binding User.State, Converter={StaticResource OnlineStateToColorConverter}}" FontWeight="Bold"/>
+		<Label
+			Grid.Row="0"
+			Padding="0"
+			x:Name="State"
+            Content="{Binding User.State}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"
+            Foreground="{Binding User.State, Converter={StaticResource OnlineStateToColorConverter}, ConverterParameter='strong'}"
+            FontWeight="Bold"/>
         <Label Grid.Row="0" Padding="10,0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
 
         <ListView

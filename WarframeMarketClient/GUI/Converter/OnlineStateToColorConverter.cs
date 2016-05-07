@@ -13,15 +13,27 @@ namespace WarframeMarketClient.GUI.Converter
 {
     class OnlineStateToColorConverter : IValueConverter
     {
+        private static Dictionary<String, Dictionary<OnlineState, Color>> _colors = new Dictionary<String, Dictionary<OnlineState, Color>>
+        {
+            { "normal", new Dictionary<OnlineState, Color>{
+                {OnlineState.INGAME, Color.FromRgb(204, 179, 255)},
+                {OnlineState.ONLINE, Color.FromRgb(179, 255, 179)},
+                {OnlineState.OFFLINE,Color.FromRgb(255, 179, 179)},
+            } },
+            { "strong", new Dictionary<OnlineState, Color>{
+                {OnlineState.INGAME, Color.FromRgb(140, 84, 255)},
+                {OnlineState.ONLINE, Color.FromRgb(0, 100, 0)},
+                {OnlineState.OFFLINE,Color.FromRgb(139, 0, 0)},
+            } }
+        };
+
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             OnlineState? state = value as OnlineState?;
-            if (state != null)
-                switch (state) {
-                    case OnlineState.INGAME: return new SolidColorBrush(Color.FromRgb(170, 255, 170));
-                    case OnlineState.ONLINE: return new SolidColorBrush(Color.FromRgb(255, 255, 170));
-                    case OnlineState.OFFLINE: return new SolidColorBrush(Color.FromRgb(255, 170, 170));
-                }
+            String colorType = parameter == null ? "normal" : parameter as String;
+            if (state != null && _colors.ContainsKey(colorType))
+                return new SolidColorBrush(_colors[colorType][(OnlineState)state]);
             return new SolidColorBrush(Color.FromRgb(200,200,200));
         }
 

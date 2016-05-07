@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -15,21 +16,21 @@ namespace WarframeMarketClient.GUI.Tabs
 
         #region Properties
 
-
-        private ObservableCollection<ChatViewModel> chats;
-
         public ObservableCollection<ChatViewModel> Chats
         {
             get { return (ObservableCollection<ChatViewModel>)GetValue(ChatsProperty); }
             set { SetValue(ChatsProperty, value);
                 value.CollectionChanged += chatUpdated;
-                OnPropertyChanged("Tabs");
             }
         }
 
         // Using a DependencyProperty as the backing store for Chats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ChatsProperty =
-            DependencyProperty.Register("Chats", typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(null));
+            DependencyProperty.Register("Chats", typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(new PropertyChangedCallback(
+                (Obj, _) => {
+                    (Obj as Tab_Chats).chatUpdated(null, null);
+                }
+                )));
 
 
 
@@ -37,9 +38,9 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             get {
                 ObservableCollection<ChatTabContentViewModel> tmp =
-                    chats == null ?
+                    Chats == null ?
                         new ObservableCollection<ChatTabContentViewModel>():
-                        new ObservableCollection<ChatTabContentViewModel>(chats);
+                        new ObservableCollection<ChatTabContentViewModel>(Chats);
                 tmp.Insert(0, newChat);
                 return new ReadOnlyObservableCollection<ChatTabContentViewModel>(tmp);
             }
@@ -66,7 +67,6 @@ namespace WarframeMarketClient.GUI.Tabs
         public Tab_Chats()
         {
             InitializeComponent();
-            this.DataContext = this;
         }
 
 
