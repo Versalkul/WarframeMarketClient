@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.Model
 {
-    public class ApplicationState
+    class ApplicationState
     {
         #region Singleton
 
         private static ApplicationState instance;
+        public MarketManager Market { get; private set; }
 
         public static ApplicationState getInstance()
         {
@@ -29,10 +31,24 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
+
         #region Properties
 
+        public string sessionToken;
 
-        public string SessionToken { get; set; }
+        public string SessionToken { get
+            {
+                
+                return sessionToken;
+            }
+            set
+            {
+                if (Market != null) Market.Dispose();
+                sessionToken = value;
+                Market = new MarketManager();
+
+            }
+        }
 
         public string Username { get; set; }
 

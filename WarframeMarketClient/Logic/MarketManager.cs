@@ -58,7 +58,7 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        public void forceUserState(object o, EventArgs args)
+        private void forceUserState(object o, EventArgs args)
         {
 
             if (getStatusOnSite(ApplicationState.getInstance().Username) != ApplicationState.getInstance().OnlineState)
@@ -235,6 +235,7 @@ namespace WarframeMarketClient.Logic
         public void Dispose()
         {
             onlineChecker.Dispose();
+            socket.Dispose();
         }
     }
 }
