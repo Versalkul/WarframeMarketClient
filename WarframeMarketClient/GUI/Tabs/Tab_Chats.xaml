@@ -7,6 +7,7 @@
              xmlns:gui="clr-namespace:WarframeMarketClient.GUI"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
+             x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
@@ -37,7 +38,7 @@
             </Grid>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid>
+    <Grid DataContext="{Binding ElementName=self}">
         <gui:FancyTabControl
             x:Name="chatTabs"
             ItemsSource="{Binding Tabs}"
