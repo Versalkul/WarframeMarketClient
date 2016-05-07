@@ -14,9 +14,8 @@ namespace WarframeMarketClient.Logic
         WebSocket socket;
         public event EventHandler<PmArgs> recievedPM;
         private Queue<string> jsonsToSend = new Queue<string>(5);
-        private static SocketManager socketMgr;
 
-        private SocketManager()
+        public SocketManager()
         {
             List<KeyValuePair<string, string>> cookies = new List<KeyValuePair<string, string>>(1);
             cookies.Add(new KeyValuePair<string, string>("session", ApplicationState.getInstance().SessionToken));
@@ -27,17 +26,6 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        public static SocketManager getInstance()
-        {
-            if (socketMgr == null) socketMgr = new SocketManager();
-            return socketMgr;
-        }
-
-        public static void Invalidate()
-        {
-            socketMgr.Dispose();
-            socketMgr = null;
-        }
 
 
         #region events

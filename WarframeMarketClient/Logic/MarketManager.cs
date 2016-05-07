@@ -23,6 +23,7 @@ namespace WarframeMarketClient.Logic
         public MarketManager()
         {
             nameTypeMap = getTypeMap();
+            socket = new SocketManager();
             (new Thread(refreshCoockie)).Start();
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
