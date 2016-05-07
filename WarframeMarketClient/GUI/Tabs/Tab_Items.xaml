@@ -20,7 +20,7 @@
             CanUserResizeRows="False"
             SelectionMode="Single">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}"/>
+                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
                 <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Path=Name}"/>
                 <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
