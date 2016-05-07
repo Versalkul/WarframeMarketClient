@@ -9,35 +9,42 @@ namespace WarframeMarketClient.Model
     class WarframeItem
     {
 
-        public string name;
-        public int price;
-        public int count;
-        public int modRank=-1;
-        public bool sellOffer;
-        public string id="";
+        public string Name { get; set; }
+        public int Price { get; set; }
+        public int Count { get; set; }
+        public int ModRank { get; set; }
+        public bool SellOffer { get; set; }
+        public string Id { get; set; }
+
+        public string Category { get
+            {
+                return ApplicationState.getInstance().Market.GetCategory(Name);
+            }
+        }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)
         {
-            this.name = name;
-            this.price = price;
-            this.count = count;
-            this.sellOffer = sellOffer;
+            this.Name = name;
+            this.Price = price;
+            this.Count = count;
+            this.SellOffer = sellOffer;
+            ModRank = -1;
         }
 
         public WarframeItem(string name, int price, int count,int modRank, bool sellOffer):this(name, price, count, sellOffer)
         {
-            this.modRank = modRank;
+            this.ModRank = modRank;
         }
 
         public WarframeItem(string name, int price, int count, bool sellOffer,string id):this(name, price, count, sellOffer)
         {
-
-            this.id = id;
+            ModRank = -1;
+            this.Id = id;
         }
 
         public WarframeItem(string name, int price, int count, int modRank, bool sellOffer,string id) : this(name, price, count, sellOffer, id)
         {
-            this.modRank = modRank;
+            this.ModRank = modRank;
         }
 
     }
