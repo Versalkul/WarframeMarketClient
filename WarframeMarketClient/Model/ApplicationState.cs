@@ -44,6 +44,7 @@ namespace WarframeMarketClient.Model
             set
             {
                 if (Market != null) Market.Dispose();
+                if (value == "") return;
                 sessionToken = value;
                 Market = new MarketManager();
 
