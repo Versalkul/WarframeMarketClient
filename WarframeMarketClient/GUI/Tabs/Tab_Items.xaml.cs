@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,14 +21,19 @@ namespace WarframeMarketClient.GUI.Tabs
     /// </summary>
     public partial class Tab_Items : UserControl
     {
+
+        public ObservableCollection<Item> Items { get; set; }
+
         public Tab_Items()
         {
             InitializeComponent();
 
-            List<Item> items = new List<Item>();
-            items.Add(new Item() { Category = "Bla", Name = "Blablub", Price=20, Count=2, Rank=0, Buttons="Nix" });
-            items.Add(new Item() { Category = "Bla", Name = "Blablub", Price = 20, Count = 2, Rank = 0, Buttons = "Nix" });
-            items.Add(new Item() { Category = "Bla", Name = "Blablub", Price = 20, Count = 2, Rank = 0, Buttons = "Nix" });
+            DataContext = this;
+
+            Items = new ObservableCollection<Item>();
+            Items.Add(new Item() { Category = "Bla", Name = "Blablub", Price=20, Count=2, Rank=0, Buttons="Nix" });
+            Items.Add(new Item() { Category = "Bla", Name = "Blablub", Price = 20, Count = 2, Rank = 0, Buttons = "Nix" });
+            Items.Add(new Item() { Category = "Bla", Name = "Blablub", Price = 20, Count = 2, Rank = 0, Buttons = "Nix" });
             //list.ItemsSource = items;
         }
     }

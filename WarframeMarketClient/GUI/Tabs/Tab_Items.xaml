@@ -6,100 +6,36 @@
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
-
-        <!--<ListView HorizontalAlignment="Stretch"
-          Behaviours:GridViewColumnResize.Enabled="True">
-            <ListViewItem></ListViewItem>
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn  Header="Column *"
-                                   Behaviours:GridViewColumnResize.Width="*" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn  Header="Column 2*" 
-                          Behaviours:GridViewColumnResize.Width="2*" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn  Header="Column Auto" Width="Auto"  >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox HorizontalAlignment="Stretch" Text="Example1" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn  Header="50 S"
-                                   Behaviours:GridViewColumnResize.Width="50" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox HorizontalAlignment="Stretch" Text="E" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn  Header="50" Width="50" >
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox HorizontalAlignment="Stretch" Text="E" />
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
-        <!-- <ListView Grid.ColumnSpan="5" Margin="10" Name="list" Grid.IsSharedSizeScope="True">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <WrapPanel>
-                        <TextBlock Grid.Column="0" Text="{Binding Category}" />
-                        <TextBlock Grid.Column="1" Text="{Binding Name}" />
-                        <TextBlock Grid.Column="2" Text="{Binding Price}" />
-                        <TextBlock Grid.Column="3" Text="{Binding Count}" />
-                        <TextBlock Grid.Column="4" Text="{Binding Rank}" />
-                        <TextBlock Grid.Column="5" Text="{Binding Buttons}" Background="Blue" />
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <ListView.View>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="10"/>
-                    <ColumnDefinition Width="20"/>
-                    <ColumnDefinition Width="30"/>
-                    <ColumnDefinition Width="50"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-            </ListView.View>
+    <Grid Background="White">
+        <DataGrid
+            x:Name="dataGrid"
+            ItemsSource="{Binding Path=Items}"
+            AutoGenerateColumns="False"
             
-            
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Category" Width="Auto" DisplayMemberBinding="{Binding Category}" />
-                    <GridViewColumn Header="Name" Width="Auto" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Price" Width="Auto" DisplayMemberBinding="{Binding Price}" />
-                    <GridViewColumn Header="Count" Width="Auto" DisplayMemberBinding="{Binding Count}" />
-                    <GridViewColumn Header="Rank" Width="Auto" DisplayMemberBinding="{Binding Rank}" />
-                    <GridViewColumn Width="Auto">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" SharedSizeGroup="IdColumn"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock HorizontalAlignment="Right" Text="{Binding Buttons}"/>
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>-->
+            CanUserDeleteRows="False"
+            CanUserAddRows="True"
+            CanUserReorderColumns="False"
+            CanUserResizeColumns="False"
+            CanUserResizeRows="False"
+            SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}"/>
+                <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Path=Name}"/>
+                <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
+                <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
+                <DataGridTextColumn Header="Rank" Width="1*" Binding="{Binding Path=Rank}"/>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Button Content="Sold" FontSize="10"></Button>
+                                <Button Content="X" FontSize="10" ></Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </UserControl>

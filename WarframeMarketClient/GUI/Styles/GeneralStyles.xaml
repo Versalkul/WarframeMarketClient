@@ -7,6 +7,15 @@
     <Color x:Key="BorderColor">#CCC</Color>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
 
+
+
+    <Color x:Key="MouseOverColor">GhostWhite</Color>
+    <SolidColorBrush x:Key="MouseOverBrush" Color="{StaticResource MouseOverColor}"/>
+    
+    <Color x:Key="SelectionColor">AntiqueWhite</Color>
+    <SolidColorBrush x:Key="SelectionBrush" Color="{StaticResource SelectionColor}"/>
+
+
     <LinearGradientBrush x:Key="TabItemPanel_BackgroundBrush" StartPoint="0,0" EndPoint="1,0">
         <LinearGradientBrush.GradientStops>
             <GradientStop Offset="0.99" Color="Transparent"/>
@@ -37,7 +46,7 @@
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
-                                    <Setter TargetName="Border" Property="Background" Value="AntiqueWhite" />
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource SelectionBrush}" />
                                     <Setter TargetName="BorderPath" Property="Visibility" Value="Visible" />
                                 </Trigger>
                                 <MultiTrigger>
@@ -45,13 +54,13 @@
                                         <Condition Property="Border.IsMouseOver" Value="True"/>
                                         <Condition Property="IsSelected" Value="False"/>
                                     </MultiTrigger.Conditions>
-                                    <Setter TargetName="Border" Property="Background" Value="GhostWhite" />
+                                    <Setter TargetName="Border" Property="Background" Value="{StaticResource MouseOverBrush}" />
                                 </MultiTrigger>
                                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content, Converter={StaticResource TabInfoToHasInfoConverter}}" Value="True">
                                     <DataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard Storyboard.TargetName="Border" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="Background.Color">
-                                                <ColorAnimation To="AntiqueWhite" AutoReverse="True" Duration="0:0:2" />
+                                                <ColorAnimation To="{StaticResource SelectionColor}" AutoReverse="True" Duration="0:0:2" />
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </DataTrigger.EnterActions>
