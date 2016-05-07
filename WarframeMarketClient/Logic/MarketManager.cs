@@ -166,7 +166,7 @@ namespace WarframeMarketClient.Logic
         public bool RemoveItem(WarframeItem item)
         {
 
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/remove_order", $"id={item.id}&count={item.count}"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/remove_order", $"id={item.Id}&count={item.Count}"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
@@ -176,7 +176,7 @@ namespace WarframeMarketClient.Logic
 
         public bool SoldItem(WarframeItem item)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/bs_order", $"id={item.id}&count={item.count}"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/bs_order", $"id={item.Id}&count={item.Count}"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
@@ -185,7 +185,7 @@ namespace WarframeMarketClient.Logic
 
         public bool EditItem(WarframeItem item)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/edit_order", $"id={item.id}&new_count={item.count}&new_price={item.price}"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/edit_order", $"id={item.Id}&new_count={item.Count}&new_price={item.Price}"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
@@ -194,10 +194,10 @@ namespace WarframeMarketClient.Logic
 
         public bool AddItem(WarframeItem item)
         {
-            if (!nameTypeMap.ContainsKey(item.name)) return false;
-            string sellType = item.sellOffer ? "sell" : "buy";
+            if (!nameTypeMap.ContainsKey(item.Name)) return false;
+            string sellType = item.SellOffer ? "sell" : "buy";
 
-            string postData = $"item_name={item.name.Replace(' ', '+')}&item_type={nameTypeMap[item.name]}&action_type={sellType}&item_quantity={item.count}&platina={item.price}";
+            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={nameTypeMap[item.Name]}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
 
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/place_order", postData))
@@ -207,6 +207,12 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
             }
 
+        }
+
+        public string GetCategory(string name)
+        {
+            if (nameTypeMap.ContainsKey(name)) return nameTypeMap[name];
+            return "";
         }
 
         #endregion
