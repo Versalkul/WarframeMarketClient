@@ -38,8 +38,8 @@ namespace WarframeMarketClient.Model
             Chats = new ObservableCollection<ChatViewModel>()
             {
                 new ChatViewModel(
-                    new User() { Name="RandomGuy", State=OnlineState.INGAME }) {
-                    ChatMessages = new ObservableCollection<ChatMessage>() {
+                    new User("RandomGuy") {State=OnlineState.INGAME }, 
+                     new ObservableCollection<ChatMessage>() {
                         new ChatMessage() {
                             MessageFrom = "ME",
                             SendHour = "12",
@@ -47,7 +47,7 @@ namespace WarframeMarketClient.Model
                             Message ="BLablabla"
                         }
                     }
-                }
+                )
             };
         }
 
@@ -80,8 +80,6 @@ namespace WarframeMarketClient.Model
         public string Username { get; set; }
 
         public OnlineState OnlineState { get; set; }
-
-        public OnlineState AfkState { get; set; }
         
         public OnlineState DefaultState { get; set; }
 
@@ -93,7 +91,7 @@ namespace WarframeMarketClient.Model
             get { return sellItems; }
             set {
                 sellItems = value;
-                OnPropertyChanged("SellItems");
+                OnPropertyChanged(nameof(SellItems));
             }
         }
 
@@ -105,7 +103,7 @@ namespace WarframeMarketClient.Model
             set
             {
                 buyItems = value;
-                OnPropertyChanged("BuyItems");
+                OnPropertyChanged(nameof(BuyItems));
             }
         }
 
@@ -116,10 +114,11 @@ namespace WarframeMarketClient.Model
             get { return chats; }
             set {
                 chats = value;
-                OnPropertyChanged("Chats");
+                OnPropertyChanged(nameof(Chats));
             }
         }
 
+        public int HourOffset { get; set; }
 
         #endregion
 

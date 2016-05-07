@@ -44,8 +44,8 @@ namespace WarframeMarketClient.Logic
             if (recievedPM != null && args.Message.Contains("recive_message"))
             {
                 SocketMessage msg = JsonConvert.DeserializeObject<SocketMessage>(args.Message);
+                recievedPM.Invoke(this, new PmArgs(msg.data.text,msg.data.from));
 
-                recievedPM.Invoke(this, new PmArgs(msg.data.text, msg.data.from));
 
             }
             Console.WriteLine(args.Message);

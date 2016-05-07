@@ -24,12 +24,15 @@ namespace WarframeMarketClient.Logic
         {
             nameTypeMap = getTypeMap();
             socket = new SocketManager();
+            socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+            InitApplicationState();
             (new Thread(refreshCoockie)).Start();
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
             onlineChecker.Interval = 60000;
             onlineChecker.AutoReset = true;
             onlineChecker.Start();
+
 
 
         }
@@ -113,6 +116,30 @@ namespace WarframeMarketClient.Logic
         #endregion
 
         #region PM
+
+        private void AddNewChat(object o, PmArgs args)
+        {
+
+            ApplicationState appState = ApplicationState.getInstance();
+            var chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
+            ChatMessage chatMsg = new ChatMessage()
+            {
+                Message = args.message,
+                MessageFrom = args.fromUser,
+                SendMinute = DateTime.UtcNow.Minute.ToString(),
+                SendHour = DateTime.UtcNow.Hour.ToString()
+            };
+
+            if (chatList.Any())
+            {
+                chatList.First().ChatMessages.Add(chatMsg);
+            }
+            else
+            {
+                appState.Chats.Add(new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
+            }
+
+        }
 
         public List<ChatMessage> GetMessages(string user)
         {
@@ -216,6 +243,30 @@ namespace WarframeMarketClient.Logic
         }
 
         #endregion
+
+
+        public void InitApplicationState()
+        {
+
+
+            List<WarframeItem> offers = getOffers();
+            ApplicationState appState = ApplicationState.getInstance();
+            appState.BuyItems.Clear();
+            appState.SellItems.Clear();
+            appState.BuyItems.Concat(offers.Where((item) => !item.SellOffer));
+            appState.SellItems.Concat(offers.Where((item) => item.SellOffer));
+
+
+            appState.Chats.Clear();
+
+            Parallel.ForEach(GetChatUser(), (user) =>
+            {
+                List<ChatMessage> msg = GetMessages(user);
+                appState.Chats.Add(new ViewModel.ChatViewModel(new User(user), msg));
+
+            });
+
+        }
 
 
         private Dictionary<string, string> getTypeMap()

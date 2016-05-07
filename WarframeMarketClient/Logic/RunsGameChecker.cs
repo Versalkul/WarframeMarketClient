@@ -65,7 +65,7 @@ namespace WarframeMarketClient.Logic
                 if (afkTime.Minutes > 5 && !isAFK)
                 {
                     isAFK = true;
-                    ApplicationState.getInstance().OnlineState = ApplicationState.getInstance().AfkState;
+                    ApplicationState.getInstance().OnlineState = OnlineState.OFFLINE;
                 }
                 if (isAFK && afkTime.Minutes < 5)
                 {

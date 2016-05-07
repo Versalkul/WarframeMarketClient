@@ -32,19 +32,23 @@ namespace WarframeMarketClient.ViewModel
         #endregion
         
 
-        public ChatViewModel(User u)
+        public ChatViewModel(User u,IEnumerable<ChatMessage> messages)
         {
             User = u;
+            ChatMessages = new ObservableCollection<ChatMessage>(messages);
+            
         }
 
 
         public void sendMessage()
         {
+            ApplicationState.getInstance().Market.SendMessage(User.Name, NewMessage);
             Console.WriteLine("Send Message to "+User.Name+" : "+NewMessage);
         }
 
         public void closeChat()
         {
+            ApplicationState.getInstance().Market.CloseChat(User.Name);
             Console.WriteLine("Close Chat with "+User.Name);
         }
     }
