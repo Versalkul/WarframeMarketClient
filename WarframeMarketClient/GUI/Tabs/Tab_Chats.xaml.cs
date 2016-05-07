@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
@@ -14,17 +15,23 @@ namespace WarframeMarketClient.GUI.Tabs
 
         #region Properties
 
+
         private ObservableCollection<ChatViewModel> chats;
 
         public ObservableCollection<ChatViewModel> Chats
         {
-            get { return chats; }
-            set {
-                chats = value;
-                chats.CollectionChanged += chatUpdated;
+            get { return (ObservableCollection<ChatViewModel>)GetValue(ChatsProperty); }
+            set { SetValue(ChatsProperty, value);
+                value.CollectionChanged += chatUpdated;
                 OnPropertyChanged("Tabs");
             }
         }
+
+        // Using a DependencyProperty as the backing store for Chats.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ChatsProperty =
+            DependencyProperty.Register("Chats", typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(null));
+
+
 
         public ReadOnlyObservableCollection<ChatTabContentViewModel> Tabs
         {

@@ -1,5 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:tabs="clr-namespace:WarframeMarketClient.GUI.Tabs"
+                    xmlns:vm="clr-namespace:WarframeMarketClient.ViewModel">
+
+
 
     <Style TargetType="DataGrid">
 
@@ -48,6 +52,10 @@
                     <Trigger Property="IsSelected" Value="True">
                         <Setter Property="Background" Value="{StaticResource SelectionBrush}" />
                     </Trigger>
+
+                    <DataTrigger Binding="{Binding}" Value="{x:Static CollectionView.NewItemPlaceholder}">
+                        <Setter Property="Background" Value="Yellow"/>
+                    </DataTrigger>
                 </Style.Triggers>
             </Style>
 

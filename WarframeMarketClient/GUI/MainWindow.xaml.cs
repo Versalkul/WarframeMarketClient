@@ -19,11 +19,11 @@ namespace WarframeMarketClient.GUI
 
         public MainWindow()
         {
+            this.DataContext = ApplicationState.getInstance();
+
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
             tbi.TrayMouseDoubleClick += new RoutedEventHandler(onTrayClick);
-
-            this.DataContext = ApplicationState.getInstance();
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)

@@ -248,16 +248,19 @@
         <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}">
 
             <TabItem Header="Settings">
-                <tabs:Tab_Settings/>
+                <tabs:Tab_Settings />
             </TabItem>
             <TabItem Header="Buy">
-                <tabs:Tab_Items/>
+                <tabs:Tab_Items Items="{Binding BuyItems}" />
             </TabItem>
             <TabItem Header="Sell">
-                <Grid Background="#FFE5E5E5"/>
+                <tabs:Tab_Items Items="{Binding SellItems}"/>
             </TabItem>
             <TabItem Header="Chats">
-                <tabs:Tab_Chats/>
+                <tabs:Tab_Chats Chats="{Binding Chats}"/>
+            </TabItem>
+            <TabItem Header="Test">
+                <Label Content="{Binding BuyItems}"/>
             </TabItem>
         </local:FancyTabControl>
 

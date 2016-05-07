@@ -10,7 +10,6 @@ namespace WarframeMarketClient.GUI.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            Console.WriteLine("Convert Has Info");
             if (value == null || !(value is TabInfoInterface))
                 return false;
             else

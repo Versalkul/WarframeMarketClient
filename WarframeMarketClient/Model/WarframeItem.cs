@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    class WarframeItem
+    public class WarframeItem
     {
 
         public string Name { get; set; }
