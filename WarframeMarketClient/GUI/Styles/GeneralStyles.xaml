@@ -10,9 +10,11 @@
 
     <Color x:Key="MouseOverColor">GhostWhite</Color>
     <SolidColorBrush x:Key="MouseOverBrush" Color="{StaticResource MouseOverColor}"/>
-    
-    <Color x:Key="SelectionColor">AntiqueWhite</Color>
+
+    <Color x:Key="SelectionColor">#FFFAEBD7</Color>
+    <Color x:Key="SelectionStrongColor">#FFFAA432</Color>
     <SolidColorBrush x:Key="SelectionBrush" Color="{StaticResource SelectionColor}"/>
+    <SolidColorBrush x:Key="SelectionStrongBrush" Color="{StaticResource SelectionStrongColor}"/>
 
 
     <LinearGradientBrush x:Key="TabItemPanel_BackgroundBrush" StartPoint="0,0" EndPoint="1,0">
@@ -41,7 +43,15 @@
                                             ContentSource="Header"
                                             Margin="{Binding RelativeSource={RelativeSource AncestorType=gui:FancyTabControl}, Path=TabNameMargin}"/>
                                 </Border>
-                                <Path Name="BorderPath" Margin="0,0,-1,0" Stroke="{StaticResource BorderBrush}" Fill="White" StrokeThickness="1" Data="M0,0 L-10,10 0,20" HorizontalAlignment="Right" Visibility="Hidden" VerticalAlignment="Center" />
+                                <Path Name="BorderPath"
+                                      Margin="0,0,-1,0"
+                                      Stroke="{StaticResource BorderBrush}"
+                                      Fill="White"
+                                      StrokeThickness="1"
+                                      Data="M0,0 L-10,10 0,20"
+                                      HorizontalAlignment="Right"
+                                      Visibility="Hidden"
+                                      VerticalAlignment="Center" />
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
