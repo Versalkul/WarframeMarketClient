@@ -28,6 +28,15 @@ namespace WarframeMarketClient.GUI.Tabs
 
         public bool ToTray { get; set; }
 
+        public bool DefaultOnline {
+            get {
+                return ApplicationState.getInstance().DefaultState == OnlineState.ONLINE;
+            }
+            set {
+                ApplicationState.getInstance().DefaultState = value ? OnlineState.ONLINE : OnlineState.OFFLINE;
+            }
+        }
+
 
 
         public Tab_Settings()

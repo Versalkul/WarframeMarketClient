@@ -12,7 +12,7 @@ using Timer=System.Timers.Timer;
 
 namespace WarframeMarketClient.Logic
 {
-    class MarketManager :IDisposable
+    class MarketManager : IDisposable
     {
 
         SocketManager socket;
@@ -31,9 +31,9 @@ namespace WarframeMarketClient.Logic
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
             onlineChecker.Interval = 60000;
             onlineChecker.AutoReset = true;
+            onlineChecker.Enabled = true;
             onlineChecker.Start();
-
-
+            (new Thread(() => forceUserState(null, null))).Start();
 
         }
 
@@ -48,11 +48,11 @@ namespace WarframeMarketClient.Logic
                 if (response == null) return OnlineState.OFFLINE;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    
+
                     OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<OnlineInfo>>(reader.ReadToEnd()).response;
 
                     if (info.Ingame) return OnlineState.INGAME;
-                    return info.Online?OnlineState.ONLINE:OnlineState.OFFLINE;
+                    return info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
 
 
                 }
@@ -151,7 +151,7 @@ namespace WarframeMarketClient.Logic
                 {
                     string json = reader.ReadToEnd();
                     JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
-                    if (result.code!=200) return new List<ChatMessage>();
+                    if (result.code != 200) return new List<ChatMessage>();
                     return result.response;
 
                 }
@@ -164,7 +164,7 @@ namespace WarframeMarketClient.Logic
 
         public List<string> GetChatUser()
         {
-             return HtmlParser.getChatUser();
+            return HtmlParser.getChatUser();
         }
 
         public void SendMessage(string to, string text)
@@ -250,6 +250,16 @@ namespace WarframeMarketClient.Logic
         {
 
 
+            Parallel.Invoke(new Action[2] { new Action(InitListings),new Action(InitChats)});
+
+
+
+            Console.WriteLine("Init Done");
+
+        }
+
+        private void InitListings()
+        {
             List<WarframeItem> offers = getOffers();
             ApplicationState appState = ApplicationState.getInstance();
             appState.BuyItems.Clear();
@@ -262,8 +272,12 @@ namespace WarframeMarketClient.Logic
                 else appState.BuyItems.Add(item);
 
             }
+        }
 
+        private void InitChats()
+        {
 
+            ApplicationState appState = ApplicationState.getInstance();
             appState.Chats.Clear();
 
             Parallel.ForEach(GetChatUser(), (user) =>
@@ -272,9 +286,6 @@ namespace WarframeMarketClient.Logic
                 appState.Chats.Add(new ViewModel.ChatViewModel(new User(user), msg));
 
             });
-
-            Console.WriteLine("Init Done");
-
         }
 
 
@@ -301,6 +312,7 @@ namespace WarframeMarketClient.Logic
 
         public void Dispose()
         {
+            setOffline();
             onlineChecker.Dispose();
             socket.Dispose();
         }

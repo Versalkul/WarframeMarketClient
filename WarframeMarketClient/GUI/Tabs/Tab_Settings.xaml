@@ -14,7 +14,8 @@
         </Grid.RowDefinitions>
         <StackPanel  Grid.Row="0" Margin="20,10"  >
             <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" />
-            <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding Autostart}"/>
+            <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding ToTray}"/>
+            <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding Autostart}" />
         </StackPanel>
 
         <StackPanel  Grid.Row="2" Margin="20,10">
