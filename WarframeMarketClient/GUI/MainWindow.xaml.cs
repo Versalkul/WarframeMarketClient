@@ -53,6 +53,8 @@ namespace WarframeMarketClient.GUI
 
         private void PART_MINIMIZE_Click(object sender, RoutedEventArgs e)
         {
+            
+
             this.WindowState = System.Windows.WindowState.Minimized;
         }
 
@@ -107,8 +109,7 @@ namespace WarframeMarketClient.GUI
         {
 
             //Rect rect = new Rect(Application.Current.MainWindow.Left, Application.Current.MainWindow.Top, Application.Current.MainWindow.ActualWidth, Application.Current.MainWindow.ActualHeight);
-
-            if(window.WindowState == WindowState.Minimized&&this.IsMouseOver&&SharedValues.toTray)
+            if(window.WindowState == WindowState.Minimized&&this.IsMouseOver&&TabSettings.ToTray)
             {
                 Hide();
                 tbi.Visibility = Visibility.Visible;

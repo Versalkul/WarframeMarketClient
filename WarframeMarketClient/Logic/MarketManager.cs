@@ -266,6 +266,8 @@ namespace WarframeMarketClient.Logic
 
             });
 
+            Console.WriteLine("Init Done");
+
         }
 
 

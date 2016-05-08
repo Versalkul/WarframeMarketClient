@@ -23,8 +23,12 @@ namespace WarframeMarketClient.Logic
             {
 
                 HttpWebRequest page = HttpWebRequest.CreateHttp(url);
-                page.CookieContainer = new CookieContainer();
-                page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
+                if (ApplicationState.getInstance().SessionToken != null)
+                {
+                    page.CookieContainer = new CookieContainer();
+                    page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
+                }
+
                 page.Timeout = 10000;
                 page.UserAgent = "C# Warframe Market Client";
                 page.AllowAutoRedirect = false;

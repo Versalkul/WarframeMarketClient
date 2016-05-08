@@ -19,7 +19,10 @@ namespace WarframeMarketClient.Model
         public static ApplicationState getInstance()
         {
             if (instance == null)
+            {
                 instance = new ApplicationState();
+            }
+
             return instance;
         }
 
@@ -28,6 +31,10 @@ namespace WarframeMarketClient.Model
             Username = "ME";
             SessionToken = "";
             OnlineState = OnlineState.ONLINE;
+            BuyItems = new ObservableCollection<WarframeItem>();
+            SellItems = new ObservableCollection<WarframeItem>();
+            Chats = new ObservableCollection<ChatViewModel>();
+
 
             BuyItems = new ObservableCollection<WarframeItem>() {
                 new WarframeItem("Abelda", 5, 2, false),

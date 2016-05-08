@@ -85,7 +85,6 @@
     <Compile Include="GUI\Tabs\Tab_Items.xaml.cs">
       <DependentUpon>Tab_Items.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\SharedValues.cs" />
     <Compile Include="GUI\Tabs\Tab_Settings.xaml.cs">
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>

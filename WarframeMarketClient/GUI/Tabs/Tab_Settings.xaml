@@ -7,14 +7,23 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <StackPanel  Grid.Row="0" Margin="20,10"  >
+            <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" />
+            <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding Autostart}"/>
+        </StackPanel>
+
+        <StackPanel  Grid.Row="2" Margin="20,10">
+            <Label x:Name="label" Content="Session Token:"/>
+            <TextBox x:Name="tokenBox" Margin="0,10" Text="{Binding SessionTokenInput}" KeyDown="tokenBox_KeyDown" />
+            <Button x:Name="saveButton"  Content="Save" Click="saveButton_Click"/>
+        </StackPanel>
 
 
-        <CheckBox x:Name="autostartBox" Content="Autostart" Margin="10,16,0,0" VerticalAlignment="Top" HorizontalAlignment="Left"/>
-        <CheckBox x:Name="minimizeBox" Content="Minimize to Tray" HorizontalAlignment="Left" Margin="8,46,0,0" VerticalAlignment="Top" Click="minimizeBox_Click"/>
-
-
-        <TextBox x:Name="tokenBox" Text="Enter Session Token" VerticalAlignment="Bottom" Margin="10,0,10,40"/>
-        <Button x:Name="saveButton" Content="Save" Margin="10,0,10,10" VerticalAlignment="Bottom" Height="25"/>
 
 
     </Grid>

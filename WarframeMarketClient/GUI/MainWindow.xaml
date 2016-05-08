@@ -248,7 +248,7 @@
         <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}">
 
             <TabItem Header="Settings">
-                <tabs:Tab_Settings />
+                <tabs:Tab_Settings x:Name="TabSettings"/>
             </TabItem>
             <TabItem Header="Buy">
                 <tabs:Tab_Items Items="{Binding BuyItems}" />
