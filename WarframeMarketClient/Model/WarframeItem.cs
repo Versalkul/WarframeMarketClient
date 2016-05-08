@@ -22,6 +22,14 @@ namespace WarframeMarketClient.Model
             }
         }
 
+        /// <summary>
+        /// Needed for DataGrid AllowUserAddItem
+        /// </summary>
+        public WarframeItem()
+        {
+            Console.WriteLine("Constructed empty WarframeItem");
+        }
+
         public WarframeItem(string name,int price,int count,bool sellOffer)
         {
             this.Name = name;
