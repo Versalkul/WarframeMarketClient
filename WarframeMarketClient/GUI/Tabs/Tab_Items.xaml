@@ -24,7 +24,7 @@
                 <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Path=Name}"/>
                 <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
-                <DataGridTextColumn Header="Rank" Width="1*" Binding="{Binding Path=Rank}"/>
+                <DataGridTextColumn Header="Rank" Width="1*" Binding="{Binding Path=ModRank}"/>
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
