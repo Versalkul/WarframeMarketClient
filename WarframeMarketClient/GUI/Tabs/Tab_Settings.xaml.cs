@@ -40,11 +40,6 @@ namespace WarframeMarketClient.GUI.Tabs
         private void save()
         {
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
-            Tuple<bool,string> verification = HtmlParser.verifyToken();
-            if (verification.Item1)
-            {
-                Console.WriteLine("Valid Token");
-            }
 
         }
 

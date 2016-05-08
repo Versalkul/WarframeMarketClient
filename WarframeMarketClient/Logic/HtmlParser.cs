@@ -136,7 +136,7 @@ namespace WarframeMarketClient.Logic
                         if (!ready) continue;
                         if (line.Contains("<li data-name=") && !line.Contains("ingame_name"))
                         {
-                            user.Add(line.Split()[1]);
+                            user.Add(line.Split('"')[1]);
                         }
 
                         if (line.Contains("</div>")) return user;

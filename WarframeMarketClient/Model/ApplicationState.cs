@@ -15,6 +15,8 @@ namespace WarframeMarketClient.Model
         #region Singleton
 
         private static ApplicationState instance;
+        public static bool HasInstance { get { return instance != null; } }
+        public static bool HasValidInstance { get { return HasInstance && String.IsNullOrWhiteSpace(instance.Username); } }
 
         public static ApplicationState getInstance()
         {
@@ -28,8 +30,6 @@ namespace WarframeMarketClient.Model
 
         private ApplicationState()
         {
-            Username = "ME";
-            SessionToken = "";
             OnlineState = OnlineState.ONLINE;
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
@@ -64,27 +64,32 @@ namespace WarframeMarketClient.Model
 
         #region Properties
 
-        public string sessionToken;
+        public string sessionToken="";
 
-        public string SessionToken { get
+        public string SessionToken
+        {
+            get
             {
-                
+
                 return sessionToken;
             }
             set
             {
-                if (Market != null) Market.Dispose();
-                if (value == "") return;
+                Username = "";
                 sessionToken = value;
+                Tuple<bool, string> verification = HtmlParser.verifyToken();
+                if (!verification.Item1) return;
+                Username = verification.Item2;
+                if (Market != null) Market.Dispose();
                 Market = new MarketManager();
 
             }
-        }
+        } 
 
         
         public MarketManager Market { get; private set; }
 
-        public string Username { get; set; }
+        public string Username { get; set; } = "";
 
         public OnlineState OnlineState { get; set; }
         

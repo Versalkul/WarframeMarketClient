@@ -18,12 +18,14 @@ namespace WarframeMarketClient.Logic
 
         public static HttpWebResponse GetPage (string url)
         {
-            
+
+            Console.WriteLine("Fetching " +url);
+
             for(int i = 0; i < 10; i++)
             {
 
                 HttpWebRequest page = HttpWebRequest.CreateHttp(url);
-                if (ApplicationState.getInstance().SessionToken != null)
+                if (ApplicationState.HasValidInstance) 
                 {
                     page.CookieContainer = new CookieContainer();
                     page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
@@ -61,7 +63,10 @@ namespace WarframeMarketClient.Logic
 
         public static HttpWebResponse PostPage(string url,string postData)
         {
-            Console.WriteLine("Posting " +postData);
+            if (!ApplicationState.HasValidInstance) return null;
+            if (String.IsNullOrWhiteSpace(ApplicationState.getInstance().SessionToken)) return null;
+
+                Console.WriteLine("Posting " +postData);
             if (csrfToken.Length < 5)
             {
                 getCsrfToken();

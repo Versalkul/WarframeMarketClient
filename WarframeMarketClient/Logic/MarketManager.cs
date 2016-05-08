@@ -150,8 +150,9 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string json = reader.ReadToEnd();
-                    if (!json.Contains("200")) return new List<ChatMessage>();
-                    return JsonConvert.DeserializeObject<List<ChatMessage>>(json);
+                    JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
+                    if (result.code!=200) return new List<ChatMessage>();
+                    return result.response;
 
                 }
 
@@ -253,8 +254,14 @@ namespace WarframeMarketClient.Logic
             ApplicationState appState = ApplicationState.getInstance();
             appState.BuyItems.Clear();
             appState.SellItems.Clear();
-            appState.BuyItems.Concat(offers.Where((item) => !item.SellOffer));
-            appState.SellItems.Concat(offers.Where((item) => item.SellOffer));
+
+            foreach (WarframeItem item in offers)
+            {
+
+                if (item.SellOffer) appState.SellItems.Add(item);
+                else appState.BuyItems.Add(item);
+
+            }
 
 
             appState.Chats.Clear();
