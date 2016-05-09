@@ -33,7 +33,7 @@ namespace WarframeMarketClient.Logic
             onlineChecker.AutoReset = true;
             onlineChecker.Enabled = true;
             onlineChecker.Start();
-            (new Thread(() => forceUserState(null, null))).Start();
+            forceUserState();
 
         }
 
@@ -41,9 +41,11 @@ namespace WarframeMarketClient.Logic
 
         #region ThreadStuff
 
+
+
         public OnlineState getStatusOnSite(string username)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"[\"username\"]"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"[\"{username}\"]"))
             {
                 if (response == null||response.StatusCode!=HttpStatusCode.OK) return OnlineState.ERROR;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -61,6 +63,10 @@ namespace WarframeMarketClient.Logic
             }
         }
 
+        public void forceUserState()
+        {
+            (new Thread(() => forceUserState(null, null))).Start();
+        }
 
         private void forceUserState(object o, EventArgs args)
         {
@@ -157,8 +163,6 @@ namespace WarframeMarketClient.Logic
 
                 }
 
-
-
             }
 
         }
@@ -250,10 +254,7 @@ namespace WarframeMarketClient.Logic
         public void InitApplicationState()
         {
 
-
             Parallel.Invoke(new Action[2] { new Action(InitListings),new Action(InitChats)});
-
-
 
             Console.WriteLine("Init Done");
 

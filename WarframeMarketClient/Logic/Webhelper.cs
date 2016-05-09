@@ -69,7 +69,7 @@ namespace WarframeMarketClient.Logic
                 Console.WriteLine("Posting " +postData);
             if (csrfToken.Length < 5)
             {
-                //getCsrfToken();
+                getCsrfToken();
             }
 
             byte[] data = Encoding.UTF8.GetBytes(postData);

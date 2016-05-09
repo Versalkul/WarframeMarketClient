@@ -15,8 +15,7 @@ namespace WarframeMarketClient.Model
         #region Singleton
 
         private static ApplicationState instance;
-        public static bool HasInstance { get { return instance != null; } }
-        public static bool HasValidInstance { get { return HasInstance && !String.IsNullOrWhiteSpace(instance.Username); } }
+
 
         public static ApplicationState getInstance()
         {
@@ -34,39 +33,9 @@ namespace WarframeMarketClient.Model
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
             Chats = new ObservableCollection<ChatViewModel>();
+            
 
 
-            BuyItems = new ObservableCollection<WarframeItem>() {
-                new WarframeItem("Abelda", 5, 2, false),
-                new WarframeItem("Test", 7, 4, false),
-                new WarframeItem("Bla", 2, 1, false)
-            };
-
-            Chats = new ObservableCollection<ChatViewModel>()
-            {
-                new ChatViewModel(
-                    new User("RandomGuy") {State=OnlineState.INGAME }, 
-                     new ObservableCollection<ChatMessage>() {
-                        new ChatMessage() {
-                            MessageFrom = "ME",
-                            SendHour = "12",
-                            SendMinute = "10",
-                            Message ="BLablabla"
-                        },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                    }
-                )
-            };
         }
 
         #endregion
@@ -95,10 +64,14 @@ namespace WarframeMarketClient.Model
                     return;
                 }
                 Username = verification.Item2;
+                OnlineState= OnlineState.OFFLINE;
                 Console.WriteLine("logged in as " + Username);
                 if (Market != null) Market.Dispose();
+                if (OnlineChecker != null) OnlineChecker.Dispose();
                 Market = new MarketManager();
                 Console.WriteLine("Token set");
+                OnlineChecker = new RunsGameChecker();
+                OnPropertyChanged(nameof(IsValid));
             }
         } 
 
@@ -107,7 +80,17 @@ namespace WarframeMarketClient.Model
 
         public string Username { get; set; } = "";
 
-        public OnlineState OnlineState { get; set; }
+
+        private OnlineState onlineState;
+        public OnlineState OnlineState { get
+            {
+                return onlineState ;
+                    }
+            set {
+                onlineState = value;
+                if (Market != null) Market.forceUserState();
+                }
+        }
         
         public OnlineState DefaultState { get; set; }
 
@@ -147,6 +130,12 @@ namespace WarframeMarketClient.Model
         }
 
         public int HourOffset { get; set; }
+
+        public static bool HasInstance { get { return instance != null; } }
+        public static bool HasValidInstance { get { return HasInstance && instance.IsValid; } }
+
+        public bool IsValid { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
+        public RunsGameChecker OnlineChecker { get; private set; }
 
         #endregion
 

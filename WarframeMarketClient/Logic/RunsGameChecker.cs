@@ -11,7 +11,7 @@ namespace WarframeMarketClient.Logic
        public bool GameOnline {  get; private set; }
 
         private bool isAFK = false;
-        public int  afkTimeoutMinutes = 5;
+        public int AfkTimeoutMinutes { get; set; } = 5;
 
         private Timer worker;
         DateTime lastMovedMouse = DateTime.Now;
@@ -51,9 +51,7 @@ namespace WarframeMarketClient.Logic
         {
 
                 GameOnline = Process.GetProcessesByName("Warframe.x64").Length > 0 || Process.GetProcessesByName("Warframe").Length > 0;
-            if (!isAFK&& GameOnline && ApplicationState.getInstance().OnlineState != OnlineState.INGAME)
-                ApplicationState.getInstance().OnlineState = OnlineState.INGAME;
-
+            if (!isAFK&& GameOnline && ApplicationState.getInstance().OnlineState != OnlineState.INGAME) ApplicationState.getInstance().OnlineState = OnlineState.INGAME;
 
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
             lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
@@ -62,12 +60,12 @@ namespace WarframeMarketClient.Logic
             if (GetLastInputInfo(out lastInputInfo))
             {
                 TimeSpan afkTime = TimeSpan.FromMilliseconds(Environment.TickCount - lastInputInfo.dwTime);
-                if (afkTime.Minutes > 5 && !isAFK)
+                if (afkTime.Minutes > AfkTimeoutMinutes && !isAFK)
                 {
                     isAFK = true;
                     ApplicationState.getInstance().OnlineState = OnlineState.OFFLINE;
                 }
-                if (isAFK && afkTime.Minutes < 5)
+                if (isAFK && afkTime.Minutes < AfkTimeoutMinutes)
                 {
                     isAFK = false;
                     ApplicationState.getInstance().OnlineState = GameOnline?OnlineState.INGAME : ApplicationState.getInstance().DefaultState;
