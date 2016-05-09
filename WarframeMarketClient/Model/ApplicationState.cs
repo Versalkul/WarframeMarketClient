@@ -42,6 +42,8 @@ namespace WarframeMarketClient.Model
 
 
 
+
+
         #region Properties
 
         public string sessionToken="";
