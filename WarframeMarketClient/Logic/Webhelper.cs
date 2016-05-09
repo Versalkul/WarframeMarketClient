@@ -69,7 +69,7 @@ namespace WarframeMarketClient.Logic
                 Console.WriteLine("Posting " +postData);
             if (csrfToken.Length < 5)
             {
-                getCsrfToken();
+                //getCsrfToken();
             }
 
             byte[] data = Encoding.UTF8.GetBytes(postData);
@@ -100,6 +100,12 @@ namespace WarframeMarketClient.Logic
                 catch (WebException e)
                 {
                     if (e == null) continue;
+                    if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
+                    {
+
+                        getCsrfToken();
+                        continue;
+                    }
                     if (e.Response != null) return (HttpWebResponse) e.Response;
                 }
                 catch(Exception ex)
