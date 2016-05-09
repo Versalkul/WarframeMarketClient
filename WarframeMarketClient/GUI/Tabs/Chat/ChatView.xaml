@@ -36,6 +36,7 @@
         <Label Grid.Row="0" Padding="10,0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
 
         <ListView
+            x:Name="ChatList"
             Grid.Row="1"
             ItemsSource="{Binding ChatMessages}"
             ItemTemplate="{StaticResource ChatItemTemplate}"

@@ -60,20 +60,27 @@
                                 </Trigger>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
-                                        <Condition Property="Border.IsMouseOver" Value="True"/>
+                                        <Condition Property="IsMouseOver" Value="True"/>
                                         <Condition Property="IsSelected" Value="False"/>
                                     </MultiTrigger.Conditions>
                                     <Setter TargetName="Border" Property="Background" Value="{StaticResource MouseOverBrush}" />
                                 </MultiTrigger>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content, Converter={StaticResource TabInfoToHasInfoConverter}}" Value="True">
-                                    <DataTrigger.EnterActions>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False"/>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content, Converter={StaticResource TabInfoToHasInfoConverter}}" Value="True"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.EnterActions>
                                         <BeginStoryboard>
                                             <Storyboard Storyboard.TargetName="Border" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="Background.Color">
-                                                <ColorAnimation To="{StaticResource SelectionColor}" AutoReverse="True" Duration="0:0:2" />
+                                                <ColorAnimation To="{StaticResource SelectionColor}" AutoReverse="True" Duration="0:0:1" />
                                             </Storyboard>
                                         </BeginStoryboard>
-                                    </DataTrigger.EnterActions>
-                                </DataTrigger>
+                                    </MultiDataTrigger.EnterActions>
+                                </MultiDataTrigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="Border" Property="Opacity" Value="0.3" />
+                                </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>

@@ -250,13 +250,13 @@
             <TabItem Header="Settings">
                 <tabs:Tab_Settings x:Name="TabSettings"/>
             </TabItem>
-            <TabItem Header="Buy">
+            <TabItem Header="Buy" IsEnabled="{Binding HasValidInstance}">
                 <tabs:Tab_Items Items="{Binding BuyItems}" />
             </TabItem>
-            <TabItem Header="Sell">
+            <TabItem Header="Sell" IsEnabled="{Binding HasValidInstance}">
                 <tabs:Tab_Items Items="{Binding SellItems}"/>
             </TabItem>
-            <TabItem Header="Chats">
+            <TabItem Header="Chats" IsEnabled="{Binding HasValidInstance}">
                 <tabs:Tab_Chats Chats="{Binding Chats}"/>
             </TabItem>
         </local:FancyTabControl>

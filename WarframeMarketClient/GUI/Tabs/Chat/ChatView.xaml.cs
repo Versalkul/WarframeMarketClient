@@ -24,27 +24,11 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
     /// </summary>
     public partial class ChatView : UserControl
     {
-        public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 
         public ChatView()
         {
             InitializeComponent();
-
-            ChatMessages = new ObservableCollection<ChatMessage>()
-            {
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-                new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="A" },
-                new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="A" },
-            };
+            //ChatList.ScrollIntoView(ChatList.Items[ChatList.Items.Count - 1]);
         }
 
 
