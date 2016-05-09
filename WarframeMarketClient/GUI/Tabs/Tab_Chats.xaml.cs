@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 
@@ -20,7 +21,7 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             get { return (ObservableCollection<ChatViewModel>)GetValue(ChatsProperty); }
             set { SetValue(ChatsProperty, value);
-                value.CollectionChanged += chatUpdated;
+                 chatUpdated(null, null);
             }
         }
 
@@ -62,22 +63,34 @@ namespace WarframeMarketClient.GUI.Tabs
 
 
         protected ChatNewViewModel newChat = new ChatNewViewModel();
+        private Dispatcher _dispatcher;
 
 
         public Tab_Chats()
         {
             InitializeComponent();
+            _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
 
         private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            OnPropertyChanged("Tabs");
-            foreach(ChatViewModel c in Chats)
+            Console.WriteLine("Chat was udated: " + sender);
+            if (sender == null) // A new Chat object
             {
-                c.PropertyChanged -= chatHasInfo;
-                c.PropertyChanged += chatHasInfo;
+                Chats.CollectionChanged -= chatUpdated;
+                Chats.CollectionChanged += chatUpdated;
             }
+
+            _dispatcher.InvokeAsync(new Action(() =>
+            {
+                foreach (ChatViewModel c in Chats)
+                {
+                    c.PropertyChanged -= chatHasInfo;
+                    c.PropertyChanged += chatHasInfo;
+                }
+            }));
+            OnPropertyChanged(nameof(Tabs));
         }
         private void chatHasInfo(object sender, PropertyChangedEventArgs args)
         {

@@ -48,6 +48,7 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void save()
         {
+            Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
 
         }

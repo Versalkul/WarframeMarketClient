@@ -47,7 +47,7 @@ namespace WarframeMarketClient.Logic
                 {
                     Console.WriteLine($"ERROR GETTING RESPONSE from {url} Error is:" + ex.Message);
 
-                    Thread.Sleep(10000);
+                    Thread.Sleep(1000);
                     if (response != null)
                     {
                         response.Close();
@@ -85,6 +85,7 @@ namespace WarframeMarketClient.Logic
                 page.ContentLength = data.Length;
                 page.Headers["x-csrf-token"] = csrfToken;
                 page.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                page.Timeout = 10000;
                 try
                 {
 
@@ -95,6 +96,11 @@ namespace WarframeMarketClient.Logic
 
                 return (HttpWebResponse)page.GetResponse();
 
+                }
+                catch (WebException e)
+                {
+                    if (e == null) continue;
+                    if (e.Response != null) return (HttpWebResponse) e.Response;
                 }
                 catch(Exception ex)
                 {

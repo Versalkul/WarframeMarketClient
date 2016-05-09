@@ -45,7 +45,7 @@ namespace WarframeMarketClient.Logic
         {
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"[\"username\"]"))
             {
-                if (response == null) return OnlineState.OFFLINE;
+                if (response == null||response.StatusCode!=HttpStatusCode.OK) return OnlineState.ERROR;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
 
@@ -116,6 +116,7 @@ namespace WarframeMarketClient.Logic
         #endregion
 
         #region PM
+
 
         private void AddNewChat(object o, PmArgs args)
         {
