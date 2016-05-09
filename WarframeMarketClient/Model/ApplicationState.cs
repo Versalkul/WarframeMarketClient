@@ -32,8 +32,45 @@ namespace WarframeMarketClient.Model
             OnlineState = OnlineState.ONLINE;
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
-            Chats = new ObservableCollection<ChatViewModel>();
-            
+            Chats = new ObservableCollection<ChatViewModel>()
+                 {
+                 new ChatViewModel(
+                    new User("RandomGuy") {State=OnlineState.ONLINE },
+                     new ObservableCollection<ChatMessage>() {
+                        new ChatMessage() {
+                            MessageFrom = "ME",
+                            SendHour = "12",
+                            SendMinute = "10",
+                            Message ="BLablabla"
+                        },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                    }
+                ),
+                new ChatViewModel(
+                    new User("RandomGuy2") {State=OnlineState.INGAME },
+                     new ObservableCollection<ChatMessage>() {
+                        new ChatMessage() {
+                            MessageFrom = "ME",
+                            SendHour = "12",
+                            SendMinute = "10",
+                            Message ="BLablabla"
+                        },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                    }
+                )
+            };
+            Username = "ME";
 
 
         }

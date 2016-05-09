@@ -35,21 +35,24 @@
             FontWeight="Bold"/>
         <Label Grid.Row="0" Padding="10,0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
 
-        <ListView
-            x:Name="ChatList"
-            Grid.Row="1"
-            ItemsSource="{Binding ChatMessages}"
-            ItemTemplate="{StaticResource ChatItemTemplate}"
-            HorizontalContentAlignment="Stretch"
+        <Border Grid.Row="1"
             Margin="0,7,0,10"
             BorderThickness="0,1,0,0"
             BorderBrush="{StaticResource BorderBrush}">
+        <ListView
+            x:Name="ChatList"
+            ItemsSource="{Binding ChatMessages}"
+            ItemTemplate="{StaticResource ChatItemTemplate}"
+            HorizontalContentAlignment="Stretch"
+            BorderThickness="0"
+            VerticalAlignment="Bottom">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Focusable" Value="False"></Setter>
                 </Style>
             </ListView.ItemContainerStyle>
         </ListView>
+        </Border>
 
         <TextBox
             Grid.Row="2"
