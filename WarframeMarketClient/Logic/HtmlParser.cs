@@ -56,6 +56,7 @@ namespace WarframeMarketClient.Logic
                     string id = "";
                     List<WarframeItem> offers = new List<WarframeItem>(50);
 
+
                     while (!reader.EndOfStream)
                     {
                         if (!ready)

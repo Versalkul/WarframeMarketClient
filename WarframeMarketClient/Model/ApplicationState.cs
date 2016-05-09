@@ -16,7 +16,7 @@ namespace WarframeMarketClient.Model
 
         private static ApplicationState instance;
         public static bool HasInstance { get { return instance != null; } }
-        public static bool HasValidInstance { get { return HasInstance && String.IsNullOrWhiteSpace(instance.Username); } }
+        public static bool HasValidInstance { get { return HasInstance && !String.IsNullOrWhiteSpace(instance.Username); } }
 
         public static ApplicationState getInstance()
         {
@@ -75,14 +75,19 @@ namespace WarframeMarketClient.Model
             }
             set
             {
-                Username = "";
+                Username = "Temp";
                 sessionToken = value;
                 Tuple<bool, string> verification = HtmlParser.verifyToken();
-                if (!verification.Item1) return;
+                if (!verification.Item1)
+                {
+                    Username = "";
+                    return;
+                }
                 Username = verification.Item2;
+                Console.WriteLine("logged in as " + Username);
                 if (Market != null) Market.Dispose();
                 Market = new MarketManager();
-
+                Console.WriteLine("Token set");
             }
         } 
 
