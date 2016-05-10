@@ -196,43 +196,11 @@
                         x:Name="Status"
                         Content="{Binding OnlineState}"
                         Background="{Binding OnlineState, Converter={StaticResource OnlineStateToColorConverter}}"
-                        FontWeight="Bold"
+                        Style="{DynamicResource CleanButton}"
                         FontSize="12"
-                        Foreground="#BF000000"
-                        >
-                        <Button.Resources>
-                            <Style TargetType="Button">
-                                <Setter Property="Button.OverridesDefaultStyle" Value="True" />
-                                <Setter Property="Button.Foreground" Value="White" />
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="0,1,1,0" Padding="4,8">
-                                                <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="Button.IsMouseOver" Value="True">
-                                                    <Setter TargetName="border" Property="Background">
-                                                        <Setter.Value>
-                                                            <SolidColorBrush Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background.Color}" Opacity="0.5"/>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Trigger>
-                                                <Trigger Property="Button.IsPressed" Value="True">
-                                                    <Setter TargetName="border" Property="Background">
-                                                        <Setter.Value>
-                                                            <SolidColorBrush Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background.Color}" Opacity="0.2"/>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                    <Setter TargetName="border" Property="BorderBrush" Value="#aaa" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Padding="4,8"
+                        BorderThickness="0,1,1,0"
+                        />
                 </Setter.Value>
             </Setter>
             <Setter Property="ContentMargin" Value="10,10,0,10" />
