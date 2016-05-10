@@ -43,6 +43,7 @@ namespace WarframeMarketClient.ViewModel
         public void sendMessage()
         {
             ApplicationState.getInstance().Market.SendMessage(User.Name, NewMessage);
+            ApplicationState.getInstance().Chats.Where(user => user.User.Name == User.Name).First().ChatMessages.Add(new ChatMessage() { Message = NewMessage, MessageFrom = ApplicationState.getInstance().Username, SendHour = DateTime.Now.Hour.ToString(), SendMinute = DateTime.Now.Minute.ToString() }); // wir brauchen eine Chatmsg.GetMsg die automatisch sich um die zeit + differenz kümmert das hier ist nur ein workaround
             Console.WriteLine("Send Message to "+User.Name+" : "+NewMessage);
         }
 

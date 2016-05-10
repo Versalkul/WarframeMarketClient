@@ -43,15 +43,16 @@ namespace WarframeMarketClient.Logic
 
 
 
+
         public OnlineState getStatusOnSite(string username)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"[\"{username}\"]"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
             {
                 if (response == null||response.StatusCode!=HttpStatusCode.OK) return OnlineState.ERROR;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-
-                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<OnlineInfo>>(reader.ReadToEnd()).response;
+                    string json = reader.ReadToEnd();
+                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
 
                     if (info.Ingame) return OnlineState.INGAME;
                     return info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;

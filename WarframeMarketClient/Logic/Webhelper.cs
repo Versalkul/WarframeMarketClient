@@ -99,6 +99,7 @@ namespace WarframeMarketClient.Logic
                 }
                 catch (WebException e)
                 {
+
                     if (e == null) continue;
                     if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
                     {
