@@ -93,8 +93,8 @@ namespace WarframeMarketClient.Logic
                 {
                     stream.Write(data, 0, data.Length);
                 }
-
-                return (HttpWebResponse)page.GetResponse();
+                    HttpWebResponse response = (HttpWebResponse)page.GetResponse();
+                return response;
 
                 }
                 catch (WebException e)

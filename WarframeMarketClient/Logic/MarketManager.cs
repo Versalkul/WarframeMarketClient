@@ -26,7 +26,6 @@ namespace WarframeMarketClient.Logic
             socket = new SocketManager();
             socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
             InitApplicationState();
-            (new Thread(refreshCoockie)).Start();
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
             onlineChecker.Interval = 60000;
@@ -92,15 +91,6 @@ namespace WarframeMarketClient.Logic
 
         }
 
-
-        private void refreshCoockie()
-        {
-            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/"))
-            {
-            }
-
-        }
-
         #endregion
 
         #region onlineOffline
@@ -134,8 +124,8 @@ namespace WarframeMarketClient.Logic
             {
                 Message = args.message,
                 MessageFrom = args.fromUser,
-                SendMinute = DateTime.UtcNow.Minute.ToString(),
-                SendHour = DateTime.UtcNow.Hour.ToString()
+                SendMinute = DateTime.Now.Minute.ToString(),
+                SendHour = DateTime.Now.Hour.ToString()
             };
 
             if (chatList.Any())
@@ -160,6 +150,7 @@ namespace WarframeMarketClient.Logic
                     string json = reader.ReadToEnd();
                     JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
                     if (result.code != 200) return new List<ChatMessage>();
+
                     return result.response;
 
                 }

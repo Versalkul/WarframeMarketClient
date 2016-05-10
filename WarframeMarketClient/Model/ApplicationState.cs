@@ -78,9 +78,6 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
-
-
-
         #region Properties
 
         public string sessionToken="";
@@ -168,7 +165,7 @@ namespace WarframeMarketClient.Model
             }
         }
 
-        public int HourOffset { get; set; }
+        public TimeSpan TimeOffset { get; set; }
 
         public static bool HasInstance { get { return instance != null; } }
         public static bool HasValidInstance { get { return HasInstance && instance.IsValid; } }
