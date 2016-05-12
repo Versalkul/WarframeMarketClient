@@ -16,13 +16,13 @@ namespace WarframeMarketClient.Logic
     {
 
         SocketManager socket;
-        Dictionary<string, string> nameTypeMap = new Dictionary<string, string>(1000);
+        static Dictionary<string, string> nameTypeMap ;
         Timer onlineChecker;
 
 
         public MarketManager()
         {
-            nameTypeMap = getTypeMap();
+           
             socket = new SocketManager();
             socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
             InitApplicationState();
@@ -33,7 +33,7 @@ namespace WarframeMarketClient.Logic
             onlineChecker.Enabled = true;
             onlineChecker.Start();
             forceUserState();
-
+            if (nameTypeMap == null) nameTypeMap = getTypeMap();
         }
 
         // add coockie refresh
@@ -43,25 +43,7 @@ namespace WarframeMarketClient.Logic
 
 
 
-        public OnlineState getStatusOnSite(string username)
-        {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
-            {
-                if (response == null||response.StatusCode!=HttpStatusCode.OK) return OnlineState.ERROR;
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string json = reader.ReadToEnd();
-                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
 
-                    if (info.Ingame) return OnlineState.INGAME;
-                    return info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
-
-
-                }
-
-
-            }
-        }
 
         public void forceUserState()
         {
@@ -94,6 +76,26 @@ namespace WarframeMarketClient.Logic
         #endregion
 
         #region onlineOffline
+
+        public OnlineState getStatusOnSite(string username)
+        {
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
+            {
+                if (response == null || response.StatusCode != HttpStatusCode.OK) return OnlineState.ERROR;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    string json = reader.ReadToEnd();
+                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
+
+                    if (info.Ingame) return OnlineState.INGAME;
+                    return info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
+
+
+                }
+
+
+            }
+        }
 
         public void setIngame()
         {
@@ -183,7 +185,7 @@ namespace WarframeMarketClient.Logic
 
         #region buy sell stuff
 
-        public static List<WarframeItem> getOffers()
+        public List<WarframeItem> getOffers()
         {
             return HtmlParser.getOffers();
         }
@@ -234,8 +236,10 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        public string GetCategory(string name)
+        public static string GetCategory(string name)
         {
+            if (String.IsNullOrWhiteSpace(name)) return "";
+            if (nameTypeMap == null) nameTypeMap = getTypeMap();
             if (nameTypeMap.ContainsKey(name)) return nameTypeMap[name];
             return "";
         }
@@ -283,7 +287,7 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        private Dictionary<string, string> getTypeMap()
+        private static Dictionary<string, string> getTypeMap()
         {
             Dictionary<string, string> map = new Dictionary<string, string>(1000);
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/api/get_all_items_v2"))

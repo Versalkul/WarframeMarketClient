@@ -31,7 +31,11 @@ namespace WarframeMarketClient.Model
         {
             OnlineState = OnlineState.ONLINE;
             BuyItems = new ObservableCollection<WarframeItem>();
-            SellItems = new ObservableCollection<WarframeItem>();
+            SellItems = new ObservableCollection<WarframeItem>() {
+                new WarframeItem("Nyx Prime Systems",5,3,true),
+                new WarframeItem("Loki Prime Systems",150,1,true),
+                new WarframeItem("Buzz Kill",150,1,5,true),
+            };
             Chats = new ObservableCollection<ChatViewModel>()
                  {
                  new ChatViewModel(

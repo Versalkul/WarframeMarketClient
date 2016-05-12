@@ -1,24 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem
+    public class WarframeItem : INotifyPropertyChanged
     {
 
-        public string Name { get; set; }
+        private string name;
+
+        public string Name
+        {
+            get { return name; }
+            set { name = value; OnPropertyChanged(nameof(Category)); }
+        }
+
+        
         public int Price { get; set; }
-        public int Count { get; set; }
+        private int count;
+
+        public int Count
+        {
+            get { return count; }
+            set { count = value; Console.WriteLine("CHANGED!!!!!!!!1elf!!1!"); }
+        }
+
         public int ModRank { get; set; }
         public bool SellOffer { get; set; }
         public string Id { get; set; }
 
         public string Category { get
             {
-                return ApplicationState.getInstance().Market.GetCategory(Name);
+                return WarframeMarketClient.Logic.MarketManager.GetCategory(Name);
             }
         }
 
@@ -27,7 +43,7 @@ namespace WarframeMarketClient.Model
         /// </summary>
         public WarframeItem()
         {
-            Console.WriteLine("Constructed empty WarframeItem");
+           
         }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)
@@ -55,5 +71,17 @@ namespace WarframeMarketClient.Model
             this.ModRank = modRank;
         }
 
+
+
+        #region OnPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(property));
+        }
+        #endregion
     }
 }
