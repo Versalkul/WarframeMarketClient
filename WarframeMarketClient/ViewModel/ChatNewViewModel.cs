@@ -39,7 +39,7 @@ namespace WarframeMarketClient.ViewModel
             if (ApplicationState.getInstance().Market.getStatusOnSite(User) != OnlineState.ERROR)
             {
                 Status = "";
-                ApplicationState.getInstance().Chats.Add(new ChatViewModel(new Model.User(User), new List<ChatMessage>()));
+                ApplicationState.getInstance().Chats.Add(new ChatViewModel(new Model.User(User), new List<ChatMessage>()) { HasInfo = true });
             }
             else Status = "Username does not exist";
             Console.WriteLine("Open Chat with: "+User);

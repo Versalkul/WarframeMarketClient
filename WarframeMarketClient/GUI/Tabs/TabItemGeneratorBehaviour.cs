@@ -166,7 +166,6 @@ namespace System.Windows.Controls
         /// <param name="e">Change notification</param>
         private static void OnItemsSourcePropertyChanged(DependencyObject parent, DependencyPropertyChangedEventArgs e)
         {
-            Console.WriteLine("Tab Collection Prop Changed");
             TabItemGeneratorBehavior instance = GetHandler(parent as TabControl);
 
             IEnumerable value = e.NewValue as IEnumerable;
@@ -245,7 +244,6 @@ namespace System.Windows.Controls
         /// <param name="e">Change event arguments</param>
         protected virtual void OnSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine("Tab Collection Changed");
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:

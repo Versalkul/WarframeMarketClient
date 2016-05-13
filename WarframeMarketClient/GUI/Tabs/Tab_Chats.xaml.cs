@@ -71,7 +71,7 @@ namespace WarframeMarketClient.GUI.Tabs
             InitializeComponent();
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
-
+        
 
         private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -88,6 +88,13 @@ namespace WarframeMarketClient.GUI.Tabs
                 {
                     c.PropertyChanged -= chatHasInfo;
                     c.PropertyChanged += chatHasInfo;
+                }
+                if (sender != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    if (!Chats[e.NewStartingIndex].HasInfo || !IsVisible) // Switch to tab if in background or created by user (HasInfo = false)
+                        chatTabs.SelectedIndex = e.NewStartingIndex + 1;
+                    foreach (ChatNewViewModel v in e.NewItems)
+                        HasInfo = HasInfo || v.HasInfo;
                 }
             }));
             OnPropertyChanged(nameof(Tabs));
