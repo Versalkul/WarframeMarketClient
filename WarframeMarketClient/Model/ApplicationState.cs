@@ -49,6 +49,17 @@ namespace WarframeMarketClient.Model
                         },
                         new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
                         new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
+                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
+                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" }
                     }
                 ),
                 new ChatViewModel(

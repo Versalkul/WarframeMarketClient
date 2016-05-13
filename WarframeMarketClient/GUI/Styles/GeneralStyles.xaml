@@ -130,7 +130,7 @@
 
 
 
-    <Style x:Name="CleanButton" TargetType="Button">
+    <Style x:Key="CleanButton" TargetType="Button">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="#BF000000" />

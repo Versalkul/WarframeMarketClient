@@ -196,7 +196,7 @@
                         x:Name="Status"
                         Content="{Binding OnlineState}"
                         Background="{Binding OnlineState, Converter={StaticResource OnlineStateToColorConverter}}"
-                        Style="{DynamicResource CleanButton}"
+                        Style="{StaticResource CleanButton}"
                         FontSize="12"
                         Padding="4,8"
                         BorderThickness="0,1,1,0"

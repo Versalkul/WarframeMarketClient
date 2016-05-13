@@ -6,6 +6,7 @@
              xmlns:chat="clr-namespace:WarframeMarketClient.GUI.Tabs.Chat"
              xmlns:gui="clr-namespace:WarframeMarketClient.GUI"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
+             xmlns:beh="clr-namespace:System.Windows.Controls"
              mc:Ignorable="d" 
              x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -41,8 +42,8 @@
     <Grid DataContext="{Binding ElementName=self}">
         <gui:FancyTabControl
             x:Name="chatTabs"
-            ItemsSource="{Binding Tabs}"
             TabNameMargin="2,2,5,2"
+            beh:TabItemGeneratorBehavior.ItemsSource="{Binding Tabs}"
             ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
     </Grid>
 </UserControl>

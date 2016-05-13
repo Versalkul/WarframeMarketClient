@@ -29,8 +29,19 @@
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <Button Content="Sold" FontSize="10" Style="{DynamicResource CleanButton}" Padding="4,5" Background="#afa"></Button>
-                                <Button Content="X" FontSize="10" Style="{DynamicResource CleanButton}" Padding="4,5" Background="#faa"></Button>
+                                <Button
+                                    Content="Sold"
+                                    FontSize="10"
+                                    Style="{StaticResource CleanButton}"
+                                    Padding="4,5"
+                                    Margin="5,0"
+                                    Background="#afa"></Button>
+                                <Button
+                                    Content="X"
+                                    FontSize="10"
+                                    Style="{StaticResource CleanButton}"
+                                    Padding="4,5"
+                                    Background="#faa"></Button>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
