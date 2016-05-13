@@ -15,14 +15,21 @@ namespace WarframeMarketClient.ViewModel
         #endregion
 
         #region Properties
-        public string Status { get; set; }
+        private string status;
+
+        public string Status
+        {
+            get { return status; }
+            set { status = value; OnPropertyChanged(nameof(Status)); }
+        }
+
 
         private string user;
 
         public string User
         {
             get { return user; }
-            set { user = value; OnPropertyChanged("User"); }
+            set { user = value; OnPropertyChanged(nameof(User)); }
         }
         #endregion
 

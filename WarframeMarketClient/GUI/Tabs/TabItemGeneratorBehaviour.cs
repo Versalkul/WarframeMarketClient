@@ -166,6 +166,7 @@ namespace System.Windows.Controls
         /// <param name="e">Change notification</param>
         private static void OnItemsSourcePropertyChanged(DependencyObject parent, DependencyPropertyChangedEventArgs e)
         {
+            Console.WriteLine("Tab Collection Prop Changed");
             TabItemGeneratorBehavior instance = GetHandler(parent as TabControl);
 
             IEnumerable value = e.NewValue as IEnumerable;
@@ -177,7 +178,7 @@ namespace System.Windows.Controls
             if (null != instance._itemsSource)
             {
                 ((INotifyCollectionChanged)instance._itemsSource).CollectionChanged -= instance.OnSourceCollectionChanged;
-                instance._tabControl.Items.Clear();
+                //instance._tabControl.Items.Clear();
                 instance._itemsSource = null;
             }
 
@@ -192,6 +193,7 @@ namespace System.Windows.Controls
 
             instance._itemsSource = value;
             notifyCollectionChanged.CollectionChanged += instance.OnSourceCollectionChanged;
+            instance.SyncItems();
         }
 
         /// <summary>
@@ -229,8 +231,7 @@ namespace System.Windows.Controls
                 "ItemsSource should not be assigned" +
                 " on TabControl if non virtualizing UI is required.");
 
-            foreach (var item in _itemsSource)
-                AddTabItem(item);
+            SyncItems();
         }
 
         #endregion  TabControl Notification Delegates
@@ -244,6 +245,7 @@ namespace System.Windows.Controls
         /// <param name="e">Change event arguments</param>
         protected virtual void OnSourceCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            Console.WriteLine("Tab Collection Changed");
             switch (e.Action)
             {
                 case NotifyCollectionChangedAction.Add:
@@ -292,6 +294,32 @@ namespace System.Windows.Controls
         }
 
         /// <summary>
+        /// Synchronizes the order of the items, adds missing and removes superfluous
+        /// </summary>
+        /// <remarks>Modified from the original</remarks>
+        private void SyncItems()
+        {
+            Collections.Generic.IEnumerable<Object> iSource = _itemsSource.Cast<Object>();
+            Collections.Generic.IEnumerable<TabItem> iTabs = _tabControl.Items.Cast<TabItem>();
+            foreach (var item in iTabs)
+            {
+                if (!iSource.Contains(item.DataContext))
+                    _tabControl.Items.Remove(item);
+            }
+            foreach (var item in _itemsSource)
+            {
+                TabItem tab = iTabs.FirstOrDefault(t => t.DataContext == item);
+                if(tab == null)
+                    AddTabItem(item);
+                else
+                {
+                    _tabControl.Items.Remove(tab);
+                    _tabControl.Items.Add(tab);
+                }
+            }
+        }
+
+        /// <summary>
         /// Replaces data in Tabs
         /// </summary>
         /// <param name="newItems">List of new data items.</param>
@@ -329,10 +357,6 @@ namespace System.Windows.Controls
         /// <param name="item">Content of the <see cref="TabItems"/></param>
         private void AddTabItem(object item)
         {
-            // MODIFIED: Don't add Items twice
-            TabItem foundItem = _tabControl.Items.Cast<TabItem>().FirstOrDefault(t => t.DataContext == item);
-            if (foundItem != null)
-                return;
             ContentControl contentControl = new ContentControl();
             TabItem tab = new TabItem
             {

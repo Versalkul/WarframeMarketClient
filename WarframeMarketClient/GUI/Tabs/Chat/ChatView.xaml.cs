@@ -22,7 +22,6 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
 
         private void OnChatChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine("PLIMPLIM");
             if (chatScroll == null)
             {
                 if (VisualTreeHelper.GetChildrenCount(ChatList) > 0)

@@ -35,7 +35,7 @@
                     <Setter.Value>
                         <ControlTemplate TargetType="TabItem">
                             <Grid Name="Panel" Margin="0">
-                                <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0,0,0,0" SnapsToDevicePixels="True" Padding="10,5">
+                                <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0" SnapsToDevicePixels="True" Padding="10,5">
                                     <ContentPresenter x:Name="ContentSite"
                                             VerticalAlignment="Center"
                                             HorizontalAlignment="Stretch"
@@ -44,7 +44,7 @@
                                             Margin="{Binding RelativeSource={RelativeSource AncestorType=gui:FancyTabControl}, Path=TabNameMargin}"/>
                                 </Border>
                                 <Path Name="BorderPath"
-                                      Margin="0,0,-1,0"
+                                      Margin="0"
                                       Stroke="{StaticResource BorderBrush}"
                                       Fill="White"
                                       StrokeThickness="1"
