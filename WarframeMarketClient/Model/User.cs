@@ -9,14 +9,24 @@ namespace WarframeMarketClient.Model
     public class User
     {
 
+        DateTime lastCheck = DateTime.MinValue;
+
         public User(string name)
         {
             Name = name;
-            State = OnlineState.OFFLINE;
+            //State = OnlineState.OFFLINE;
         }
 
         public String Name { get; set; }
 
-        public OnlineState State { get; set; }
+        private OnlineState state;
+
+        public OnlineState State
+        {
+            get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchAssign(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); return state; }
+            set { state = value; }
+        }
+
+        
     }
 }
