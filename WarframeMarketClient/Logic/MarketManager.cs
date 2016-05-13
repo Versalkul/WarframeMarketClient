@@ -18,6 +18,7 @@ namespace WarframeMarketClient.Logic
         SocketManager socket;
         static Dictionary<string, string> nameTypeMap ;
         Timer onlineChecker;
+        public static TimeSpan timeOffset;
 
 
         public MarketManager()

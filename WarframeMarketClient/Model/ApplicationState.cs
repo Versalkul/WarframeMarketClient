@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using WarframeMarketClient.Logic;
 using WarframeMarketClient.ViewModel;
@@ -29,63 +30,10 @@ namespace WarframeMarketClient.Model
 
         private ApplicationState()
         {
-            OnlineState = OnlineState.ONLINE;
+            OnlineState = OnlineState.ERROR;
             BuyItems = new ObservableCollection<WarframeItem>();
-            SellItems = new ObservableCollection<WarframeItem>() {
-                new WarframeItem("Nyx Prime Systems",5,3,true),
-                new WarframeItem("Loki Prime Systems",150,1,true),
-                new WarframeItem("Buzz Kill",150,1,5,true),
-            };
-            Chats = new ObservableCollection<ChatViewModel>()
-                 {
-                 new ChatViewModel(
-                    new User("RandomGuy") {State=OnlineState.ONLINE },
-                     new ObservableCollection<ChatMessage>() {
-                        new ChatMessage() {
-                            MessageFrom = "ME",
-                            SendHour = "12",
-                            SendMinute = "10",
-                            Message ="BLablabla"
-                        },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" }
-                    }
-                ),
-                new ChatViewModel(
-                    new User("RandomGuy2") {State=OnlineState.INGAME },
-                     new ObservableCollection<ChatMessage>() {
-                        new ChatMessage() {
-                            MessageFrom = "ME",
-                            SendHour = "12",
-                            SendMinute = "10",
-                            Message ="BLablabla"
-                        },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                        new ChatMessage() { Message = "Nice!", SendHour="20", SendMinute="17", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Test", SendHour="20", SendMinute="15", MessageFrom="ME" },
-                        new ChatMessage() { Message = "Passt", SendHour="20", SendMinute="16", MessageFrom="B" },
-                    }
-                )
-            };
-            Username = "ME";
+            SellItems = new ObservableCollection<WarframeItem>();
+            Chats = new ObservableCollection<ChatViewModel>();
 
 
         }
@@ -191,6 +139,17 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
+        public  void asynchAssign(Action function)
+        {
+            (new Thread(() =>
+            {
+                // add try catch
+                function.Invoke();
+            }
+            )).Start();
+
+        }
+
 
         #region OnPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
@@ -200,6 +159,7 @@ namespace WarframeMarketClient.Model
             var handler = PropertyChanged;
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(property));
+            
         }
         #endregion
     }
