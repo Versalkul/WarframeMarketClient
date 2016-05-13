@@ -16,6 +16,16 @@
         <Setter Property="Background" Value="Transparent"/>
 
         <Style.Resources>
+            <!--<Style TargetType="DataGridTextColumn">
+                <Setter Property="EditingElementStyle">
+                    <Setter.Value>
+                        <Style TargetType="TextBox">
+                            
+                        </Style>
+                    </Setter.Value>
+                </Setter>
+            </Style>-->
+            
             <Style TargetType="DataGridCell">
                 <Setter Property="Template">
                     <Setter.Value>

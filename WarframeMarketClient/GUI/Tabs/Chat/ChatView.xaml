@@ -45,7 +45,8 @@
             ItemTemplate="{StaticResource ChatItemTemplate}"
             HorizontalContentAlignment="Stretch"
             BorderThickness="0"
-            VerticalAlignment="Bottom">
+            VerticalAlignment="Bottom"
+            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="Focusable" Value="False"></Setter>

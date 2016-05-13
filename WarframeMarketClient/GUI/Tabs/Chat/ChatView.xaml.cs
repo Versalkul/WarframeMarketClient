@@ -29,7 +29,11 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
         {
             InitializeComponent();
             //ChatList.ScrollIntoView(ChatList.Items[ChatList.Items.Count - 1]);
+            LayoutUpdated += 
         }
+
+
+        private void 
 
 
         private void Input_KeyDown(object sender, KeyEventArgs e)

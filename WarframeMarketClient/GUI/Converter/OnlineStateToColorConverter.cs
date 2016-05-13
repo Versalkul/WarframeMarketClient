@@ -32,7 +32,7 @@ namespace WarframeMarketClient.GUI.Converter
         {
             OnlineState? state = value as OnlineState?;
             String colorType = parameter == null ? "normal" : parameter as String;
-            if (state != null && _colors.ContainsKey(colorType))
+            if (state != null && _colors.ContainsKey(colorType) && _colors[colorType].ContainsKey((OnlineState)state))
                 return new SolidColorBrush(_colors[colorType][(OnlineState)state]);
             return new SolidColorBrush(Color.FromRgb(200,200,200));
         }

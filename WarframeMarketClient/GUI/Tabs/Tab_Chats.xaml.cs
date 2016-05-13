@@ -96,6 +96,8 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             if (args.PropertyName == "HasInfo")
                 HasInfo = HasInfo || (sender as ChatViewModel).HasInfo;
+            if(!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
+                chatTabs.SelectedIndex = Chats.IndexOf((sender as ChatViewModel))+1;
         }
 
 

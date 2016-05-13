@@ -24,8 +24,21 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-            <TextBlock x:Name="Time" TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}" Text="{Binding TimeString}" VerticalAlignment="Top" FontSize="7" Foreground="#999" Margin="0,0,0,-2"/>
-            <TextBlock x:Name="Message" TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}" TextWrapping="Wrap" Text="{Binding Message}" VerticalAlignment="Top" Grid.Row="1"/>
+            <TextBlock
+                x:Name="Time"
+                TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
+                Text="{Binding TimeString}"
+                VerticalAlignment="Top"
+                FontSize="7"
+                Foreground="#999"
+                Margin="0,0,0,-2"/>
+            <TextBlock
+                x:Name="Message"
+                TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
+                TextWrapping="Wrap"
+                Text="{Binding Message}"
+                VerticalAlignment="Top"
+                Grid.Row="1"/>
         </Grid>
     </DataTemplate>
 
