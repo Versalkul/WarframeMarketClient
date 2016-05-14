@@ -196,12 +196,16 @@
                         x:Name="Status"
                         Content="{Binding OnlineState}"
                         Background="{Binding OnlineState, Converter={StaticResource OnlineStateToColorConverter}}"
-                        Style="{StaticResource CleanButton}"
                         FontSize="12"
                         Padding="4,8"
                         BorderThickness="0,1,1,0"
-                        Click="MainButtonClick"
-                        />
+                        >
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource CleanButton}">
+                                <EventSetter Event="Click" Handler="MainButtonClick"/>
+                            </Style>
+                        </Button.Style>
+                    </Button>
                 </Setter.Value>
             </Setter>
             <Setter Property="ContentMargin" Value="10,10,0,10" />
