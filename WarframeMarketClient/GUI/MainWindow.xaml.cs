@@ -32,6 +32,13 @@ namespace WarframeMarketClient.GUI
         }
 
 
+        private void MainButtonClick(object sender, RoutedEventArgs args)
+        {
+            Console.WriteLine("Main Button");
+        }
+
+
+
         private void PART_LOADED(object sender, RoutedEventArgs e)
         {
             FrameworkElement Wnd = (FrameworkElement) sender;

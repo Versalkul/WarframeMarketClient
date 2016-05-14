@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -39,7 +35,7 @@ namespace WarframeMarketClient.ViewModel
             if (ApplicationState.getInstance().Market.getStatusOnSite(User) != OnlineState.ERROR)
             {
                 Status = "";
-                ApplicationState.getInstance().Chats.Add(new ChatViewModel(new Model.User(User), new List<ChatMessage>()) { HasInfo = true });
+                ApplicationState.getInstance().Chats.Add(new ChatViewModel(new Model.User(User), new List<ChatMessage>()));
             }
             else Status = "Username does not exist";
             Console.WriteLine("Open Chat with: "+User);
