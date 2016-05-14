@@ -304,10 +304,13 @@ namespace System.Windows.Controls
             }
             Collections.Generic.IEnumerable<Object> iSource = _itemsSource.Cast<Object>();
             Collections.Generic.IEnumerable<TabItem> iTabs = _tabControl.Items.Cast<TabItem>();
-            foreach (var item in iTabs)
+            for (int i = 0; i < _tabControl.Items.Count; i++)
             {
-                if (!iSource.Contains(item.DataContext))
-                    _tabControl.Items.Remove(item);
+                if (!iSource.Contains((_tabControl.Items[i] as TabItem).DataContext))
+                {
+                    _tabControl.Items.Remove(i);
+                    i--;
+                }
             }
             foreach (var item in _itemsSource)
             {
