@@ -297,6 +297,11 @@ namespace System.Windows.Controls
         /// <remarks>Modified from the original</remarks>
         private void SyncItems()
         {
+            if(_itemsSource == null)
+            {
+                _tabControl.Items.Clear();
+                return;
+            }
             Collections.Generic.IEnumerable<Object> iSource = _itemsSource.Cast<Object>();
             Collections.Generic.IEnumerable<TabItem> iTabs = _tabControl.Items.Cast<TabItem>();
             foreach (var item in iTabs)
