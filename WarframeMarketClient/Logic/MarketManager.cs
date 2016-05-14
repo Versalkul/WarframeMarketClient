@@ -84,7 +84,10 @@ namespace WarframeMarketClient.Logic
             lock (userStatusCache)
             {
 
-            if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Minutes < 1) return userStatusCache[username].Item2;
+                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Minutes < 1)
+                {
+                    return userStatusCache[username].Item2;
+                }
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
             {

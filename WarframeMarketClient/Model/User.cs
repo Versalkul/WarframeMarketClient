@@ -25,7 +25,7 @@ namespace WarframeMarketClient.Model
         public OnlineState State
         {
             get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchAssign(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); lastCheck = DateTime.Now; return state; }
-            set { state = value;OnPropertyChanged(nameof(State)); }
+            set { OnlineState oldstate = state; ; state = value; if(oldstate!=state) OnPropertyChanged(nameof(State)); }
         }
 
 

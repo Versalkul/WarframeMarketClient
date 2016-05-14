@@ -25,7 +25,7 @@ namespace WarframeMarketClient.Model
         public int Count
         {
             get { return count; }
-            set { count = value; Console.WriteLine("CHANGED!!!!!!!!1elf!!1!"); }
+            set { count = value; }
         }
 
         public int ModRank { get; set; }
@@ -75,12 +75,20 @@ namespace WarframeMarketClient.Model
 
         public void DecreaseCount()
         {
-            Console.WriteLine("Sold or Bought or whatever: "+Name);
+            ApplicationState.getInstance().Market.SoldItem(this);
+            if (count > 1) Count--;
+            else
+            {
+                if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
+                else ApplicationState.getInstance().BuyItems.Remove(this);
+            }
         }
 
         public void RemoveItem()
         {
-            Console.WriteLine("Seems like you want to get rid of this: "+Name);
+            ApplicationState.getInstance().Market.RemoveItem(this);
+            if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
+            else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
         #region OnPropertyChanged
