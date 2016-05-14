@@ -34,6 +34,8 @@ namespace WarframeMarketClient.GUI
 
         private void MainButtonClick(object sender, RoutedEventArgs args)
         {
+
+            ApplicationState.getInstance().OnlineChecker.changeRunning();
             Console.WriteLine("Main Button");
         }
 
@@ -55,6 +57,7 @@ namespace WarframeMarketClient.GUI
 
         private void PART_CLOSE_Click(object sender, RoutedEventArgs e)
         {
+            //if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.setOffline();
             this.Close();
         }
 

@@ -42,9 +42,24 @@ namespace WarframeMarketClient.Logic
             worker.AutoReset = true;
             worker.Interval = 5000;
             worker.Start();
+            checker(null, null);
 
         }
 
+        public void changeRunning()
+        {
+            worker.Enabled = !worker.Enabled;
+
+            if (!worker.Enabled)
+            {
+                ApplicationState.getInstance().OnlineState = OnlineState.OFFLINE;
+            }
+            else
+            {
+                ApplicationState.getInstance().OnlineState = ApplicationState.getInstance().DefaultState;
+                checker(null, null);
+            }
+        }
 
 
         private void checker(object o,EventArgs args)

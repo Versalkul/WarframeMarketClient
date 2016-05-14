@@ -34,6 +34,7 @@ namespace WarframeMarketClient.Model
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
             Chats = new ObservableCollection<ChatViewModel>();
+            asynchAssign(() => Webhelper.GetPage("http://warframe.market"));
 
 
         }
@@ -137,6 +138,7 @@ namespace WarframeMarketClient.Model
 
         public bool IsValid { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
         public RunsGameChecker OnlineChecker { get; private set; }
+
 
         #endregion
 
