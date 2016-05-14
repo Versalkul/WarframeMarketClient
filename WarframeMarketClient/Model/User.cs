@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    public class User
+    public class User: INotifyPropertyChanged
     {
 
         DateTime lastCheck = DateTime.MinValue;
@@ -23,10 +24,23 @@ namespace WarframeMarketClient.Model
 
         public OnlineState State
         {
-            get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchAssign(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); return state; }
-            set { state = value; }
+            get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchAssign(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); lastCheck = DateTime.Now; return state; }
+            set { state = value;OnPropertyChanged(nameof(State)); }
         }
 
-        
+
+
+        #region OnPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(property));
+
+        }
+        #endregion
+
     }
 }

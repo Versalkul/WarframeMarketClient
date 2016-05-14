@@ -20,6 +20,7 @@ namespace WarframeMarketClient.Logic
         Timer onlineChecker;
         public static TimeSpan timeOffset;
 
+        private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
 
         public MarketManager()
         {
@@ -80,6 +81,8 @@ namespace WarframeMarketClient.Logic
 
         public OnlineState getStatusOnSite(string username)
         {
+            if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Minutes < 1) return userStatusCache[username].Item2;
+
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
             {
                 if (response == null || response.StatusCode != HttpStatusCode.OK) return OnlineState.ERROR;
