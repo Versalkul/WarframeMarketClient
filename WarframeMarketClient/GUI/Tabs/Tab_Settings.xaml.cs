@@ -80,6 +80,7 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void SetToken()
         {
+            if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.Dispose();
             Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
         }
