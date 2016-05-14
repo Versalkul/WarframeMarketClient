@@ -79,14 +79,18 @@ namespace WarframeMarketClient.Logic
 
         private void sendJson(string json)
         {
-            if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
+            lock (socket)
             {
-                jsonsToSend.Enqueue(json);
-                socket.Open();
-            }
-            else
-            {
-                socket.Send(json);
+
+                if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
+                {
+                    jsonsToSend.Enqueue(json);
+                    if(socket.State!=WebSocketState.Connecting) socket.Open();
+                }
+                else
+                {
+                    socket.Send(json);
+                }
             }
         }
 

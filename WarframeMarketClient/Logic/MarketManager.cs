@@ -81,6 +81,9 @@ namespace WarframeMarketClient.Logic
 
         public OnlineState getStatusOnSite(string username)
         {
+            lock (userStatusCache)
+            {
+
             if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Minutes < 1) return userStatusCache[username].Item2;
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
@@ -91,12 +94,18 @@ namespace WarframeMarketClient.Logic
                     string json = reader.ReadToEnd();
                     OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
 
-                    if (info.Ingame) return OnlineState.INGAME;
-                    return info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
+                    OnlineState ret;
+
+                    if (info.Ingame) ret=OnlineState.INGAME;
+                    ret= info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
+                    if (!userStatusCache.ContainsKey(username)) userStatusCache.Add(username, new Tuple<DateTime, OnlineState>(DateTime.Now, ret));
+                    else userStatusCache[username] = new Tuple<DateTime, OnlineState>(DateTime.Now, ret);
+                    return ret;
 
 
                 }
 
+            }
 
             }
         }
