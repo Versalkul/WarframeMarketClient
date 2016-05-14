@@ -15,6 +15,8 @@ namespace WarframeMarketClient.Logic
         public event EventHandler<PmArgs> recievedPM;
         private Queue<string> jsonsToSend = new Queue<string>(5);
 
+        Object socketLock = new object();
+
         public SocketManager()
         {
             List<KeyValuePair<string, string>> cookies = new List<KeyValuePair<string, string>>(1);
@@ -79,13 +81,12 @@ namespace WarframeMarketClient.Logic
 
         private void sendJson(string json)
         {
-            lock (socket)
+            lock (socketLock)
             {
-
+                Console.WriteLine("Sending: "+json+"\n with state " + socket.State);
                 if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
                 {
                     jsonsToSend.Enqueue(json);
-                    if(socket.State!=WebSocketState.Connecting) socket.Open();
                 }
                 else
                 {
@@ -107,12 +108,22 @@ namespace WarframeMarketClient.Logic
         public void setOnline()
         {
             sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"online\"}}");
+
+            lock (socketLock)
+            {
+                if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
+                    socket.Open();
+            }
         }
 
         public void setOffline()
         {
             sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"online\"}}");
-            if (socket.State == WebSocketState.Open && jsonsToSend.Count == 0) socket.Close();
+            lock (socketLock)
+            {
+                if (socket.State == WebSocketState.Open && jsonsToSend.Count == 0)
+                    socket.Close();
+            }
         }
 
         public void Dispose()
