@@ -55,7 +55,7 @@ namespace WarframeMarketClient.GUI.Tabs
             private set
             {
                 hasInfo = value;
-                OnPropertyChanged("HasInfo");
+                OnPropertyChanged(nameof(HasInfo));
             }
         }
 
@@ -93,7 +93,7 @@ namespace WarframeMarketClient.GUI.Tabs
                 {
                     if (!Chats[e.NewStartingIndex].HasInfo || !IsVisible) // Switch to tab if in background or created by user (HasInfo = false)
                         chatTabs.SelectedIndex = e.NewStartingIndex + 1;
-                    foreach (ChatNewViewModel v in e.NewItems)
+                    foreach (ChatViewModel v in e.NewItems)
                         HasInfo = HasInfo || v.HasInfo;
                 }
             }));

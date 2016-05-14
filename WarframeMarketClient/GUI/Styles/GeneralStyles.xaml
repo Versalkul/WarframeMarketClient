@@ -68,7 +68,14 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False"/>
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=Content, Converter={StaticResource TabInfoToHasInfoConverter}}" Value="True"/>
+                                        <Condition Value="True">
+                                            <Condition.Binding>
+                                                <MultiBinding Converter="{StaticResource TabInfoToHasInfoConverter}">
+                                                    <Binding RelativeSource="{RelativeSource Self}" Path="Content.HasInfo" />
+                                                    <Binding RelativeSource="{RelativeSource Self}" Path="DataContext.HasInfo" />
+                                                </MultiBinding>
+                                            </Condition.Binding>
+                                        </Condition>
                                     </MultiDataTrigger.Conditions>
                                     <MultiDataTrigger.EnterActions>
                                         <BeginStoryboard>

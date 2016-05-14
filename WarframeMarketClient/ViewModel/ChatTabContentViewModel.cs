@@ -14,7 +14,7 @@ namespace WarframeMarketClient.ViewModel
         public virtual OnlineState? OnlineStateInfo { get; }
 
 
-        protected bool hasInfo = true;
+        protected bool hasInfo = false;
 
         public bool HasInfo
         {

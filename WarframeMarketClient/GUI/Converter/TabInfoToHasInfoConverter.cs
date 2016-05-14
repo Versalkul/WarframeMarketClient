@@ -1,22 +1,28 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.GUI.Converter
 {
-    class TabInfoToHasInfoConverter : IValueConverter
+    class TabInfoToHasInfoConverter : IMultiValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null || !(value is TabInfoInterface))
-                return false;
-            else
-                return (value as TabInfoInterface).HasInfo;
+            foreach (object value in values)
+            {
+                if (value == null)
+                    continue;
+                if ((value is TabInfoInterface) && (value as TabInfoInterface).HasInfo)
+                    return true;
+                if (value is bool && (value as bool?) == true)
+                    return true;
+            }
+            return false;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }
