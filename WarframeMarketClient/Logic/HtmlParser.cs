@@ -18,7 +18,7 @@ namespace WarframeMarketClient.Logic
             {
 
                 if (response == null || ((HttpWebResponse)response).StatusCode != HttpStatusCode.OK) return new Tuple<bool, string>(false,"");
-                //MarketManager.timeOffset = DateTime.Now - DateTime.Parse(response.Headers["time"]);
+                MarketManager.timeOffset = DateTime.Now - DateTimeOffset.Parse(response.Headers["Date"]).DateTime;
 
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {

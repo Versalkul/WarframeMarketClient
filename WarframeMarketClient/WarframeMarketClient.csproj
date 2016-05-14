@@ -140,8 +140,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Logic\AfkStateChangedArgs.cs" />
-    <Compile Include="Logic\GameStateChangedArgs.cs" />
     <Compile Include="Logic\HtmlParser.cs" />
     <Compile Include="Logic\ItemTypeMap.cs" />
     <Compile Include="Logic\MarketManager.cs" />

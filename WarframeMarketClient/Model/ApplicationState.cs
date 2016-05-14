@@ -68,6 +68,7 @@ namespace WarframeMarketClient.Model
                 if (Market != null) Market.Dispose();
                 if (OnlineChecker != null) OnlineChecker.Dispose();
                 Market = new MarketManager();
+                OnlineState = DefaultState;
                 Console.WriteLine("Token set");
                 OnlineChecker = new RunsGameChecker();
                 OnPropertyChanged(nameof(IsValid));
@@ -88,10 +89,11 @@ namespace WarframeMarketClient.Model
             set {
                 onlineState = value;
                 if (Market != null) Market.forceUserState();
+                OnPropertyChanged(nameof(OnlineState));
                 }
         }
-        
-        public OnlineState DefaultState { get; set; }
+
+        public OnlineState DefaultState { get; set; } = OnlineState.OFFLINE;
 
 
 
