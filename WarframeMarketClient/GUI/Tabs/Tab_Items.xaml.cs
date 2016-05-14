@@ -24,6 +24,19 @@ namespace WarframeMarketClient.GUI.Tabs
             DependencyProperty.Register("Items", typeof(ObservableCollection<WarframeItem>), typeof(Tab_Items), new PropertyMetadata(null));
 
 
+        public string DecreaseItemText
+        {
+            get { return (string)GetValue(DecreaseItemTextProperty); }
+            set { SetValue(DecreaseItemTextProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DecreaseItemText.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DecreaseItemTextProperty =
+            DependencyProperty.Register("DecreaseItemText", typeof(string), typeof(Tab_Items), new PropertyMetadata(null));
+
+
+
+
 
         public Tab_Items()
         {
