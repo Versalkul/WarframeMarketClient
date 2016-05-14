@@ -200,6 +200,7 @@
                         FontSize="12"
                         Padding="4,8"
                         BorderThickness="0,1,1,0"
+                        Click="MainButtonClick"
                         />
                 </Setter.Value>
             </Setter>
