@@ -10,14 +10,22 @@ namespace WarframeMarketClient.Model
     public class ChatMessage
     {
 
+        public ChatMessage()
+        {
+            Time = new DateTime();
+        }
+
         #region Properties
 
         #region JSON
 
         private string message;
         private string messageFrom;
-        private int sendHour;
-        private int sendMinute;
+       // private int sendHour;
+       // private int sendMinute;
+
+        public DateTime Time { get; set; }
+
 
         [JsonProperty(PropertyName = "message")]
         public string Message
@@ -36,15 +44,15 @@ namespace WarframeMarketClient.Model
         [JsonProperty(PropertyName = "send_hour")]
         public String SendHour
         {
-            get { return ""+sendHour; }
-            set { sendHour = Convert.ToInt32(value); }
+            get { return ""+Time.Hour; }
+            set { Time.AddHours(Convert.ToInt32(value)); }
         }
 
         [JsonProperty(PropertyName = "send_minute")]
         public string SendMinute
         {
-            get { return ""+sendMinute; }
-            set { sendMinute = Convert.ToInt32(value); }
+            get { return ""+Time.Minute; }
+            set { Time.AddMinutes(Convert.ToInt32(value)); }
         }
 
         #endregion
@@ -66,7 +74,7 @@ namespace WarframeMarketClient.Model
         {
             get
             {
-                return String.Format("{0:D2} : {1:D2}", sendHour, sendMinute);
+                return String.Format("{0:D2} : {1:D2}", Time.Hour, Time.Minute);
             }
         }
 

@@ -131,6 +131,7 @@ namespace WarframeMarketClient.Logic
                 SendHour = DateTime.Now.Hour.ToString()
             };
 
+            
             if (chatList.Any())
             {
                 chatList.First().ChatMessages.Add(chatMsg);
@@ -153,6 +154,7 @@ namespace WarframeMarketClient.Logic
                     string json = reader.ReadToEnd();
                     JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
                     if (result.code != 200) return new List<ChatMessage>();
+                    result.response.ForEach(x => x.Time = x.Time + timeOffset);
 
                     return result.response;
 
