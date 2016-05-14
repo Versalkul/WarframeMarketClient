@@ -68,6 +68,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="GUI\Converter\FromMeToColumnConverter.cs" />
+    <Compile Include="GUI\Converter\IsNamedObjectToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\TabInfoToHasInfoConverter.cs" />
     <Compile Include="GUI\Converter\OnlineStateToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\OnlineStateToColorConverter.cs" />

@@ -73,6 +73,16 @@ namespace WarframeMarketClient.Model
 
 
 
+        public void DecreaseCount()
+        {
+            Console.WriteLine("Sold or Bought or whatever: "+Name);
+        }
+
+        public void RemoveItem()
+        {
+            Console.WriteLine("Seems like you want to get rid of this: "+Name);
+        }
+
         #region OnPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;
 

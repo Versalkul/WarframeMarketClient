@@ -4,9 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
+             xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d"
              x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <converter:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+    </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
         <DataGrid
             x:Name="dataGrid"
@@ -35,12 +39,16 @@
                                     Style="{StaticResource CleanButton}"
                                     Padding="4,5"
                                     Margin="0,0,5,0"
+                                    Click="Decrease"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}"
                                     Background="#afa"></Button>
                                 <Button
                                     Content="X"
                                     FontSize="10"
                                     Style="{StaticResource CleanButton}"
                                     Padding="4,5"
+                                    Click="Remove"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}"
                                     Background="#faa"></Button>
                             </StackPanel>
                         </DataTemplate>

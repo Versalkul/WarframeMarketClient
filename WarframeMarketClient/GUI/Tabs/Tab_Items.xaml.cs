@@ -42,7 +42,17 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             InitializeComponent();
         }
-        
+
+
+        private void Decrease(object sender, RoutedEventArgs e)
+        {
+            ((sender as Button).DataContext as WarframeItem).DecreaseCount();
+        }
+        private void Remove(object sender, RoutedEventArgs e)
+        {
+            ((sender as Button).DataContext as WarframeItem).RemoveItem();
+        }
+
     }
 
 }

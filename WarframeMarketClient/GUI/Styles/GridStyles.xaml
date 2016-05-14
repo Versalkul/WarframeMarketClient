@@ -64,7 +64,7 @@
                     </Trigger>
 
                     <DataTrigger Binding="{Binding}" Value="{x:Static CollectionView.NewItemPlaceholder}">
-                        <Setter Property="Background" Value="Yellow"/>
+                        
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
