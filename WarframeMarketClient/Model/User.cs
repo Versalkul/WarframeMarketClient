@@ -15,16 +15,15 @@ namespace WarframeMarketClient.Model
         public User(string name)
         {
             Name = name;
-            //State = OnlineState.OFFLINE;
         }
 
         public String Name { get; set; }
 
-        private OnlineState state;
+        private OnlineState state=OnlineState.OFFLINE;
 
         public OnlineState State
         {
-            get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchAssign(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); lastCheck = DateTime.Now; return state; }
+            get { if((DateTime.Now - lastCheck).Minutes<1)ApplicationState.getInstance().asynchRun(() => State = ApplicationState.getInstance().Market.getStatusOnSite(Name)); lastCheck = DateTime.Now; return state; }
             set { OnlineState oldstate = state; ; state = value; if(oldstate!=state) OnPropertyChanged(nameof(State)); }
         }
 

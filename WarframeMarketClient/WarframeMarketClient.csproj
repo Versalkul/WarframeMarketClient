@@ -93,7 +93,7 @@
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\JsonFrame.cs" />
-    <Compile Include="Logic\OnlineInfo.cs" />
+    <Compile Include="Model\OnlineInfo.cs" />
     <Compile Include="ViewModel\ChatTabContentViewModel.cs" />
     <Compile Include="Model\TabInfoInterface.cs" />
     <Page Include="GUI\MainWindow.xaml">
@@ -143,7 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Logic\HtmlParser.cs" />
-    <Compile Include="Logic\ItemTypeMap.cs" />
+    <Compile Include="Model\ItemTypeMap.cs" />
     <Compile Include="Logic\MarketManager.cs" />
     <Compile Include="Logic\PmArgs.cs" />
     <Compile Include="Logic\RunsGameChecker.cs" />

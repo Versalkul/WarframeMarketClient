@@ -24,6 +24,7 @@ namespace WarframeMarketClient.GUI
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
             tbi.TrayMouseDoubleClick += new RoutedEventHandler(onTrayClick);
+
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)
@@ -34,9 +35,8 @@ namespace WarframeMarketClient.GUI
 
         private void MainButtonClick(object sender, RoutedEventArgs args)
         {
-
+            
             ApplicationState.getInstance().OnlineChecker.changeRunning();
-            Console.WriteLine("Main Button");
         }
 
 
@@ -57,7 +57,7 @@ namespace WarframeMarketClient.GUI
 
         private void PART_CLOSE_Click(object sender, RoutedEventArgs e)
         {
-            //if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.setOffline();
+            if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.setOffline();
             this.Close();
         }
 

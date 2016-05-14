@@ -34,7 +34,7 @@ namespace WarframeMarketClient.Model
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
             Chats = new ObservableCollection<ChatViewModel>();
-            asynchAssign(() => Webhelper.GetPage("http://warframe.market"));
+            asynchRun(() => WarframeItem.itemInfoMap=MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
 
 
         }
@@ -65,12 +65,11 @@ namespace WarframeMarketClient.Model
                 }
                 Username = verification.Item2;
                 OnlineState= OnlineState.OFFLINE;
-                Console.WriteLine("logged in as " + Username);
+                Console.WriteLine("Logged in as " + Username);
                 if (Market != null) Market.Dispose();
                 if (OnlineChecker != null) OnlineChecker.Dispose();
                 Market = new MarketManager();
                 OnlineState = DefaultState;
-                Console.WriteLine("Token set");
                 OnlineChecker = new RunsGameChecker();
                 OnPropertyChanged(nameof(IsValid));
             }
@@ -143,7 +142,7 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
-        public  void asynchAssign(Action function)
+        public  void asynchRun(Action function)
         {
             (new Thread(() =>
             {

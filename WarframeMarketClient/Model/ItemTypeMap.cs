@@ -10,6 +10,6 @@ namespace WarframeMarketClient.Logic
     {
         public string item_name;
         public string item_type;
-
+        public int mod_max_rank=-1;
     }
 }

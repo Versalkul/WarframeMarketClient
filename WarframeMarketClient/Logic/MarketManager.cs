@@ -16,7 +16,6 @@ namespace WarframeMarketClient.Logic
     {
 
         SocketManager socket;
-        static Dictionary<string, string> nameTypeMap ;
         Timer onlineChecker;
         public static TimeSpan timeOffset;
 
@@ -24,10 +23,14 @@ namespace WarframeMarketClient.Logic
 
         public MarketManager()
         {
-           
+
             socket = new SocketManager();
             socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
-            InitApplicationState();
+            InitChats(); InitListings(); 
+
+
+            
+
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
             onlineChecker.Interval = 60000;
@@ -35,7 +38,6 @@ namespace WarframeMarketClient.Logic
             onlineChecker.Enabled = true;
             onlineChecker.Start();
             forceUserState();
-            if (nameTypeMap == null) nameTypeMap = getTypeMap();
         }
 
         // add coockie refresh
@@ -239,10 +241,10 @@ namespace WarframeMarketClient.Logic
 
         public bool AddItem(WarframeItem item)
         {
-            if (!nameTypeMap.ContainsKey(item.Name)) return false;
+            if (!WarframeItem.itemInfoMap.ContainsKey(item.Name)) return false;
             string sellType = item.SellOffer ? "sell" : "buy";
 
-            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={nameTypeMap[item.Name]}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
+            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={WarframeItem.itemInfoMap[item.Name].Item1}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
 
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/place_order", postData))
@@ -257,37 +259,30 @@ namespace WarframeMarketClient.Logic
         public static string GetCategory(string name)
         {
             if (String.IsNullOrWhiteSpace(name)) return "";
-            if (nameTypeMap == null) nameTypeMap = getTypeMap();
-            if (nameTypeMap.ContainsKey(name)) return nameTypeMap[name];
+            if (WarframeItem.itemInfoMap == null) WarframeItem.itemInfoMap = getTypeMap();
+            if (WarframeItem.itemInfoMap.ContainsKey(name)) return WarframeItem.itemInfoMap[name].Item1;
             return "";
         }
 
         #endregion
 
 
-        public void InitApplicationState()
-        {
-
-            Parallel.Invoke(new Action[2] { new Action(InitListings),new Action(InitChats)});
-
-            Console.WriteLine("Init Done");
-
-        }
-
         private void InitListings()
         {
             List<WarframeItem> offers = getOffers();
             ApplicationState appState = ApplicationState.getInstance();
-            appState.BuyItems.Clear();
-            appState.SellItems.Clear();
 
-            foreach (WarframeItem item in offers)
-            {
 
-                if (item.SellOffer) appState.SellItems.Add(item);
-                else appState.BuyItems.Add(item);
+                appState.BuyItems.Clear();
+                appState.SellItems.Clear();
 
-            }
+                foreach (WarframeItem item in offers)
+                {
+
+                    if (item.SellOffer) appState.SellItems.Add(item);
+                    else appState.BuyItems.Add(item);
+
+                }
         }
 
         private void InitChats()
@@ -305,9 +300,9 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        private static Dictionary<string, string> getTypeMap()
+        public static Dictionary<string, Tuple<string,int>> getTypeMap()
         {
-            Dictionary<string, string> map = new Dictionary<string, string>(1000);
+            Dictionary<string, Tuple<string, int>> map = new Dictionary<string, Tuple<string, int>>(1000);
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/api/get_all_items_v2"))
             {
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
@@ -317,7 +312,7 @@ namespace WarframeMarketClient.Logic
 
                     foreach (ItemTypeMap elem in mapList)
                     {
-                        map.Add(elem.item_name, elem.item_type);
+                        map.Add(elem.item_name,new Tuple<string, int>(elem.item_type,elem.mod_max_rank));
                     }
                 }
 

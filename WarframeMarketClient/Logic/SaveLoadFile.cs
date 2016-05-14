@@ -165,7 +165,7 @@ namespace WarframeMarketClient.Logic
             }
             else
             {
-                autoReg.DeleteValue(IDENTIFIER);
+                if(isAutostart()) autoReg.DeleteValue(IDENTIFIER);
             }
         }
 

@@ -10,6 +10,8 @@ namespace WarframeMarketClient.Model
     public class WarframeItem : INotifyPropertyChanged
     {
 
+        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
+
         private string name;
 
         public string Name

@@ -75,7 +75,6 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            Console.WriteLine("Chat was udated: " + sender);
             if (sender == null) // A new Chat object
             {
                 Chats.CollectionChanged -= chatUpdated;

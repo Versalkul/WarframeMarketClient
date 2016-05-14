@@ -48,7 +48,7 @@ namespace WarframeMarketClient.Logic
 
 
             }
-            Console.WriteLine(args.Message);
+            if(!args.Message.Contains("online_counter"))Console.WriteLine(args.Message);
         }
 
 

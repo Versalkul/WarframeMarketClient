@@ -23,10 +23,17 @@ namespace WarframeMarketClient.GUI.Tabs
         public bool Autostart
         {
             get { return autostart; }
-            set { autostart = value; Console.WriteLine("Set Autostart"); }
+            set { autostart = value;SaveSettings(); }
         }
 
-        public bool ToTray { get; set; }
+        private bool toTray;
+
+        public bool ToTray
+        {
+            get { return toTray; }
+            set { toTray = value;SaveSettings(); }
+        }
+
 
         public bool DefaultOnline {
             get {
@@ -34,6 +41,19 @@ namespace WarframeMarketClient.GUI.Tabs
             }
             set {
                 ApplicationState.getInstance().DefaultState = value ? OnlineState.ONLINE : OnlineState.OFFLINE;
+                SaveSettings();
+                if (value)
+                {
+                    if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE)
+                        ApplicationState.getInstance().OnlineState = OnlineState.ONLINE;
+                }
+
+                else
+                {
+                    if (ApplicationState.getInstance().OnlineState == OnlineState.ONLINE)
+                        ApplicationState.getInstance().OnlineState = OnlineState.OFFLINE;
+                }
+
             }
         }
 
@@ -43,28 +63,52 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             InitializeComponent();
             this.DataContext = this;
-          
+            SaveLoadFile loader = new SaveLoadFile();
+            loader.Read();
+            Autostart = loader.isAutostart();
+            DefaultOnline = loader.loadBool("DefaultOnline");
+            ToTray = loader.loadBool("ToTray");
+            SessionTokenInput = loader.loadString("Token");
+            SetToken();
+            if(ToTray)
+            {
+                Window window = Window.GetWindow(this);
+                window.WindowState = WindowState.Minimized;
+            }
+
         }
 
-        private void save()
+        private void SetToken()
         {
             Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
-
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
         {
-            save();
+            SetToken();
+            SaveSettings();
         }
 
         private void tokenBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return)
             {
-                save();
+                SetToken();
 
             }
+        }
+
+        private void SaveSettings()
+        {
+            if (!ApplicationState.HasValidInstance) return;
+            SaveLoadFile saver = new SaveLoadFile();
+            saver.saveString("Token", ApplicationState.getInstance().SessionToken);
+            saver.autostart(Autostart);
+            saver.saveBool("ToTray", ToTray);
+            saver.saveBool("DefaultOnline",DefaultOnline);
+            saver.Save();
+            
         }
 
 
