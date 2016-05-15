@@ -68,6 +68,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GUI\Converter\FromMeToColorConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToColumnConverter.cs" />
     <Compile Include="GUI\Converter\IsNamedObjectToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\TabInfoToHasInfoConverter.cs" />

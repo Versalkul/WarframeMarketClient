@@ -51,7 +51,7 @@ namespace WarframeMarketClient.Logic
 
         private void onOpen(object sender, EventArgs args)
         {
-            Console.WriteLine("Socket opened!");
+            //Console.WriteLine("Socket opened!");
 
             if (jsonsToSend.Count != 0)
                 while (jsonsToSend.Count > 0)
@@ -60,7 +60,7 @@ namespace WarframeMarketClient.Logic
             if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE)
             {
                 socket.Close();
-                Console.WriteLine("And offline again");
+                //Console.WriteLine("And offline again");
             }
         }
 
@@ -77,7 +77,7 @@ namespace WarframeMarketClient.Logic
         {
             lock (socket)
             {
-                Console.WriteLine("Sending: " + json + "\n with state " + socket.State);
+                //Console.WriteLine("Sending: " + json + "\n with state " + socket.State);
                 if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
                 {
                     jsonsToSend.Enqueue(json);

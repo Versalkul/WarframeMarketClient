@@ -19,38 +19,42 @@
         <DataTemplate.Resources>
             <converter:FromMeToAlignmentConverter x:Key="FromMeToAlignmentConverter"/>
             <converter:FromMeToColumnConverter x:Key="FromMeToColumnConverter"/>
+            <converter:FromMeToColorConverter x:Key="FromMeToColorConverter"/>
         </DataTemplate.Resources>
         <Grid Margin="10,1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/> <!-- Left Padding -->
-                <ColumnDefinition Width="1*"/> <!-- Left Spacing for UserMsg -->
-                <ColumnDefinition Width="10*"/> <!-- Common Space -->
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="Auto"/> <!-- Left Spacing for UserMsg -->
+                <ColumnDefinition Width="20*"/> <!-- Common Space -->
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <TextBlock
                 x:Name="Time"
-                Grid.Column="{Binding IsFromMe, Converter={StaticResource FromMeToColumnConverter}}"
-                Grid.ColumnSpan="2"
+                Grid.Column="{Binding IsFromMe, Converter={StaticResource FromMeToColumnConverter}, ConverterParameter='3,1'}"
                 TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
                 Text="{Binding TimeString}"
-                VerticalAlignment="Top"
+                VerticalAlignment="Center"
                 FontSize="7"
                 Foreground="#999"
-                Margin="0,0,0,-2"/>
-            <TextBlock
-                x:Name="Message"
-                Grid.Row="1"
+                Margin="2,0"/>
+            <Border
                 Grid.Column="{Binding IsFromMe, Converter={StaticResource FromMeToColumnConverter}}"
                 Grid.ColumnSpan="2"
+                Background="{Binding IsFromMe, Converter={StaticResource FromMeToColorConverter}}"
+                CornerRadius="2"
+                Padding="5,2">
+            <TextBlock
+                x:Name="Message"
                 TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
                 TextWrapping="Wrap"
                 Text="{Binding Message}"
+                HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"/>
+            </Border>
         </Grid>
     </DataTemplate>
 

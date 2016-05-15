@@ -304,7 +304,9 @@ namespace System.Windows.Controls
             }
             Collections.Generic.IEnumerable<Object> iSource = _itemsSource.Cast<Object>();
             Collections.Generic.IEnumerable<TabItem> iTabs = _tabControl.Items.Cast<TabItem>();
-            for (int i = 0; i < _tabControl.Items.Count; i++)
+
+            int i = 0;
+            for (i = 0; i < _tabControl.Items.Count; i++)
             {
                 if (!iSource.Contains((_tabControl.Items[i] as TabItem).DataContext))
                 {
@@ -312,16 +314,18 @@ namespace System.Windows.Controls
                     i--;
                 }
             }
+            i = 0;
             foreach (var item in _itemsSource)
             {
                 TabItem tab = iTabs.FirstOrDefault(t => t.DataContext == item);
                 if(tab == null)
                     AddTabItem(item);
-                else
+                else if (_tabControl.Items.IndexOf(tab) != i)
                 {
                     _tabControl.Items.Remove(tab);
                     _tabControl.Items.Add(tab);
                 }
+                i++;
             }
         }
 
