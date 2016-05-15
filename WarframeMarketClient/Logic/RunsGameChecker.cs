@@ -52,7 +52,7 @@ namespace WarframeMarketClient.Logic
 
             if (!worker.Enabled)
             {
-                ApplicationState.getInstance().OnlineState = OnlineState.OFFLINE;
+                ApplicationState.getInstance().OnlineState = OnlineState.DISABLED;
             }
             else
             {
@@ -68,7 +68,6 @@ namespace WarframeMarketClient.Logic
                 GameOnline = Process.GetProcessesByName("Warframe.x64").Length > 0 || Process.GetProcessesByName("Warframe").Length > 0;
             if (!isAFK&& GameOnline && ApplicationState.getInstance().OnlineState != OnlineState.INGAME) ApplicationState.getInstance().OnlineState = OnlineState.INGAME;
             if(!isAFK && !GameOnline && ApplicationState.getInstance().OnlineState == OnlineState.INGAME) ApplicationState.getInstance().OnlineState = ApplicationState.getInstance().DefaultState;
-            //Fehlendes if wenn spiel nicht läuft auf default state setzten
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();
             lastInputInfo.cbSize = Marshal.SizeOf(lastInputInfo);
             lastInputInfo.dwTime = 0;

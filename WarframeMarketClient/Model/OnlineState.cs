@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace WarframeMarketClient.Model
 {
     public enum OnlineState {
+        ERROR,
         OFFLINE,
         ONLINE,
         INGAME,
-        ERROR
+        DISABLED
     }
 }

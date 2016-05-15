@@ -19,11 +19,13 @@ namespace WarframeMarketClient.GUI.Converter
                 {OnlineState.INGAME, Color.FromRgb(204, 179, 255)},
                 {OnlineState.ONLINE, Color.FromRgb(179, 255, 179)},
                 {OnlineState.OFFLINE,Color.FromRgb(255, 179, 179)},
+                { OnlineState.DISABLED,Color.FromRgb(130,60,60)},
             } },
             { "strong", new Dictionary<OnlineState, Color>{
                 {OnlineState.INGAME, Color.FromRgb(140, 84, 255)},
                 {OnlineState.ONLINE, Color.FromRgb(0, 100, 0)},
                 {OnlineState.OFFLINE,Color.FromRgb(139, 0, 0)},
+                { OnlineState.DISABLED,Color.FromRgb(130,0,0)},
             } }
         };
 

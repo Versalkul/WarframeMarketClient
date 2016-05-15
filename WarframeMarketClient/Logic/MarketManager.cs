@@ -71,6 +71,9 @@ namespace WarframeMarketClient.Logic
                     case OnlineState.INGAME:
                         setIngame();
                         break;
+                    case OnlineState.DISABLED:
+                        setOffline();
+                        break;
                     default:
                         break;
                 }
@@ -295,12 +298,20 @@ namespace WarframeMarketClient.Logic
             ApplicationState appState = ApplicationState.getInstance();
             appState.Chats.Clear();
 
-            Parallel.ForEach(GetChatUser(), (user) =>
+            List<string> users = GetChatUser();
+            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
+            Parallel.For(0,users.Count, (x) =>
             {
-                List<ChatMessage> msg = GetMessages(user);
-                appState.Chats.Add(new ViewModel.ChatViewModel(new User(user), msg));
+                List<ChatMessage> msg = GetMessages(users[x]);
+                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
 
             });
+
+            foreach (ViewModel.ChatViewModel c in result)
+            {
+                ApplicationState.getInstance().Chats.Add(c);
+            }
+
         }
 
 
