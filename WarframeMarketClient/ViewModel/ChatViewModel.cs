@@ -18,7 +18,19 @@ namespace WarframeMarketClient.ViewModel
         #endregion
 
         #region Properties
-        public User User { get; private set; }
+
+        private User user;
+        public User User { get { return user; } private set {
+                if (user != null)
+                    user.PropertyChanged -= User_PropertyChanged;
+                user = value;
+                user.PropertyChanged += User_PropertyChanged;
+            } }
+
+        private void User_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            OnPropertyChanged(nameof(OnlineStateInfo));
+        }
 
         public ObservableCollection<ChatMessage> ChatMessages { get; set; }
 

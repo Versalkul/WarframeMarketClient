@@ -20,16 +20,20 @@ namespace WarframeMarketClient.GUI.Tabs
         public ObservableCollection<ChatViewModel> Chats
         {
             get { return (ObservableCollection<ChatViewModel>)GetValue(ChatsProperty); }
-            set { SetValue(ChatsProperty, value);
-                 chatUpdated(null, null);
+            set {
+                chatChanged(GetValue(ChatsProperty), value);
+                SetValue(ChatsProperty, value);
             }
         }
 
         // Using a DependencyProperty as the backing store for Chats.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ChatsProperty =
-            DependencyProperty.Register("Chats", typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(new PropertyChangedCallback(
-                (Obj, _) => {
-                    (Obj as Tab_Chats).chatUpdated(null, null);
+            DependencyProperty.Register(nameof(Chats), typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(new PropertyChangedCallback(
+                (Obj, a) => {
+                    DependencyPropertyChangedEventArgs? args = (a as DependencyPropertyChangedEventArgs?);
+                    (Obj as Tab_Chats).chatChanged(
+                        args.HasValue ? args.Value.OldValue : null,
+                        args.HasValue ? args.Value.NewValue : null);
                 }
                 )));
 
@@ -71,16 +75,42 @@ namespace WarframeMarketClient.GUI.Tabs
             InitializeComponent();
             _dispatcher = Dispatcher.CurrentDispatcher;
         }
-        
 
+
+        #region Chat Events
+        /// <summary>
+        /// Called when chat changes completely
+        /// </summary>
+        /// <param name="oldChat"></param>
+        /// <param name="newChat"></param>
+        private void chatChanged(object oldChat, object newChat) {
+            ObservableCollection<ChatViewModel> oC = oldChat as ObservableCollection<ChatViewModel>,
+                nC = newChat as ObservableCollection<ChatViewModel>;
+            if (nC == oC)
+                return;
+            if (oC != null)
+            {
+                oC.CollectionChanged -= chatUpdated;
+                foreach (ChatViewModel c in oC)
+                    c.PropertyChanged -= chatHasInfo;
+            }
+            if (nC != null)
+            {
+                nC.CollectionChanged += chatUpdated;
+                HasInfo = false;
+                foreach (ChatViewModel v in nC)
+                    HasInfo = HasInfo || v.HasInfo;
+            }
+            chatUpdated(null, null);
+        }
+
+        /// <summary>
+        /// Called when chat content changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (sender == null) // A new Chat object
-            {
-                Chats.CollectionChanged -= chatUpdated;
-                Chats.CollectionChanged += chatUpdated;
-            }
-
             _dispatcher.InvokeAsync(new Action(() =>
             {
                 foreach (ChatViewModel c in Chats)
@@ -90,14 +120,22 @@ namespace WarframeMarketClient.GUI.Tabs
                 }
                 if (sender != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                 {
-                    if (!Chats[e.NewStartingIndex].HasInfo || !IsVisible) // Switch to tab if in background or created by user (HasInfo = false)
+                    /*
+                     * Switch to tab if:
+                     *  + New chat content received (HasInfo = true) and in background
+                     *  + User created Tab (HasInfo = false, NewStartingIndex = 0)
+                     *  - Tab inserted while loading (NewStartingIndex != 0)
+                     */
+                    if (Chats[e.NewStartingIndex].HasInfo && !IsVisible ||
+                        !Chats[e.NewStartingIndex].HasInfo && e.NewStartingIndex == 0)
                         chatTabs.SelectedIndex = e.NewStartingIndex + 1;
                     foreach (ChatViewModel v in e.NewItems)
                         HasInfo = HasInfo || v.HasInfo;
                 }
+                OnPropertyChanged(nameof(Tabs));
             }));
-            OnPropertyChanged(nameof(Tabs));
         }
+
         private void chatHasInfo(object sender, PropertyChangedEventArgs args)
         {
             if (args.PropertyName == "HasInfo")
@@ -105,6 +143,7 @@ namespace WarframeMarketClient.GUI.Tabs
             if(!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
                 chatTabs.SelectedIndex = Chats.IndexOf((sender as ChatViewModel))+1;
         }
+        #endregion
 
 
         #region OnPropertyChanged

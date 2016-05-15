@@ -305,8 +305,22 @@ namespace System.Windows.Controls
             Collections.Generic.IEnumerable<Object> iSource = _itemsSource.Cast<Object>();
             Collections.Generic.IEnumerable<TabItem> iTabs = _tabControl.Items.Cast<TabItem>();
 
+            TabItem selected = _tabControl.SelectedItem as TabItem;
             int i = 0;
-            for (i = 0; i < _tabControl.Items.Count; i++)
+            foreach (var item in _itemsSource)
+            {
+                TabItem tab = iTabs.FirstOrDefault(t => t.DataContext == item);
+                if(tab == null)
+                    tab = AddTabItem(item);
+
+                if (_tabControl.Items.IndexOf(tab) != i)
+                {
+                    _tabControl.Items.Remove(tab);
+                    _tabControl.Items.Insert(i, tab);
+                }
+                i++;
+            }
+            for (; i < _tabControl.Items.Count; i++)
             {
                 if (!iSource.Contains((_tabControl.Items[i] as TabItem).DataContext))
                 {
@@ -314,19 +328,8 @@ namespace System.Windows.Controls
                     i--;
                 }
             }
-            i = 0;
-            foreach (var item in _itemsSource)
-            {
-                TabItem tab = iTabs.FirstOrDefault(t => t.DataContext == item);
-                if(tab == null)
-                    AddTabItem(item);
-                else if (_tabControl.Items.IndexOf(tab) != i)
-                {
-                    _tabControl.Items.Remove(tab);
-                    _tabControl.Items.Add(tab);
-                }
-                i++;
-            }
+            // Remember selected Tab or select first
+            _tabControl.SelectedIndex = selected == null ? 0 : Math.Max(0, _tabControl.Items.IndexOf(selected));
         }
 
         /// <summary>
@@ -365,7 +368,7 @@ namespace System.Windows.Controls
         /// Adds <see cref="TabItem"/> for the content object
         /// </summary>
         /// <param name="item">Content of the <see cref="TabItems"/></param>
-        private void AddTabItem(object item)
+        private TabItem AddTabItem(object item)
         {
             ContentControl contentControl = new ContentControl();
             TabItem tab = new TabItem
@@ -379,6 +382,7 @@ namespace System.Windows.Controls
             tab.SetBinding(TabItem.HeaderProperty, new Binding());
 
             _tabControl.Items.Add(tab);
+            return tab;
         }
 
         #endregion Methods

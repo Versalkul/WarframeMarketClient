@@ -16,16 +16,16 @@ namespace WarframeMarketClient.GUI.Converter
         private static Dictionary<String, Dictionary<OnlineState, Color>> _colors = new Dictionary<String, Dictionary<OnlineState, Color>>
         {
             { "normal", new Dictionary<OnlineState, Color>{
-                {OnlineState.INGAME, Color.FromRgb(204, 179, 255)},
-                {OnlineState.ONLINE, Color.FromRgb(179, 255, 179)},
-                {OnlineState.OFFLINE,Color.FromRgb(255, 179, 179)},
-                { OnlineState.DISABLED,Color.FromRgb(130,60,60)},
+                { OnlineState.INGAME,   Color.FromRgb(204, 179, 255)},
+                { OnlineState.ONLINE,   Color.FromRgb(179, 255, 179)},
+                { OnlineState.OFFLINE,  Color.FromRgb(255, 179, 179)},
+                { OnlineState.DISABLED, Color.FromRgb(204, 143, 143)},
             } },
             { "strong", new Dictionary<OnlineState, Color>{
-                {OnlineState.INGAME, Color.FromRgb(140, 84, 255)},
-                {OnlineState.ONLINE, Color.FromRgb(0, 100, 0)},
-                {OnlineState.OFFLINE,Color.FromRgb(139, 0, 0)},
-                { OnlineState.DISABLED,Color.FromRgb(130,0,0)},
+                { OnlineState.INGAME,   Color.FromRgb(140,  84, 255)},
+                { OnlineState.ONLINE,   Color.FromRgb(  0, 100,   0)},
+                { OnlineState.OFFLINE,  Color.FromRgb(139,   0,   0)},
+                { OnlineState.DISABLED, Color.FromRgb(130,  60,  60)},
             } }
         };
 
