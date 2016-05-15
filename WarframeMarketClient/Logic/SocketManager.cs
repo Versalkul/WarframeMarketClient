@@ -9,13 +9,11 @@ using WebSocket4Net;
 
 namespace WarframeMarketClient.Logic
 {
-    class SocketManager:IDisposable
+    class SocketManager : IDisposable
     {
         WebSocket socket;
         public event EventHandler<PmArgs> recievedPM;
         private Queue<string> jsonsToSend = new Queue<string>(5);
-
-        Object socketLock = new object();
 
         public SocketManager()
         {
@@ -42,32 +40,28 @@ namespace WarframeMarketClient.Logic
 
         public void onMessage(object caller, MessageReceivedEventArgs args)
         {
-
             if (recievedPM != null && args.Message.Contains("recive_message"))
             {
                 SocketMessage msg = JsonConvert.DeserializeObject<SocketMessage>(args.Message);
-                recievedPM.Invoke(this, new PmArgs(msg.data.text,msg.data.from));
-
-
+                recievedPM.Invoke(this, new PmArgs(msg.data.text, msg.data.from));
             }
-            if(!args.Message.Contains("online_counter"))Console.WriteLine(args.Message);
+            if (!args.Message.Contains("online_counter")) Console.WriteLine(args.Message);
         }
 
 
         private void onOpen(object sender, EventArgs args)
         {
+            Console.WriteLine("Socket opened!");
 
             if (jsonsToSend.Count != 0)
-            {
-
-                while (jsonsToSend.Count != 0)
-                {
+                while (jsonsToSend.Count > 0)
                     socket.Send(jsonsToSend.Dequeue());
-                }
 
+            if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE)
+            {
+                socket.Close();
+                Console.WriteLine("And offline again");
             }
-            if (ApplicationState.getInstance().OnlineState==OnlineState.OFFLINE) socket.Close();
-
         }
 
         #endregion
@@ -81,40 +75,38 @@ namespace WarframeMarketClient.Logic
 
         private void sendJson(string json)
         {
-            lock (socketLock)
+            lock (socket)
             {
-                Console.WriteLine("Sending: "+json+"\n with state " + socket.State);
+                Console.WriteLine("Sending: " + json + "\n with state " + socket.State);
                 if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
                 {
                     jsonsToSend.Enqueue(json);
+                    socket.Open();
                 }
                 else
-                {
                     socket.Send(json);
-                }
             }
+        }
+
+        private void sendIngameJson()
+        {
+            sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"in_game\"}}");
         }
 
         public void setIngame()
         {
-            sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"in_game\"}}");
+            sendIngameJson();
         }
 
         public void setOnline()
         {
             sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"online\"}}");
-
-            lock (socketLock)
-            {
-                if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
-                    socket.Open();
-            }
         }
 
         public void setOffline()
         {
             sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"online\"}}");
-            lock (socketLock)
+            lock (socket)
             {
                 if (socket.State == WebSocketState.Open && jsonsToSend.Count == 0)
                     socket.Close();
@@ -124,8 +116,6 @@ namespace WarframeMarketClient.Logic
         public void Dispose()
         {
             setOffline();
-            socket.Dispose();
-            socket = null;
         }
     }
 }
