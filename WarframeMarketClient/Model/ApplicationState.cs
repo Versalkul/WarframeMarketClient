@@ -57,7 +57,7 @@ namespace WarframeMarketClient.Model
             {
 
                 #region clean old
-                Market.Dispose();
+                if(Market!=null)Market.Dispose();
                 Market = null;
                 Chats.Clear();
                 SellItems.Clear();
