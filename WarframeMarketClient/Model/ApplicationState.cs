@@ -11,7 +11,7 @@ using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.Model
 {
-    class ApplicationState : INotifyPropertyChanged
+    class ApplicationState : INotifyPropertyChanged 
     {
         #region Singleton
 
@@ -55,7 +55,17 @@ namespace WarframeMarketClient.Model
             }
             set
             {
-                Username = "Temp";
+
+                #region clean old
+                Market.Dispose();
+                Market = null;
+                Chats.Clear();
+                SellItems.Clear();
+                BuyItems.Clear();
+
+
+                #endregion
+               Username = "Temp";
                 sessionToken = value;
                 Tuple<bool, string> verification = HtmlParser.verifyToken();
                 if (!verification.Item1)

@@ -94,14 +94,9 @@ namespace WarframeMarketClient.Logic
             }
         }
 
-        private void sendIngameJson()
-        {
-            sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"in_game\"}}");
-        }
-
         public void setIngame()
         {
-            sendIngameJson();
+            sendJson("{\"destination\":\"user.set_status\",\"data\":{\"status\":\"in_game\"}}");
         }
 
         public void setOnline()
@@ -118,6 +113,8 @@ namespace WarframeMarketClient.Logic
         public void Dispose()
         {
             setOffline();
+            socket.Dispose();
+            socket = null;
         }
     }
 }

@@ -101,8 +101,8 @@ namespace WarframeMarketClient.Logic
 
                     OnlineState ret;
 
-                    if (info.Ingame) ret=OnlineState.INGAME;
                     ret= info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
+                    if (info.Ingame) ret=OnlineState.INGAME;
                     if (!userStatusCache.ContainsKey(username)) userStatusCache.Add(username, new Tuple<DateTime, OnlineState>(DateTime.Now, ret));
                     else userStatusCache[username] = new Tuple<DateTime, OnlineState>(DateTime.Now, ret);
                     return ret;
