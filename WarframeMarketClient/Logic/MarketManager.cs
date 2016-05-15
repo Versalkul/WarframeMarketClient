@@ -33,7 +33,7 @@ namespace WarframeMarketClient.Logic
 
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
-            onlineChecker.Interval = 60000;
+            onlineChecker.Interval = 5000;//60000;
             onlineChecker.AutoReset = true;
             onlineChecker.Enabled = true;
             onlineChecker.Start();
@@ -56,8 +56,9 @@ namespace WarframeMarketClient.Logic
 
         private void forceUserState(object o, EventArgs args)
         {
-
-            if (getStatusOnSite(ApplicationState.getInstance().Username) != ApplicationState.getInstance().OnlineState)
+            OnlineState actualState = getStatusOnSite(ApplicationState.getInstance().Username);
+            Console.WriteLine("State on Site is: "+actualState);
+            if (actualState != ApplicationState.getInstance().OnlineState)
             {
                 switch (ApplicationState.getInstance().OnlineState)
                 {
@@ -86,8 +87,9 @@ namespace WarframeMarketClient.Logic
             lock (userStatusCache)
             {
 
-                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Minutes < 1)
+                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 3)
                 {
+                    Console.WriteLine("Chached");
                     return userStatusCache[username].Item2;
                 }
 
@@ -101,8 +103,10 @@ namespace WarframeMarketClient.Logic
 
                     OnlineState ret;
 
-                    ret= info.Online ? OnlineState.ONLINE : OnlineState.OFFLINE;
-                    if (info.Ingame) ret=OnlineState.INGAME;
+                    ret= info.Online ?
+                            info.Ingame ? OnlineState.INGAME : OnlineState.ONLINE
+                            : OnlineState.OFFLINE;
+
                     if (!userStatusCache.ContainsKey(username)) userStatusCache.Add(username, new Tuple<DateTime, OnlineState>(DateTime.Now, ret));
                     else userStatusCache[username] = new Tuple<DateTime, OnlineState>(DateTime.Now, ret);
                     return ret;

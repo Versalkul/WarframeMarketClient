@@ -308,7 +308,7 @@ namespace System.Windows.Controls
             {
                 if (!iSource.Contains((_tabControl.Items[i] as TabItem).DataContext))
                 {
-                    _tabControl.Items.Remove(i);
+                    _tabControl.Items.RemoveAt(i);
                     i--;
                 }
             }
