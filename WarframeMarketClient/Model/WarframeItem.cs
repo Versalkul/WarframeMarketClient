@@ -39,7 +39,6 @@ namespace WarframeMarketClient.Model
         public int? ModRankDisplay { get { return ModRank < 0 ? null as int? : ModRank;  } }
 
         public IEnumerable<int> ModRanks { get {
-                // TODO: Find ModMaxRank
                 return Enumerable.Range(0,MaxRank+1);
             }
         }
@@ -88,7 +87,11 @@ namespace WarframeMarketClient.Model
         public void DecreaseCount()
         {
             ApplicationState.getInstance().Market.SoldItem(this);
-            if (count > 1) Count--;
+            if (count > 1)
+            {
+                Count--;
+                OnPropertyChanged(nameof(Count));
+            }
             else
             {
                 if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
