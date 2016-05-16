@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d"
@@ -10,6 +11,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converter:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+        <converter:ModRankToStringConverter x:Key="ModRankToStringConverter"/>
     </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
         <DataGrid
@@ -25,13 +27,30 @@
             SelectionMode="Single">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
-                <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Path=Name}"/>
+                <DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Name}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <toolkit:AutoCompleteBox
+                                ItemsSource="{Binding AllItemNames}"
+                                Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                ItemFilter="{Binding ElementName=self, Path=AutoCItemFilter}"
+                                Populating="AutoCItemPopulating"
+                                IsTextCompletionEnabled="True"
+                                />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
                 <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
                 <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding ModRankDisplay}" />
+                            <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
