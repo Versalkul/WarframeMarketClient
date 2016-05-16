@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -34,6 +35,14 @@ namespace WarframeMarketClient.Model
         public bool SellOffer { get; set; }
         public string Id { get; set; }
 
+        public int? ModRankDisplay { get { return ModRank < 0 ? null as int? : ModRank;  } }
+
+        public ObservableCollection<int> ModRanks { get {
+                // TODO: Find ModMaxRank
+                return new ObservableCollection<int>() { 0, 1, 2, 3 };
+            }
+        }
+
         public string Category { get
             {
                 return WarframeMarketClient.Logic.MarketManager.GetCategory(Name);
@@ -45,7 +54,7 @@ namespace WarframeMarketClient.Model
         /// </summary>
         public WarframeItem()
         {
-           
+            Console.WriteLine("New Item!");
         }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)
@@ -88,6 +97,7 @@ namespace WarframeMarketClient.Model
 
         public void RemoveItem()
         {
+            Console.WriteLine("Remove!");
             ApplicationState.getInstance().Market.RemoveItem(this);
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);

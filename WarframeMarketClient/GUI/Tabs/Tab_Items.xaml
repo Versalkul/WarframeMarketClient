@@ -13,7 +13,7 @@
     </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
         <DataGrid
-            x:Name="dataGrid"
+            x:Name="ItemList"
             ItemsSource="{Binding Path=Items}"
             AutoGenerateColumns="False"
             
@@ -28,8 +28,22 @@
                 <DataGridTextColumn Header="Name" Width="3*" Binding="{Binding Path=Name}"/>
                 <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
                 <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
-                <DataGridTextColumn Header="Rank" Width="1*" Binding="{Binding Path=ModRank}"/>
-                <DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding ModRankDisplay}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
+                        <DataTemplate>
+                            <ComboBox
+                                IsEditable="False" 
+                                SelectedIndex="{Binding Path=ModRank}"
+                                ItemsSource="{Binding Path=ModRanks}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

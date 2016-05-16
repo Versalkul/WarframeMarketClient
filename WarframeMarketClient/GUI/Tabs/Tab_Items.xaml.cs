@@ -18,7 +18,6 @@ namespace WarframeMarketClient.GUI.Tabs
             set { SetValue(ItemsProperty, value); }
         }
 
-
         // Using a DependencyProperty as the backing store for Items.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register("Items", typeof(ObservableCollection<WarframeItem>), typeof(Tab_Items), new PropertyMetadata(null));
@@ -46,10 +45,12 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void Decrease(object sender, RoutedEventArgs e)
         {
+            ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).DecreaseCount();
         }
         private void Remove(object sender, RoutedEventArgs e)
         {
+            ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).RemoveItem();
         }
 
