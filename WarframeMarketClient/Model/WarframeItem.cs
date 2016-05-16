@@ -18,7 +18,7 @@ namespace WarframeMarketClient.Model
         public string Name
         {
             get { return name; }
-            set { name = value; OnPropertyChanged(nameof(Category)); }
+            set { if (itemInfoMap.ContainsKey(value)) name = value; else name = ""; OnPropertyChanged(nameof(Category)); }
         }
 
         
@@ -32,14 +32,15 @@ namespace WarframeMarketClient.Model
         }
 
         public int ModRank { get; set; }
+        public int MaxRank { get { return itemInfoMap[Name].Item2; } }
         public bool SellOffer { get; set; }
         public string Id { get; set; }
 
         public int? ModRankDisplay { get { return ModRank < 0 ? null as int? : ModRank;  } }
 
-        public ObservableCollection<int> ModRanks { get {
+        public IEnumerable<int> ModRanks { get {
                 // TODO: Find ModMaxRank
-                return new ObservableCollection<int>() { 0, 1, 2, 3 };
+                return Enumerable.Range(0,MaxRank+1);
             }
         }
 

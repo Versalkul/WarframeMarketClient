@@ -23,7 +23,8 @@ namespace WarframeMarketClient.GUI.Tabs
         public bool Autostart
         {
             get { return autostart; }
-            set { autostart = value;SaveSettings(); }
+            set { autostart = value;SaveSettings();
+            }
         }
 
         private bool toTray;

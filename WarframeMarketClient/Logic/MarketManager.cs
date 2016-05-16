@@ -72,7 +72,7 @@ namespace WarframeMarketClient.Logic
                         setIngame();
                         break;
                     case OnlineState.DISABLED:
-                        setOffline();
+                        setOffline(); // just one time pls maybe also stop timer
                         break;
                     default:
                         break;
