@@ -35,6 +35,22 @@ namespace WarframeMarketClient.GUI.Tabs
 
 
 
+        private int AutoCItemCount = 0;
+        public AutoCompleteFilterPredicate<Object> AutoCItemFilter { get
+            {
+                return new AutoCompleteFilterPredicate<object>((s, e) =>
+                {
+                    // returns only 5 items
+                    return (e as string).ToLower().Contains(s.ToLower()) && AutoCItemCount++ < 5;
+                });
+            }
+        }
+
+        private void AutoCItemPopulating(object sender, RoutedEventArgs e)
+        {
+            AutoCItemCount = 0;
+        }
+
 
 
         public Tab_Items()

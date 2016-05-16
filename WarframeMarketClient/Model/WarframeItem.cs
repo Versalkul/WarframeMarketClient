@@ -5,20 +5,37 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo
     {
-
         public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
+
+        #region Properties
+
+        #region Native Properties
         private string name;
 
         public string Name
         {
             get { return name; }
-            set { if (itemInfoMap.ContainsKey(value)) name = value; else name = ""; OnPropertyChanged(nameof(Category)); }
+            set {
+                Console.WriteLine("Name Set!");
+                if (itemInfoMap.ContainsKey(value))
+                {
+                    name = value;
+                    ModRank = Math.Min(0, itemInfoMap[name].Item2);
+                }
+                //name = value;
+                // else name = ""; // Keep old name
+                OnPropertyChanged(nameof(Category));
+                OnPropertyChanged(nameof(MaxRank));
+                OnPropertyChanged(nameof(ModRank));
+                OnPropertyChanged(nameof(ModRanks));
+            }
         }
 
         
@@ -32,14 +49,15 @@ namespace WarframeMarketClient.Model
         }
 
         public int ModRank { get; set; }
-        public int MaxRank { get { return itemInfoMap[Name].Item2; } }
         public bool SellOffer { get; set; }
         public string Id { get; set; }
+        #endregion
 
-        public int? ModRankDisplay { get { return ModRank < 0 ? null as int? : ModRank;  } }
+        #region Derivated Properties
+        public int MaxRank { get { return itemInfoMap[Name].Item2; } }
 
         public IEnumerable<int> ModRanks { get {
-                return Enumerable.Range(0,MaxRank+1);
+                return Enumerable.Range(0, MaxRank+1);
             }
         }
 
@@ -48,6 +66,50 @@ namespace WarframeMarketClient.Model
                 return WarframeMarketClient.Logic.MarketManager.GetCategory(Name);
             }
         }
+        
+        public List<string> AllItemNames { get { return itemInfoMap.Keys.ToList(); } }
+
+        #region IDataErrorInfo
+
+        public string Error
+        {
+            get
+            {
+                Console.WriteLine(" Called Error");
+                if (Name == "" || Count <= 0 || Price <= 0) return "Single DATA ERROR";
+                return null;
+            }
+        }
+
+        public string this[string columnName] // WTFH IS THIS SYNTAX O.o
+        {
+            get
+            {
+                // apply property level validation rules
+                if (columnName == "Name")
+                {
+                    if (!itemInfoMap.ContainsKey(Name))
+                        return "Wrong Name";
+                }
+                
+                if (columnName == "Count")
+                {
+                    if (Count<=0)
+                        return "Wrong Count";
+                }
+                return "";
+            }
+        }
+
+        #endregion
+
+
+        #endregion
+
+        #endregion
+
+
+        #region Constructors
 
         /// <summary>
         /// Needed for DataGrid AllowUserAddItem
@@ -82,7 +144,10 @@ namespace WarframeMarketClient.Model
             this.ModRank = modRank;
         }
 
+        #endregion
 
+
+        #region Methods
 
         public void DecreaseCount()
         {
@@ -106,6 +171,8 @@ namespace WarframeMarketClient.Model
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
+
+        #endregion
 
         #region OnPropertyChanged
         public event PropertyChangedEventHandler PropertyChanged;

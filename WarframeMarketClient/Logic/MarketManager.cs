@@ -7,6 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 using Timer = System.Timers.Timer;
@@ -205,7 +206,7 @@ namespace WarframeMarketClient.Logic
             }
             else
             {
-                appState.Chats.Add(new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
+                appState.Chats.Insert (0,new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
             }
 
         }
@@ -248,6 +249,29 @@ namespace WarframeMarketClient.Logic
 
 
             }
+        }
+
+
+        private void InitChats()
+        {
+
+            ApplicationState appState = ApplicationState.getInstance();
+            appState.Chats.Clear();
+
+            List<string> users = GetChatUser();
+            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
+            Parallel.For(0, users.Count, (x) =>
+            {
+                List<ChatMessage> msg = GetMessages(users[x]);
+                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+
+            });
+
+            foreach (ViewModel.ChatViewModel c in result)
+            {
+                ApplicationState.getInstance().Chats.Add(c);
+            }
+
         }
 
 
@@ -317,7 +341,7 @@ namespace WarframeMarketClient.Logic
         #endregion
 
 
-        private void InitListings()
+        public void InitListings()
         {
             List<WarframeItem> offers = getOffers();
             ApplicationState appState = ApplicationState.getInstance();
@@ -335,27 +359,6 @@ namespace WarframeMarketClient.Logic
                 }
         }
 
-        private void InitChats()
-        {
-
-            ApplicationState appState = ApplicationState.getInstance();
-            appState.Chats.Clear();
-
-            List<string> users = GetChatUser();
-            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
-            Parallel.For(0,users.Count, (x) =>
-            {
-                List<ChatMessage> msg = GetMessages(users[x]);
-                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-
-            });
-
-            foreach (ViewModel.ChatViewModel c in result)
-            {
-                ApplicationState.getInstance().Chats.Add(c);
-            }
-
-        }
 
 
         public static Dictionary<string, Tuple<string,int>> getTypeMap()
