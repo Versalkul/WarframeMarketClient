@@ -21,10 +21,9 @@ namespace WarframeMarketClient.Model
 
         private string message;
         private string messageFrom;
-       // private int sendHour;
-       // private int sendMinute;
+        // private int sendHour;
+        // private int sendMinute;
 
-        public DateTime Time { get; set; }
 
 
         [JsonProperty(PropertyName = "message")]
@@ -45,19 +44,22 @@ namespace WarframeMarketClient.Model
         public String SendHour
         {
             get { return ""+Time.Hour; }
-            set { Time.AddHours(Convert.ToInt32(value)); }
+            set {Time = Time.AddHours(Convert.ToInt32(value));}
         }
 
         [JsonProperty(PropertyName = "send_minute")]
         public string SendMinute
         {
             get { return ""+Time.Minute; }
-            set { Time.AddMinutes(Convert.ToInt32(value)); }
+            set { Time = Time.AddMinutes(Convert.ToInt32(value)); }
         }
 
         #endregion
 
         #region Dynamic
+
+        [JsonIgnoreAttribute]
+        public DateTime Time { get; set; }
 
         [JsonIgnoreAttribute]
         public bool IsFromMe

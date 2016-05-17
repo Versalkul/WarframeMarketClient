@@ -4,8 +4,7 @@
                     xmlns:tabs="clr-namespace:WarframeMarketClient.GUI.Tabs"
                     xmlns:vm="clr-namespace:WarframeMarketClient.ViewModel"
                     
-                    xmlns:System="clr-namespace:System;assembly=mscorlib"
-                    xmlns:input="clr-namespace:System.Windows.Controls.Input">
+                    xmlns:System="clr-namespace:System;assembly=mscorlib">
 
 
 

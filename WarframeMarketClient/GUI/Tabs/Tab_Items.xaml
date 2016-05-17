@@ -25,6 +25,7 @@
             CanUserResizeColumns="False"
             CanUserResizeRows="False"
             SelectionMode="Single">
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
                 <DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
@@ -45,8 +46,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"/>
-                <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
+                <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price}"   />
+                    <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count}"/>
                 <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>

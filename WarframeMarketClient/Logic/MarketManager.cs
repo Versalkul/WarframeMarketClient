@@ -7,8 +7,10 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using WarframeMarketClient.Model;
-using Timer=System.Timers.Timer;
+using WarframeMarketClient.ViewModel;
+using Timer = System.Timers.Timer;
 
 namespace WarframeMarketClient.Logic
 {
@@ -20,6 +22,7 @@ namespace WarframeMarketClient.Logic
         public static TimeSpan timeOffset;
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
+
 
         public MarketManager()
         {
@@ -34,7 +37,7 @@ namespace WarframeMarketClient.Logic
 
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
-            onlineChecker.Interval = 5000;//60000;
+            onlineChecker.Interval = 35000;//60000;
             onlineChecker.AutoReset = true;
             onlineChecker.Enabled = true;
             onlineChecker.Start();
@@ -53,12 +56,12 @@ namespace WarframeMarketClient.Logic
         public void forceUserState()
         {
             (new Thread(() => forceUserState(null, null))).Start();
+            (new Thread(() => CheckAndUpdateChats())).Start();
         }
 
         private void forceUserState(object o, EventArgs args)
         {
             OnlineState actualState = getStatusOnSite(ApplicationState.getInstance().Username);
-            Console.WriteLine("State on Site is: "+actualState);
             if (actualState != ApplicationState.getInstance().OnlineState)
             {
                 switch (ApplicationState.getInstance().OnlineState)
@@ -91,9 +94,8 @@ namespace WarframeMarketClient.Logic
             lock (userStatusCache)
             {
 
-                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 3)
+                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 30)
                 {
-                    Console.WriteLine("Chached");
                     return userStatusCache[username].Item2;
                 }
 
@@ -142,6 +144,48 @@ namespace WarframeMarketClient.Logic
 
         #region PM
 
+        public void CheckAndUpdateChats()
+        {
+
+            if (ApplicationState.getInstance().Market==null) return;
+
+            List<string> users = GetChatUser();
+            bool first = true;
+
+            // MISSING: Any new Chats ?
+
+            foreach(ChatViewModel chatView  in ApplicationState.getInstance().Chats)
+            {
+
+
+                if (!users.Contains(chatView.User.Name))  // user closed chat
+                {
+                    ApplicationState.getInstance().Chats.Remove(chatView);
+                    continue;
+                }
+
+                if (first) // check for new chats
+                {
+                    List<ChatMessage> msg = GetMessages(chatView.User.Name);
+                    if (msg.Count == chatView.ChatMessages.Count) first = false; // nothing new
+
+                    else 
+                    {
+
+                        msg.RemoveRange(0, ApplicationState.getInstance().Chats.Count);
+
+                        foreach(ChatMessage chat in msg)
+                        {
+                            chatView.ChatMessages.Add(chat);
+                        }
+                   }
+
+                }
+
+            }
+
+
+        }
 
         private void AddNewChat(object o, PmArgs args)
         {
@@ -163,7 +207,7 @@ namespace WarframeMarketClient.Logic
             }
             else
             {
-                appState.Chats.Add(new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
+                appState.Chats.Insert (0,new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
             }
 
         }
@@ -209,6 +253,29 @@ namespace WarframeMarketClient.Logic
         }
 
 
+        private void InitChats()
+        {
+
+            ApplicationState appState = ApplicationState.getInstance();
+            appState.Chats.Clear();
+
+            List<string> users = GetChatUser();
+            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
+            Parallel.For(0, users.Count, (x) =>
+            {
+                List<ChatMessage> msg = GetMessages(users[x]);
+                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+
+            });
+
+            foreach (ViewModel.ChatViewModel c in result)
+            {
+                ApplicationState.getInstance().Chats.Add(c);
+            }
+
+        }
+
+
         #endregion
 
         #region buy sell stuff
@@ -231,7 +298,7 @@ namespace WarframeMarketClient.Logic
 
         public bool SoldItem(WarframeItem item)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/bs_order", $"id={item.Id}&count={item.Count}"))
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/bs_order", $"id={item.Id}&count=1"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
@@ -275,7 +342,7 @@ namespace WarframeMarketClient.Logic
         #endregion
 
 
-        private void InitListings()
+        public void InitListings()
         {
             List<WarframeItem> offers = getOffers();
             ApplicationState appState = ApplicationState.getInstance();
@@ -293,27 +360,6 @@ namespace WarframeMarketClient.Logic
                 }
         }
 
-        private void InitChats()
-        {
-
-            ApplicationState appState = ApplicationState.getInstance();
-            appState.Chats.Clear();
-
-            List<string> users = GetChatUser();
-            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
-            Parallel.For(0,users.Count, (x) =>
-            {
-                List<ChatMessage> msg = GetMessages(users[x]);
-                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-
-            });
-
-            foreach (ViewModel.ChatViewModel c in result)
-            {
-                ApplicationState.getInstance().Chats.Add(c);
-            }
-
-        }
 
 
         public static Dictionary<string, Tuple<string,int>> getTypeMap()

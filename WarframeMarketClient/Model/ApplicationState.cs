@@ -97,6 +97,7 @@ namespace WarframeMarketClient.Model
                 return onlineState ;
                     }
             set {
+                if (onlineState == value) return;
                 onlineState = value;
                 if (Market != null) Market.forceUserState();
                 OnPropertyChanged(nameof(OnlineState));

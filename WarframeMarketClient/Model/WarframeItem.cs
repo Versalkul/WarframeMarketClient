@@ -5,12 +5,13 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
     public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo
     {
-        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000);
+        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
 
         #region Properties
@@ -68,25 +69,40 @@ namespace WarframeMarketClient.Model
         
         public List<string> AllItemNames { get { return itemInfoMap.Keys.ToList(); } }
 
+        #region IDataErrorInfo
+
         public string Error
         {
             get
             {
-                Console.WriteLine("--- Called Error");
-                return "Test2";
-            }
-        }
-
-        public string this[string columnName]
-        {
-            get
-            {
-                Console.WriteLine("--- Called ["+columnName+"]"); // Not working yet
-                if (columnName == nameof(Name))
-                  return itemInfoMap.ContainsKey(Name) ? null : "Incorrect Itemname";
+                Console.WriteLine(" Called Error");
+                if (Name == "" || Count <= 0 || Price <= 0) return "Single DATA ERROR";
                 return null;
             }
         }
+
+        public string this[string columnName] // WTFH IS THIS SYNTAX O.o
+        {
+            get
+            {
+                // apply property level validation rules
+                if (columnName == "Name")
+                {
+                    if (!itemInfoMap.ContainsKey(Name))
+                        return "Wrong Name";
+                }
+                
+                if (columnName == "Count")
+                {
+                    if (Count<=0)
+                        return "Wrong Count";
+                }
+                return "";
+            }
+        }
+
+        #endregion
+
 
         #endregion
 
@@ -141,7 +157,11 @@ namespace WarframeMarketClient.Model
         public void DecreaseCount()
         {
             ApplicationState.getInstance().Market.SoldItem(this);
-            if (count > 1) Count--;
+            if (count > 1)
+            {
+                Count--;
+                OnPropertyChanged(nameof(Count));
+            }
             else
             {
                 if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
