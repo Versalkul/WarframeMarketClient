@@ -10,7 +10,7 @@
              x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <converter:IsNamedObjectVisibilityConverter x:Key="IsNamedObjectVisibilityConverter"/>
+        <converter:WarframeItemToVisibilityConverter x:Key="WarframeItemToVisibilityConverter"/>
         <converter:ModRankToStringConverter x:Key="ModRankToStringConverter"/>
     </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
@@ -68,13 +68,22 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <Button
+                                    Content="Add"
+                                    FontSize="10"
+                                    Style="{StaticResource CleanButton}"
+                                    Padding="4,5"
+                                    Margin="0,0,5,0"
+                                    Click="Add"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=PA}"
+                                    Background="#afa"></Button>
+                                <Button
                                     Content="{Binding ElementName=self, Path=DecreaseItemText}"
                                     FontSize="10"
                                     Style="{StaticResource CleanButton}"
                                     Padding="4,5"
                                     Margin="0,0,5,0"
                                     Click="Decrease"
-                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=N}"
                                     Background="#afa"></Button>
                                 <Button
                                     Content="X"
@@ -82,7 +91,7 @@
                                     Style="{StaticResource CleanButton}"
                                     Padding="4,5"
                                     Click="Remove"
-                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource IsNamedObjectVisibilityConverter}}"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=NA}"
                                     Background="#faa"></Button>
                             </StackPanel>
                         </DataTemplate>

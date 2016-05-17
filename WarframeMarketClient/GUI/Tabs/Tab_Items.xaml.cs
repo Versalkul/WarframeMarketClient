@@ -59,6 +59,20 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
 
+        private void Add(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("Add! : "+ (sender as Button).DataContext);
+            if ((sender as Button).DataContext is WarframeItem)
+            {
+                ItemList.CommitEdit();
+                ((sender as Button).DataContext as WarframeItem).CommitAdd();
+            }
+            else
+            {
+                ItemList.CurrentCell = new DataGridCellInfo(ItemList.CurrentCell.Item, ItemList.Columns[1]);
+                ItemList.BeginEdit();
+            }
+        }
         private void Decrease(object sender, RoutedEventArgs e)
         {
             ItemList.CancelEdit();

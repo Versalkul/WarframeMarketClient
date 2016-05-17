@@ -149,6 +149,11 @@ namespace WarframeMarketClient.Model
 
         #region Methods
 
+        public void CommitAdd()
+        {
+            Console.WriteLine("Added!");
+        }
+
         public void DecreaseCount()
         {
             ApplicationState.getInstance().Market.SoldItem(this);

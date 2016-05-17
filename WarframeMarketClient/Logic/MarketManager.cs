@@ -29,7 +29,8 @@ namespace WarframeMarketClient.Logic
 
             socket = new SocketManager();
             socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
-            InitChats(); InitListings(); 
+            InitChats();
+            InitListings(); 
 
 
             
