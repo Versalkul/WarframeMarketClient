@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo // Implement IEditableObject 
     {
         public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
@@ -23,7 +23,6 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
-                Console.WriteLine("Name Set!");
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;

@@ -29,6 +29,7 @@ namespace WarframeMarketClient.Logic
 
             socket = new SocketManager();
             socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+            if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
             InitChats();
             InitListings(); 
 
@@ -42,6 +43,8 @@ namespace WarframeMarketClient.Logic
             onlineChecker.Enabled = true;
             onlineChecker.Start();
             forceUserState();
+
+
         }
 
         // add coockie refresh

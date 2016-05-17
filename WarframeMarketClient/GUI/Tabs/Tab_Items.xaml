@@ -6,6 +6,7 @@
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
+             xmlns:validation="clr-namespace:WarframeMarketClient.Model.Validation"
              mc:Ignorable="d"
              x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
@@ -25,6 +26,10 @@
             CanUserResizeColumns="False"
             CanUserResizeRows="False"
             SelectionMode="Single">
+
+            <DataGrid.RowValidationRules>
+                <validation:ItemValidation ValidationStep="UpdatedValue" />
+            </DataGrid.RowValidationRules>
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
@@ -66,7 +71,7 @@
                 <DataGridTemplateColumn IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                                 <Button
                                     Content="Add"
                                     FontSize="10"
@@ -89,6 +94,7 @@
                                     Content="X"
                                     FontSize="10"
                                     Style="{StaticResource CleanButton}"
+                                    HorizontalAlignment="Right"
                                     Padding="4,5"
                                     Click="Remove"
                                     Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=NA}"
