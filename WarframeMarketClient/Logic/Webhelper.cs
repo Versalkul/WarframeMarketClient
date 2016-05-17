@@ -31,7 +31,7 @@ namespace WarframeMarketClient.Logic
                     page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
                 }
 
-                page.Timeout = 10000;
+                page.Timeout = 20000;
                 page.UserAgent = "C# Warframe Market Client";
                 page.AllowAutoRedirect = false;
                 page.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
