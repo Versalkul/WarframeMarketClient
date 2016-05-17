@@ -85,7 +85,7 @@ namespace WarframeMarketClient.Logic
                 page.ContentLength = data.Length;
                 page.Headers["x-csrf-token"] = csrfToken;
                 page.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                page.Timeout = 10000;
+                page.Timeout = 20000;
                 try
                 {
 
@@ -101,6 +101,8 @@ namespace WarframeMarketClient.Logic
                 {
 
                     if (e == null) continue;
+                    if (((HttpWebResponse)e.Response) == null) continue;
+                    // Nullcheck e.response 
                     if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
                     {
 
