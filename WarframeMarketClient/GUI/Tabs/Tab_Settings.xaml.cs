@@ -61,6 +61,10 @@ namespace WarframeMarketClient.GUI.Tabs
 
 
 
+        public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
+
+
+
         public Tab_Settings()
         {
             InitializeComponent();

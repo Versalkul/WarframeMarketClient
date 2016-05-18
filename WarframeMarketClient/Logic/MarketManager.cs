@@ -14,7 +14,7 @@ using Timer = System.Timers.Timer;
 
 namespace WarframeMarketClient.Logic
 {
-    class MarketManager : IDisposable
+    public class MarketManager : IDisposable
     {
 
         SocketManager socket;

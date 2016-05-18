@@ -6,7 +6,7 @@ using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.Logic
 {
-    class RunsGameChecker:IDisposable
+    public class RunsGameChecker:IDisposable
     {
        public bool GameOnline {  get; private set; }
 

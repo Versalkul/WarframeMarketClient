@@ -12,7 +12,7 @@ using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.Model
 {
-    class ApplicationState : INotifyPropertyChanged 
+    public class ApplicationState : INotifyPropertyChanged 
     {
         #region Singleton
 
