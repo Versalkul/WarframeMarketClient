@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace WarframeMarketClient.Model.Validation
+namespace WarframeMarketClient.ViewModel.Validation
 {
     class ItemValidation:ValidationRule
 

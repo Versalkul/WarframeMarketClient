@@ -108,7 +108,7 @@
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
     <Compile Include="Logic\JsonFrame.cs" />
-    <Compile Include="Model\Validation\ItemValidation.cs" />
+    <Compile Include="ViewModel\Validation\ItemValidation.cs" />
     <Compile Include="Model\OnlineInfo.cs" />
     <Compile Include="ViewModel\ChatTabContentViewModel.cs" />
     <Compile Include="Model\TabInfoInterface.cs" />

@@ -65,12 +65,16 @@ namespace WarframeMarketClient.GUI.Tabs
             InitializeComponent();
             this.DataContext = this;
             SaveLoadFile loader = new SaveLoadFile();
-            loader.Read();
-            Autostart = loader.isAutostart();
-            DefaultOnline = loader.loadBool("DefaultOnline");
-            ToTray = loader.loadBool("ToTray");
-            SessionTokenInput = loader.loadString("Token");
-            SetToken();
+            if (loader.FileExists())
+            {
+
+                loader.Read();
+                Autostart = loader.isAutostart();
+                DefaultOnline = loader.loadBool("DefaultOnline");
+                ToTray = loader.loadBool("ToTray");
+                SessionTokenInput = loader.loadString("Token");
+                SetToken();
+            }
             if(ToTray)
             {
                 Window window = Window.GetWindow(this);
@@ -81,7 +85,7 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void SetToken()
         {
-            if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.Dispose();
+            if (ApplicationState.getInstance().IsValid) ApplicationState.getInstance().Market.Dispose();
             Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
         }

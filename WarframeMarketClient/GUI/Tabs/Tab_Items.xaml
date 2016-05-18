@@ -6,7 +6,7 @@
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
-             xmlns:validation="clr-namespace:WarframeMarketClient.Model.Validation"
+             xmlns:validation="clr-namespace:WarframeMarketClient.ViewModel.Validation"
              mc:Ignorable="d"
              x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">

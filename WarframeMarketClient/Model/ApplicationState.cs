@@ -61,7 +61,7 @@ namespace WarframeMarketClient.Model
             }
             set
             {
-
+                if (value.Length < 10) return;
                 #region clean old
                 if(Market!=null)Market.Dispose();
                 Market = null;
@@ -82,14 +82,14 @@ namespace WarframeMarketClient.Model
                     if (!verification.Item1)
                     {
                         Username = "";
+                        OnlineState= OnlineState.ERROR;
                         return;
                     }
                     Username = verification.Item2;
-                    //OnlineState = OnlineState.OFFLINE;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
                     Market = new MarketManager();
-                    OnlineChecker = new RunsGameChecker(); // initialized the OnlineState when created
+                    OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
 

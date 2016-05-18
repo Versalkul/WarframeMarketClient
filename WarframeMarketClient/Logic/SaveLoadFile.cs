@@ -30,6 +30,12 @@ namespace WarframeMarketClient.Logic
         private Data dat = new Data();
         private RegistryKey autoReg = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
         private string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketOnlineController.BinaryConfig");
+
+        public bool FileExists()
+        {
+            return File.Exists(FilePath);
+        }
+
         #region Integer
 
         /// <summary>
