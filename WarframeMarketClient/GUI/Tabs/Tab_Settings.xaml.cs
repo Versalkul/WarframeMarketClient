@@ -36,6 +36,7 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
 
+
         public bool DefaultOnline {
             get {
                 return ApplicationState.getInstance().DefaultState == OnlineState.ONLINE;
@@ -67,7 +68,6 @@ namespace WarframeMarketClient.GUI.Tabs
             SaveLoadFile loader = new SaveLoadFile();
             if (loader.FileExists())
             {
-
                 loader.Read();
                 Autostart = loader.isAutostart();
                 DefaultOnline = loader.loadBool("DefaultOnline");
@@ -75,16 +75,14 @@ namespace WarframeMarketClient.GUI.Tabs
                 SessionTokenInput = loader.loadString("Token");
                 SetToken();
             }
-            if(ToTray)
-            {
-                Window window = Window.GetWindow(this);
-                window.WindowState = WindowState.Minimized;
-            }
+            
+            // minimize if toTray
 
         }
 
         private void SetToken()
         {
+
             if (ApplicationState.getInstance().IsValid) ApplicationState.getInstance().Market.Dispose();
             Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;

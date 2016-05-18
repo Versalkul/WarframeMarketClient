@@ -213,10 +213,10 @@
 
 
     </Window.Resources>
-    
-    
-    
-    
+
+
+
+
     <Grid>
         <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}">
 
@@ -233,6 +233,8 @@
                 <tabs:Tab_Chats x:Name="TabChats" Chats="{Binding Chats}"/>
             </TabItem>
         </local:FancyTabControl>
+
+        <tb:TaskbarIcon x:Name="TrayIcon" TrayMouseDoubleClick="onTrayClick" ToolTipText="Doubleclick to Mazimize" />
 
     </Grid>
 </Window>

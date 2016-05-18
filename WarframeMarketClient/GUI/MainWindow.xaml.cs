@@ -14,7 +14,6 @@ namespace WarframeMarketClient.GUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private TaskbarIcon tbi = new TaskbarIcon();
         public bool toTray = false;
 
         public MainWindow()
@@ -23,7 +22,6 @@ namespace WarframeMarketClient.GUI
 
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
-            tbi.TrayMouseDoubleClick += new RoutedEventHandler(onTrayClick);
 
         }
 
@@ -122,11 +120,11 @@ namespace WarframeMarketClient.GUI
             if(window.WindowState == WindowState.Minimized&&this.IsMouseOver&&TabSettings.ToTray)
             {
                 Hide();
-                tbi.Visibility = Visibility.Visible;
+                TrayIcon.Visibility = Visibility.Visible;
             }
             else
             {
-                tbi.Visibility = Visibility.Hidden;
+                TrayIcon.Visibility = Visibility.Hidden;
             }
 
         }

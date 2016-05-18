@@ -20,8 +20,8 @@
 
         <StackPanel  Grid.Row="2" Margin="20,10">
             <Label x:Name="label" Content="Session Token:"/>
-            <TextBox x:Name="tokenBox" Margin="0,10" Text="{Binding SessionTokenInput, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" />
-            <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click"/>
+            <TextBox x:Name="tokenBox" Margin="0,10" Text="{Binding SessionTokenInput, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown"/>
+            <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="Collapsed"/>
             <ProgressBar x:Name="progressBar" Height="22" IsIndeterminate="True"/>
         </StackPanel>
 
