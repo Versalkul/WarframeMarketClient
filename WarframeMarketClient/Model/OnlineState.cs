@@ -8,6 +8,7 @@ namespace WarframeMarketClient.Model
 {
     public enum OnlineState {
         ERROR,
+        VALIDATING,
         OFFLINE,
         ONLINE,
         INGAME,

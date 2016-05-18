@@ -120,7 +120,6 @@ namespace WarframeMarketClient.Model
         /// </summary>
         public WarframeItem()
         {
-            Console.WriteLine("New Item!");
         }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)

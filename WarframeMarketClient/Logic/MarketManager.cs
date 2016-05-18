@@ -26,10 +26,11 @@ namespace WarframeMarketClient.Logic
 
         public MarketManager()
         {
-            List<WarframeItem> offers=null;
-            ViewModel.ChatViewModel[] result=null;
-        Action[] initActions = new Action[4]
-        {
+            List<WarframeItem> offers = null;
+            ViewModel.ChatViewModel[] result = null;
+            ApplicationState appState = ApplicationState.getInstance();
+            Action[] initActions = new Action[4]
+            {
             ()=>
             {
                 socket = new SocketManager();
@@ -53,16 +54,17 @@ namespace WarframeMarketClient.Logic
              ()=>
             {
                  offers = getOffers();
+
             }
 
-        };
+            };
 
             Parallel.Invoke(initActions);
-            ApplicationState appState = ApplicationState.getInstance();
             foreach (ViewModel.ChatViewModel c in result)
             {
                 appState.Chats.Add(c);
             }
+
             foreach (WarframeItem item in offers)
             {
 
@@ -70,11 +72,12 @@ namespace WarframeMarketClient.Logic
                 else appState.BuyItems.Add(item);
 
             }
+
             Console.WriteLine("Done paralell init");
-           
 
 
-            
+
+
 
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
@@ -104,6 +107,7 @@ namespace WarframeMarketClient.Logic
 
         private void forceUserState(object o, EventArgs args)
         {
+
             OnlineState actualState = getStatusOnSite(ApplicationState.getInstance().Username);
             if (actualState != ApplicationState.getInstance().OnlineState)
             {

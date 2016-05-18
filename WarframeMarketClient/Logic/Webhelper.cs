@@ -101,8 +101,7 @@ namespace WarframeMarketClient.Logic
                 {
 
                     if (e == null) continue;
-                    if (((HttpWebResponse)e.Response) == null) continue;
-                    // Nullcheck e.response 
+                    if (((HttpWebResponse)e.Response) == null) continue; // This is c# saying you got a timeout -.-'
                     if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
                     {
 

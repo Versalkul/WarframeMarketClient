@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using WarframeMarketClient.Logic;
 using WarframeMarketClient.ViewModel;
 
@@ -16,8 +17,9 @@ namespace WarframeMarketClient.Model
         #region Singleton
 
         private static ApplicationState instance;
-
-
+        private static object buyItemsLock = new object();
+        private static object sellItemsLock = new object();
+        private static object chatLock = new object();
         public static ApplicationState getInstance()
         {
             if (instance == null)
@@ -30,10 +32,14 @@ namespace WarframeMarketClient.Model
 
         private ApplicationState()
         {
+
             OnlineState = OnlineState.ERROR;
             BuyItems = new ObservableCollection<WarframeItem>();
             SellItems = new ObservableCollection<WarframeItem>();
             Chats = new ObservableCollection<ChatViewModel>();
+            BindingOperations.EnableCollectionSynchronization(sellItems, sellItemsLock);
+            BindingOperations.EnableCollectionSynchronization(buyItems, buyItemsLock);
+            BindingOperations.EnableCollectionSynchronization(chats, chatLock);
             asynchRun(() => WarframeItem.itemInfoMap=MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
 
 
@@ -63,25 +69,28 @@ namespace WarframeMarketClient.Model
                 SellItems.Clear();
                 BuyItems.Clear();
 
-
                 #endregion
-               Username = "Temp";
+                Username = "Temp";
                 sessionToken = value;
-                Tuple<bool, string> verification = HtmlParser.verifyToken();
-                if (!verification.Item1)
+                asynchRun(() =>
                 {
-                    Username = "";
-                    return;
-                }
-                Username = verification.Item2;
-                OnlineState= OnlineState.OFFLINE;
-                Console.WriteLine("Logged in as " + Username);
-                if (Market != null) Market.Dispose();
-                if (OnlineChecker != null) OnlineChecker.Dispose();
-                Market = new MarketManager();
-                OnlineState = DefaultState;
-                OnlineChecker = new RunsGameChecker();
-                OnPropertyChanged(nameof(IsValid));
+
+                    OnlineState = OnlineState.VALIDATING;
+                    Tuple<bool, string> verification = HtmlParser.verifyToken();
+                    if (!verification.Item1)
+                    {
+                        Username = "";
+                        return;
+                    }
+                    Username = verification.Item2;
+                    OnlineState = OnlineState.OFFLINE;
+                    Console.WriteLine("Logged in as " + Username);
+                    if (OnlineChecker != null) OnlineChecker.Dispose();
+                    Market = new MarketManager();
+                    OnlineChecker = new RunsGameChecker(); // initialized the OnlineState when created 
+                    OnPropertyChanged(nameof(IsValid));
+
+                });
             }
         } 
 
