@@ -96,6 +96,11 @@ namespace WarframeMarketClient.Model
                     if (Count<=0)
                         return "Wrong Count";
                 }
+                if (columnName == "Price")
+                {
+                    if (Price <= 0)
+                        return "Wrong Price";
+                }
                 return "";
             }
         }

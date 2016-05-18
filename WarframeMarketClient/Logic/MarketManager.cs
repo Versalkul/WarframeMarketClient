@@ -22,27 +22,67 @@ namespace WarframeMarketClient.Logic
         public static TimeSpan timeOffset;
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
-
+        System.Windows.Threading.Dispatcher dispatcher = System.Windows.Application.Current.Dispatcher;
 
         public MarketManager()
         {
+            List<WarframeItem> offers=null;
+            ViewModel.ChatViewModel[] result=null;
+        Action[] initActions = new Action[4]
+        {
+            ()=>
+            {
+                socket = new SocketManager();
+                socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+            },
+            ()=>
+            {
+                if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
+            },
+            ()=>
+            {
+                List<string> users = GetChatUser();
+                result = new ViewModel.ChatViewModel[users.Count];
+                Parallel.For(0, users.Count, (x) =>
+                {
+                    List<ChatMessage> msg = GetMessages(users[x]);
+                    result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
 
-            socket = new SocketManager();
-            socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
-            if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
-            InitChats();
-            InitListings(); 
+                });
+            },
+             ()=>
+            {
+                 offers = getOffers();
+            }
+
+        };
+
+            Parallel.Invoke(initActions);
+            ApplicationState appState = ApplicationState.getInstance();
+            foreach (ViewModel.ChatViewModel c in result)
+            {
+                appState.Chats.Add(c);
+            }
+            foreach (WarframeItem item in offers)
+            {
+
+                if (item.SellOffer) appState.SellItems.Add(item);
+                else appState.BuyItems.Add(item);
+
+            }
+            Console.WriteLine("Done paralell init");
+           
 
 
             
 
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
-            onlineChecker.Interval = 35000;//60000;
+            onlineChecker.Interval = 35000;
             onlineChecker.AutoReset = true;
             onlineChecker.Enabled = true;
             onlineChecker.Start();
-            forceUserState();
+            //forceUserState(); will be done as soon as the userstate is set to offline or onfline from error
 
 
         }
@@ -79,7 +119,7 @@ namespace WarframeMarketClient.Logic
                         setIngame();
                         break;
                     case OnlineState.DISABLED:
-                        setOffline(); // just one time pls maybe also stop timer
+                        setOffline(); // just maybe also stop timer
                         break;
                     default:
                         break;
@@ -154,16 +194,35 @@ namespace WarframeMarketClient.Logic
 
             List<string> users = GetChatUser();
             bool first = true;
+            int elem = 0; // what elem am i looking at relevant for 2. foreach loop
+            users.Reverse();// oldest usernames checked first because if i get the newest last i can just Insert at 0
+            foreach(string user in users)
+            {
 
-            // MISSING: Any new Chats ?
+                if (!ApplicationState.getInstance().Chats.ToList().Exists(x => x.User.Name == user))
+                {
+                    List<ChatMessage> msg = GetMessages(user); // the init with the chat messages is part of the forech below
+                    ApplicationState.getInstance().Chats.Insert(0, new ChatViewModel(new User(user), msg));
+                    ApplicationState.getInstance().Chats.First().HasInfo = true;
+                    elem--;
+                }
+
+            }
+
+            List<ChatViewModel> closedChats = new List<ChatViewModel>();
 
             foreach(ChatViewModel chatView  in ApplicationState.getInstance().Chats)
             {
 
+                if (elem < 0) // added this one milisecond before i dont want to check it 
+                {
+                    elem++;
+                    continue;
+                }
 
                 if (!users.Contains(chatView.User.Name))  // user closed chat
                 {
-                    ApplicationState.getInstance().Chats.Remove(chatView);
+                   closedChats.Add(chatView); // cant remove elements in a foreach loop will do that later 
                     continue;
                 }
 
@@ -186,7 +245,9 @@ namespace WarframeMarketClient.Logic
                 }
 
             }
+            
 
+           closedChats.ForEach(x => ApplicationState.getInstance().Chats.Remove(x));
 
         }
 
@@ -256,32 +317,47 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        private void InitChats()
-        {
-
-            ApplicationState appState = ApplicationState.getInstance();
-            appState.Chats.Clear();
-
-            List<string> users = GetChatUser();
-            ViewModel.ChatViewModel[] result = new ViewModel.ChatViewModel[users.Count];
-            Parallel.For(0, users.Count, (x) =>
-            {
-                List<ChatMessage> msg = GetMessages(users[x]);
-                result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-
-            });
-
-            foreach (ViewModel.ChatViewModel c in result)
-            {
-                ApplicationState.getInstance().Chats.Add(c);
-            }
-
-        }
-
-
         #endregion
 
         #region buy sell stuff
+
+        public void updateListing()
+        {
+            List<WarframeItem> items = getOffers();
+            ApplicationState.getInstance().BuyItems.ToList().ForEach(x => items.Remove(x)); // all identical items dont need to be looked at
+            foreach (WarframeItem item in items)
+            {
+                string id = item.Id;
+                item.Id = "";
+                if (item.SellOffer)
+                {
+                    int itemIndex = ApplicationState.getInstance().SellItems.IndexOf(item);
+                    if (itemIndex>0)
+                    {
+                        ApplicationState.getInstance().SellItems[itemIndex].Id = id;
+                    }
+                    else
+                    {
+                        //new Item not added by my code synch it anyway
+                    }
+
+                }
+                else
+                {
+                    int itemIndex = ApplicationState.getInstance().BuyItems.IndexOf(item);
+                    if (itemIndex > 0)
+                    {
+                        ApplicationState.getInstance().BuyItems[itemIndex].Id = id;
+                    }
+                    else
+                    {
+                        //new Item not added by my code synch it anyway
+                    }
+
+                }
+            }
+
+        }
 
         public List<WarframeItem> getOffers()
         {
@@ -344,24 +420,6 @@ namespace WarframeMarketClient.Logic
 
         #endregion
 
-
-        public void InitListings()
-        {
-            List<WarframeItem> offers = getOffers();
-            ApplicationState appState = ApplicationState.getInstance();
-
-
-                appState.BuyItems.Clear();
-                appState.SellItems.Clear();
-
-                foreach (WarframeItem item in offers)
-                {
-
-                    if (item.SellOffer) appState.SellItems.Add(item);
-                    else appState.BuyItems.Add(item);
-
-                }
-        }
 
 
 
