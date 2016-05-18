@@ -65,6 +65,8 @@ namespace WarframeMarketClient.Model
                 #region clean old
                 if(Market!=null)Market.Dispose();
                 Market = null;
+                if (Market != null) OnlineChecker.Dispose();
+                OnlineChecker = null;
                 Chats.Clear();
                 SellItems.Clear();
                 BuyItems.Clear();
@@ -74,7 +76,7 @@ namespace WarframeMarketClient.Model
                 sessionToken = value;
                 asynchRun(() =>
                 {
-
+                    
                     OnlineState = OnlineState.VALIDATING;
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
                     if (!verification.Item1)
@@ -150,12 +152,16 @@ namespace WarframeMarketClient.Model
             }
         }
 
-        public TimeSpan TimeOffset { get; set; }
 
         public static bool HasInstance { get { return instance != null; } }
-        public static bool HasValidInstance { get { return HasInstance && instance.IsValid; } }
+        public static bool HasValidInstance { get { return HasInstance && instance.HasUsername; } }
 
-        public bool IsValid { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
+        public bool HasUsername { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
+
+        public bool IsValid { get { return HasUsername&&Username!="Temp"&&OnlineChecker!=null; } }
+
+        public bool IsValidating { get { return !String.IsNullOrWhiteSpace(instance.Username) && instance.Username == "Temp"; } }
+
         public RunsGameChecker OnlineChecker { get; private set; }
 
 
