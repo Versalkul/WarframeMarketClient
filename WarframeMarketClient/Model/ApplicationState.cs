@@ -85,11 +85,12 @@ namespace WarframeMarketClient.Model
                         return;
                     }
                     Username = verification.Item2;
-                    OnlineState = OnlineState.OFFLINE;
+                    //OnlineState = OnlineState.OFFLINE;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
                     Market = new MarketManager();
-                    OnlineChecker = new RunsGameChecker(); // initialized the OnlineState when created 
+                    OnlineChecker = new RunsGameChecker(); // initialized the OnlineState when created
+                    OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
 
                 });
