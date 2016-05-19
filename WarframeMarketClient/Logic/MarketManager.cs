@@ -79,10 +79,6 @@ namespace WarframeMarketClient.Logic
 
             Console.WriteLine("Done paralell init");
 
-
-
-
-
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
             onlineChecker.Interval = 35000;
@@ -329,10 +325,12 @@ namespace WarframeMarketClient.Logic
 
         #region buy sell stuff
 
-        public void updateListing()
+        public void UpdateListing() // may fail HORRIBLY if the cloning doesnt do clone
         {
             List<WarframeItem> items = getOffers();
+            List<WarframeItem> itemsAll = items.ToList(); // cloning that list;
             ApplicationState.getInstance().BuyItems.ToList().ForEach(x => items.Remove(x)); // all identical items dont need to be looked at
+            ApplicationState.getInstance().SellItems.ToList().ForEach(x => items.Remove(x));
             foreach (WarframeItem item in items)
             {
                 string id = item.Id;
@@ -365,6 +363,18 @@ namespace WarframeMarketClient.Logic
                     }
 
                 }
+            }
+            foreach(WarframeItem item in ApplicationState.getInstance().BuyItems.ToList().Where(x=>x.Id!="")) // indirect clone here 
+            {
+
+                if (!itemsAll.Contains(item)) ApplicationState.getInstance().BuyItems.Remove(item);
+
+            }
+            foreach (WarframeItem item in ApplicationState.getInstance().SellItems.Where(x => x.Id != "")) // indirect clone here 
+            {
+
+                if (!itemsAll.Contains(item)) ApplicationState.getInstance().SellItems.ToList().Remove(item);
+
             }
 
         }

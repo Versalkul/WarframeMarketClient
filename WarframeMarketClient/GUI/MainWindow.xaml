@@ -225,10 +225,10 @@
                 <tabs:Tab_Settings x:Name="TabSettings"/>
             </TabItem>
             <TabItem Header="Buy" IsEnabled="{Binding IsValid}">
-                <tabs:Tab_Items x:Name="TabBuy" DecreaseItemText="Bought" Items="{Binding BuyItems}" />
+                <tabs:Tab_Items x:Name="TabBuy" DecreaseItemText="Bought" TabName="Buy" Items="{Binding BuyItems}" />
             </TabItem>
             <TabItem Header="Sell" IsEnabled="{Binding IsValid}">
-                <tabs:Tab_Items x:Name="TabSell" DecreaseItemText="Sold" Items="{Binding SellItems}"/>
+                <tabs:Tab_Items x:Name="TabSell" DecreaseItemText="Sold" TabName="Sell" Items="{Binding SellItems}"/>
             </TabItem>
             <TabItem Header="Chats" IsEnabled="{Binding IsValid}">
                 <tabs:Tab_Chats x:Name="TabChats" Chats="{Binding Chats}"/>

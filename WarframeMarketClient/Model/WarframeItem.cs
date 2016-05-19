@@ -111,7 +111,7 @@ namespace WarframeMarketClient.Model
 
         #endregion
 
-
+        // implement Bigin and cancel safe data in backup to restore for cancel edit for existing items
         public void BeginEdit()
         {
             Console.WriteLine("Begin Edit");
@@ -176,7 +176,14 @@ namespace WarframeMarketClient.Model
         public void CommitAdd()
         {
             MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want to add the "+(SellOffer?"Sell":"Buy")+$" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", "Confirm Additem", System.Windows.MessageBoxButton.YesNo);
-            Console.WriteLine("Added!");
+
+            if (messageBoxResult == MessageBoxResult.Yes)
+            {
+                ApplicationState.getInstance().Market.AddItem(this);
+                ApplicationState.getInstance().Market.UpdateListing();
+                Console.WriteLine("Added!");
+            }
+
         }
 
         public void DecreaseCount()

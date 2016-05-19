@@ -64,6 +64,7 @@ namespace WarframeMarketClient.ViewModel
         public void closeChat()
         {
             ApplicationState.getInstance().Market.CloseChat(User.Name);
+            ApplicationState.getInstance().Chats.Remove(this);
             Console.WriteLine("Close Chat with "+User.Name);
         }
     }
