@@ -53,7 +53,7 @@ namespace WarframeMarketClient.Model
         #endregion
 
         #region Derivated Properties
-        public int MaxRank { get { return itemInfoMap[Name].Item2; } }
+        public int MaxRank { get { return (Name==null||!itemInfoMap.ContainsKey(name))? -1: itemInfoMap[Name].Item2; } }
 
         public IEnumerable<int> ModRanks { get {
                 return Enumerable.Range(0, MaxRank+1);

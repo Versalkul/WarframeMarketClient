@@ -47,7 +47,7 @@ namespace WarframeMarketClient.Logic
                 List<string> users = GetChatUser();
                 result = new ViewModel.ChatViewModel[users.Count];
                 ApplicationState.getInstance().ValidationProgress+=10;
-                int valPerChat =50/users.Count;
+                int valPerChat =45/users.Count;
                 Parallel.For(0, users.Count, (x) =>
                 {
                     List<ChatMessage> msg = GetMessages(users[x]);
