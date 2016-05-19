@@ -134,7 +134,7 @@
 
             <Style TargetType="toolkit:AutoCompleteBox">
                 <Setter Property="Margin" Value="-5,0" />
-                <Setter Property="Padding" Value="3,5" />
+                <Setter Property="Padding" Value="3,2" />
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>
                         <Style TargetType="ListBoxItem">

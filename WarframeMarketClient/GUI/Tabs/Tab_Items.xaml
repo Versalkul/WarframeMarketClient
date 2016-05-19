@@ -47,7 +47,7 @@
                                 ItemFilter="{Binding ElementName=self, Path=AutoCItemFilter}"
                                 Populating="AutoCItemPopulating"
                                 IsTextCompletionEnabled="True"
-                                />
+                                Loaded="EditView_Loaded" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>
@@ -64,7 +64,8 @@
                             <ComboBox
                                 IsEditable="False" 
                                 SelectedIndex="{Binding Path=ModRank}"
-                                ItemsSource="{Binding Path=ModRanks}" />
+                                ItemsSource="{Binding Path=ModRanks}"
+                                Loaded="EditView_Loaded" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>

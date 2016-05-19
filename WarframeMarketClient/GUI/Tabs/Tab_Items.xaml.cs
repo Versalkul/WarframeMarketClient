@@ -51,6 +51,18 @@ namespace WarframeMarketClient.GUI.Tabs
             AutoCItemCount = 0;
         }
 
+        private void EditView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (sender is UIElement)
+                (sender as UIElement).Focus();
+
+            if (sender is AutoCompleteBox) // Yes, that's necessary :(
+            {
+                TextBox textbox = (sender as AutoCompleteBox).Template.FindName("Text", sender as AutoCompleteBox) as TextBox;
+                if (textbox != null) textbox.Focus();
+            }
+        }
+
 
 
         public Tab_Items()
