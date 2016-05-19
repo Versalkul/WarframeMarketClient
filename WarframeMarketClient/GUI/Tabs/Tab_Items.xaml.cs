@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using WarframeMarketClient.Model;
@@ -12,6 +11,7 @@ namespace WarframeMarketClient.GUI.Tabs
     /// </summary>
     public partial class Tab_Items : UserControl
     {
+        #region Properties
         public ObservableCollection<WarframeItem> Items
         {
             get { return (ObservableCollection<WarframeItem>)GetValue(ItemsProperty); }
@@ -33,8 +33,9 @@ namespace WarframeMarketClient.GUI.Tabs
         public static readonly DependencyProperty DecreaseItemTextProperty =
             DependencyProperty.Register("DecreaseItemText", typeof(string), typeof(Tab_Items), new PropertyMetadata(null));
 
+        #endregion
 
-
+        #region Autocompletion Behaviour
         private int AutoCItemCount = 0;
         public AutoCompleteFilterPredicate<Object> AutoCItemFilter { get
             {
@@ -50,7 +51,9 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             AutoCItemCount = 0;
         }
+        #endregion
 
+        #region View Behaviour
         private void EditView_Loaded(object sender, RoutedEventArgs e)
         {
             if (sender is UIElement)
@@ -62,15 +65,19 @@ namespace WarframeMarketClient.GUI.Tabs
                 if (textbox != null) textbox.Focus();
             }
         }
-
+        #endregion
 
 
         public Tab_Items()
         {
             InitializeComponent();
+            Items = new ObservableCollection<WarframeItem>() {
+                new WarframeItem("Test", 1, 2, true)
+            };
         }
 
 
+        #region Button Events
         private void Add(object sender, RoutedEventArgs e)
         {
             Console.WriteLine("Add! : "+ (sender as Button).DataContext);
@@ -95,7 +102,7 @@ namespace WarframeMarketClient.GUI.Tabs
             ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).RemoveItem();
         }
-
+        #endregion
     }
 
 }
