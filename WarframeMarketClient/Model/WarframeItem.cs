@@ -84,10 +84,12 @@ namespace WarframeMarketClient.Model
         {
             get
             {
+                
+
                 // apply property level validation rules
                 if (columnName == "Name")
                 {
-                    if (!itemInfoMap.ContainsKey(Name))
+                    if (Name==null||!itemInfoMap.ContainsKey(Name))
                         return "Wrong Name";
                 }
                 
@@ -175,7 +177,7 @@ namespace WarframeMarketClient.Model
         public void RemoveItem()
         {
             Console.WriteLine("Remove!");
-            ApplicationState.getInstance().Market.RemoveItem(this);
+            if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().Market.RemoveItem(this);
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }

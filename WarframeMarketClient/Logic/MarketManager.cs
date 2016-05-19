@@ -346,7 +346,8 @@ namespace WarframeMarketClient.Logic
                     }
                     else
                     {
-                        //new Item not added by my code synch it anyway
+                        item.Id = id;
+                        ApplicationState.getInstance().SellItems.Add(item);
                     }
 
                 }
@@ -359,7 +360,8 @@ namespace WarframeMarketClient.Logic
                     }
                     else
                     {
-                        //new Item not added by my code synch it anyway
+                        item.Id = id;
+                        ApplicationState.getInstance().SellItems.Add(item);
                     }
 
                 }

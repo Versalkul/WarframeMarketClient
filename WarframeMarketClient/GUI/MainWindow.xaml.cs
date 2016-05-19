@@ -19,7 +19,6 @@ namespace WarframeMarketClient.GUI
         public MainWindow()
         {
             this.DataContext = ApplicationState.getInstance();
-
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
 
@@ -36,8 +35,6 @@ namespace WarframeMarketClient.GUI
             
             ApplicationState.getInstance().OnlineChecker.changeRunning();
         }
-
-
 
         private void PART_LOADED(object sender, RoutedEventArgs e)
         {
@@ -94,9 +91,7 @@ namespace WarframeMarketClient.GUI
             if (mRestoreForDragMove)
             {
                 mRestoreForDragMove = false;
-
                 var point = PointToScreen(e.MouseDevice.GetPosition(this));
-
                 Left = point.X - (RestoreBounds.Width * 0.5);
                 Top = point.Y;
 
@@ -135,10 +130,5 @@ namespace WarframeMarketClient.GUI
             window.Activate();
             window.WindowState = WindowState.Normal;
         }
-
-
-
-
-
     }
 }

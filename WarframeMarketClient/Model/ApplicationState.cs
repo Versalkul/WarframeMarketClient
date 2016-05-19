@@ -90,6 +90,9 @@ namespace WarframeMarketClient.Model
                     Username = verification.Item2;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
+
+                    Thread.Sleep(5000);
+
                     Market = new MarketManager();
                     ValidationProgress = 100;
                     OnlineChecker = new RunsGameChecker(); 
@@ -164,7 +167,7 @@ namespace WarframeMarketClient.Model
 
         public bool IsValid { get { return HasUsername&&Username!="Temp"&&OnlineChecker!=null; } }
 
-        public bool IsValidating { get { return !String.IsNullOrWhiteSpace(instance.Username) && instance.Username == "Temp"; } }
+        public bool IsValidating { get { return !String.IsNullOrWhiteSpace(instance.Username) && (instance.Username == "Temp" || OnlineChecker == null); } }
 
         private int validationProgress=0;
 
