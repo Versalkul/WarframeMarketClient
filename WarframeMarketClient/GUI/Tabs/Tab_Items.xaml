@@ -43,7 +43,7 @@
                         <DataTemplate>
                             <toolkit:AutoCompleteBox
                                 ItemsSource="{Binding AllItemNames}"
-                                Text="{Binding Path=Name, Mode=TwoWay, ValidatesOnDataErrors=True}"
+                                Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}"
                                 ItemFilter="{Binding ElementName=self, Path=AutoCItemFilter}"
                                 Populating="AutoCItemPopulating"
                                 IsTextCompletionEnabled="True"

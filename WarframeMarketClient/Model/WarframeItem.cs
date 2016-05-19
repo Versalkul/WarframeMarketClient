@@ -5,11 +5,12 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo // Implement IEditableObject 
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject 
     {
         public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
@@ -23,6 +24,7 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
+                Console.WriteLine("Name set to: "+value);
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;
@@ -110,6 +112,22 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
+        public void BeginEdit()
+        {
+            Console.WriteLine("Begin Edit");
+        }
+
+        public void EndEdit()
+        {
+            Console.WriteLine("Commit Edit");
+        }
+
+        public void CancelEdit()
+        {
+            Console.WriteLine("Cancel Edit");
+        }
+
+
         #endregion
 
         #endregion
@@ -122,6 +140,7 @@ namespace WarframeMarketClient.Model
         /// </summary>
         public WarframeItem()
         {
+            Name = "";
         }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)
@@ -156,6 +175,7 @@ namespace WarframeMarketClient.Model
 
         public void CommitAdd()
         {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want to add the "+(SellOffer?"Sell":"Buy")+$" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", "Confirm Additem", System.Windows.MessageBoxButton.YesNo);
             Console.WriteLine("Added!");
         }
 
