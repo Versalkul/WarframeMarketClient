@@ -74,11 +74,13 @@ namespace WarframeMarketClient.Model
                 #endregion
                 Username = "Temp";
                 sessionToken = value;
+                ValidationProgress = 0;
                 asynchRun(() =>
                 {
                     
                     OnlineState = OnlineState.VALIDATING;
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
+                    ValidationProgress += 10;
                     if (!verification.Item1)
                     {
                         Username = "";
@@ -89,6 +91,7 @@ namespace WarframeMarketClient.Model
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
                     Market = new MarketManager();
+                    ValidationProgress = 100;
                     OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
@@ -152,7 +155,7 @@ namespace WarframeMarketClient.Model
                 OnPropertyChanged(nameof(Chats));
             }
         }
-
+        #region Validating etc props
 
         public static bool HasInstance { get { return instance != null; } }
         public static bool HasValidInstance { get { return HasInstance && instance.HasUsername; } }
@@ -163,6 +166,15 @@ namespace WarframeMarketClient.Model
 
         public bool IsValidating { get { return !String.IsNullOrWhiteSpace(instance.Username) && instance.Username == "Temp"; } }
 
+        private int validationProgress=0;
+
+        public int ValidationProgress
+        {
+            get { return validationProgress; }
+            set { validationProgress = value;OnPropertyChanged(nameof(ValidationProgress)); }
+        }
+
+        #endregion
         public RunsGameChecker OnlineChecker { get; private set; }
 
 

@@ -6,13 +6,14 @@ using System.Windows;
 using WarframeMarketClient.Model;
 using System.Windows.Input;
 using WarframeMarketClient.Logic;
+using System.ComponentModel;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
     /// <summary>
     /// Interaktionslogik für Tab_Settings.xaml
     /// </summary>
-    public partial class Tab_Settings : UserControl
+    public partial class Tab_Settings : UserControl,INotifyPropertyChanged
     {
 
 
@@ -79,9 +80,15 @@ namespace WarframeMarketClient.GUI.Tabs
                 SessionTokenInput = loader.loadString("Token");
                 SetToken();
             }
-            
+
+            ApplicationState.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ApplPropChanged);
             // minimize if toTray
 
+        }
+
+        private void ApplPropChanged(object o, EventArgs args)
+        {
+            OnPropertyChanged(nameof(ApplicationState));
         }
 
         private void SetToken()
@@ -118,6 +125,18 @@ namespace WarframeMarketClient.GUI.Tabs
             saver.Save();
             
         }
+
+        #region OnPropertyChanged
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs(property));
+
+        }
+        #endregion
 
 
     }

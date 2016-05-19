@@ -35,26 +35,30 @@ namespace WarframeMarketClient.Logic
             {
                 socket = new SocketManager();
                 socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+                 ApplicationState.getInstance().ValidationProgress+=10;
             },
             ()=>
             {
                 if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
+                 ApplicationState.getInstance().ValidationProgress+=10;
             },
             ()=>
             {
                 List<string> users = GetChatUser();
                 result = new ViewModel.ChatViewModel[users.Count];
+                ApplicationState.getInstance().ValidationProgress+=10;
+                int valPerChat =50/users.Count;
                 Parallel.For(0, users.Count, (x) =>
                 {
                     List<ChatMessage> msg = GetMessages(users[x]);
                     result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-
+                    ApplicationState.getInstance().ValidationProgress+=valPerChat;
                 });
             },
              ()=>
             {
                  offers = getOffers();
-
+                ApplicationState.getInstance().ValidationProgress+=10;
             }
 
             };
@@ -417,7 +421,7 @@ namespace WarframeMarketClient.Logic
         public static string GetCategory(string name)
         {
             if (String.IsNullOrWhiteSpace(name)) return "";
-            if (WarframeItem.itemInfoMap == null) WarframeItem.itemInfoMap = getTypeMap();
+            if (WarframeItem.itemInfoMap == null|| WarframeItem.itemInfoMap.Count<50) WarframeItem.itemInfoMap = getTypeMap();
             if (WarframeItem.itemInfoMap.ContainsKey(name)) return WarframeItem.itemInfoMap[name].Item1;
             return "";
         }
@@ -432,6 +436,8 @@ namespace WarframeMarketClient.Logic
             Dictionary<string, Tuple<string, int>> map = new Dictionary<string, Tuple<string, int>>(1000);
             using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/api/get_all_items_v2"))
             {
+                if (response == null || response.StatusCode != HttpStatusCode.OK) return new Dictionary<string, Tuple<string, int>>();
+
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
 
