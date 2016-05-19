@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
@@ -54,7 +55,7 @@ namespace WarframeMarketClient.Model
         #endregion
 
         #region Derivated Properties
-        public int MaxRank { get { return itemInfoMap[Name].Item2; } }
+        public int MaxRank { get { return (Name==null||!itemInfoMap.ContainsKey(name))? -1: itemInfoMap[Name].Item2; } }
 
         public IEnumerable<int> ModRanks { get {
                 return Enumerable.Range(0, MaxRank+1);
@@ -174,6 +175,7 @@ namespace WarframeMarketClient.Model
 
         public void CommitAdd()
         {
+            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want to add the "+(SellOffer?"Sell":"Buy")+$" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", "Confirm Additem", System.Windows.MessageBoxButton.YesNo);
             Console.WriteLine("Added!");
         }
 
