@@ -9,7 +9,7 @@ using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo // Implement IEditableObject 
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject 
     {
         public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
@@ -23,6 +23,7 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
+                Console.WriteLine("Name set to: "+value);
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;
@@ -110,6 +111,22 @@ namespace WarframeMarketClient.Model
         #endregion
 
 
+        public void BeginEdit()
+        {
+            Console.WriteLine("Begin Edit");
+        }
+
+        public void EndEdit()
+        {
+            Console.WriteLine("Commit Edit");
+        }
+
+        public void CancelEdit()
+        {
+            Console.WriteLine("Cancel Edit");
+        }
+
+
         #endregion
 
         #endregion
@@ -122,6 +139,7 @@ namespace WarframeMarketClient.Model
         /// </summary>
         public WarframeItem()
         {
+            Name = "";
         }
 
         public WarframeItem(string name,int price,int count,bool sellOffer)
