@@ -23,14 +23,24 @@ namespace WarframeMarketClient.Logic
             socket.Opened += new EventHandler(onOpen);
             socket.Error += new EventHandler<SuperSocket.ClientEngine.ErrorEventArgs>(onError);
             socket.MessageReceived += new EventHandler<MessageReceivedEventArgs>(onMessage);
+            socket.Closed += Socket_Closed;
         }
+
 
 
 
 
         #region events
 
-        public void onError(object caller, SuperSocket.ClientEngine.ErrorEventArgs args)
+        private void Socket_Closed(object sender, EventArgs e)
+        {
+
+            Console.WriteLine("CLOSED");
+
+        }
+
+
+        private void onError(object caller, SuperSocket.ClientEngine.ErrorEventArgs args)
         {
             Console.WriteLine("Error from websocket:");
             Console.WriteLine(args.Exception.Message);
@@ -57,7 +67,7 @@ namespace WarframeMarketClient.Logic
                 while (jsonsToSend.Count > 0)
                     socket.Send(jsonsToSend.Dequeue());
 
-            if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE)
+            if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE|| ApplicationState.getInstance().OnlineState==OnlineState.DISABLED)
             {
                 socket.Close();
                 //Console.WriteLine("And offline again");
@@ -77,7 +87,6 @@ namespace WarframeMarketClient.Logic
         {
             lock (socket)
             {
-                //Console.WriteLine("Sending: " + json + "\n with state " + socket.State);
                 if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
                 {
                     jsonsToSend.Enqueue(json);
