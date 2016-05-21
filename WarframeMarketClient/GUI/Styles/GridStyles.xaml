@@ -11,7 +11,7 @@
 
     <!-- 1 of many places where the validation errors are styled... welcome to WPF-hell -->
     <Style x:Key="dgTextBlockStyle" TargetType="{x:Type TextBlock}">
-        <Setter Property="Padding" Value="3,0,3,3" />
+        <Setter Property="Padding" Value="3,0" />
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="true">
@@ -25,11 +25,11 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid Margin="0" Background="{TemplateBinding Background}">
-                        <ScrollViewer Margin="0" Padding="0" x:Name="PART_ContentHost"/>
+                    <Grid Margin="0,1,0,0" Background="{TemplateBinding Background}">
+                        <ScrollViewer Margin="0" Padding="0,0,0,2" x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
                         <!-- Draws over the Path drawn by the DataGridCell to be able to highlight binding errors like 'asdf' for numbers -->
                         <Path Name="EditUnderline"
-                                    Margin="-3,15,-3,0"
+                                    Margin="-3,12,-3,0"
                                     Stroke="{StaticResource BorderBrush}"
                                     StrokeThickness="2"
                                     Stretch="Fill"
