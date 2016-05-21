@@ -3,9 +3,59 @@
                     xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
                     xmlns:tabs="clr-namespace:WarframeMarketClient.GUI.Tabs"
                     xmlns:vm="clr-namespace:WarframeMarketClient.ViewModel"
+                    xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
                     
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
+
+
+    <!-- 1 of many places where the validation errors are styled... welcome to WPF-hell -->
+    <Style x:Key="dgTextBlockStyle" TargetType="{x:Type TextBlock}">
+        <Setter Property="Padding" Value="3,0,3,3" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="true">
+                <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self},
+                                Path=(Validation.Errors)[0].ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="dgTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Margin="0" Background="{TemplateBinding Background}">
+                        <ScrollViewer Margin="0" Padding="0" x:Name="PART_ContentHost"/>
+                        <!-- Draws over the Path drawn by the DataGridCell to be able to highlight binding errors like 'asdf' for numbers -->
+                        <Path Name="EditUnderline"
+                                    Margin="-3,15,-3,0"
+                                    Stroke="{StaticResource BorderBrush}"
+                                    StrokeThickness="2"
+                                    Stretch="Fill"
+                                    Data="M0,0 L0,5 5,5 5,0"
+                                    HorizontalAlignment="Center"
+                                    Visibility="Visible"
+                                    VerticalAlignment="Center" />
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="Validation.HasError" Value="True">
+                            <Setter TargetName="EditUnderline" Property="Stroke" Value="Red" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTip" 
+                              Value="{Binding RelativeSource={RelativeSource Self},
+                                Path=(Validation.Errors)[0].ErrorContent}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 
     <Style TargetType="DataGrid">
@@ -18,25 +68,33 @@
         <Setter Property="HorizontalGridLinesBrush" Value="#e0e0e0"/>
         <Setter Property="Background" Value="Transparent"/>
 
+        <!-- Currently does nothing -->
+        <Setter Property="RowValidationErrorTemplate">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Grid Margin="0,-2,0,-2"
+                          ToolTip="{Binding RelativeSource={RelativeSource
+                          FindAncestor, AncestorType={x:Type DataGridRow}},
+                          Path=(Validation.Errors)[0].ErrorContent}">
+                        <Ellipse StrokeThickness="0" Fill="Red" 
+                                Width="{TemplateBinding FontSize}" 
+                                Height="{TemplateBinding FontSize}" />
+                        <TextBlock Text="!" FontSize="{TemplateBinding FontSize}" 
+                                FontWeight="Bold" Foreground="White" 
+                                HorizontalAlignment="Center"  />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
         <Style.Resources>
-            <!--<Style TargetType="DataGridTextColumn">
-                <Setter Property="EditingElementStyle">
-                    <Setter.Value>
-                        <Style TargetType="TextBox">
-                            
-                        </Style>
-                    </Setter.Value>
-                </Setter>
-            </Style>-->
+            <converter:ErrorPropertiesAndNameToHasErrorConverter x:Key="ErrorPropertiesAndNameToHasErrorConverter"/>
 
             <Style TargetType="DataGridCell">
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type DataGridCell}">
                             <Grid Margin="0">
-                                <Border Padding="5,10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                                    <ContentPresenter Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center"/>
-                                </Border>
                                 <Path Name="EditUnderline"
                                       Margin="3,15,3,0"
                                       Stroke="{StaticResource BorderBrush}"
@@ -46,6 +104,9 @@
                                       HorizontalAlignment="Center"
                                       Visibility="Hidden"
                                       VerticalAlignment="Center" />
+                                <Border Padding="5,10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ContentPresenter Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
+                                </Border>
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
@@ -54,8 +115,16 @@
                                     <Setter Property="BorderBrush" Value="Transparent" />
                                 </Trigger>
                                 <Trigger Property="IsEditing" Value="True">
-                                    <Setter Property="Background" Value="White" />
                                 </Trigger>
+                                <DataTrigger Value="True">
+                                    <DataTrigger.Binding>
+                                        <MultiBinding Converter="{StaticResource ErrorPropertiesAndNameToHasErrorConverter}">
+                                            <Binding Path="ErrorProperties"></Binding>
+                                            <Binding RelativeSource="{RelativeSource Self}"></Binding>
+                                        </MultiBinding>
+                                    </DataTrigger.Binding>
+                                    <Setter TargetName="EditUnderline" Property="Stroke" Value="Red" />
+                                </DataTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsReadOnly}" Value="False" />
@@ -142,17 +211,9 @@
             </Style>
 
 
-
-
-
-
-
-
-
-
             <Style TargetType="toolkit:AutoCompleteBox">
-                <Setter Property="Margin" Value="-5,0" />
-                <Setter Property="Padding" Value="3,2" />
+                <Setter Property="Margin" Value="0" />
+                <Setter Property="Padding" Value="1,1" />
                 <Setter Property="ItemContainerStyle">
                     <Setter.Value>
                         <Style TargetType="ListBoxItem">
@@ -160,11 +221,12 @@
                         </Style>
                     </Setter.Value>
                 </Setter>
+                <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type toolkit:AutoCompleteBox}">
                             <Grid Opacity="{TemplateBinding Opacity}">
-                                <TextBox x:Name="Text" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" IsTabStop="True" Margin="0" Padding="{TemplateBinding Padding}" Style="{TemplateBinding TextBoxStyle}"/>
+                                <TextBox x:Name="Text" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0" Foreground="{TemplateBinding Foreground}" IsTabStop="True" Margin="0" Padding="{TemplateBinding Padding}" Style="{StaticResource dgTextBoxStyle}"/>
                                 <Border x:Name="ValidationErrorElement" BorderBrush="#FFDB000C" BorderThickness="1" CornerRadius="1" Visibility="Collapsed">
                                     <Border.ToolTip>
                                         <ToolTip x:Name="validationTooltip" Placement="Right">

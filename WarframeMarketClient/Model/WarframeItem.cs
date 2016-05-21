@@ -72,6 +72,10 @@ namespace WarframeMarketClient.Model
 
         #region IDataErrorInfo
 
+
+        public ObservableCollection<string> ErrorProperties { get; } = new ObservableCollection<string>();
+
+
         public string Error
         {
             get
@@ -82,30 +86,35 @@ namespace WarframeMarketClient.Model
             }
         }
 
-        public string this[string columnName] // WTFH IS THIS SYNTAX O.o
+        public string this[string columnName]
         {
             get
             {
-                
+                string error = "";
 
                 // apply property level validation rules
                 if (columnName == "Name")
                 {
                     if (Name==null||!itemInfoMap.ContainsKey(Name))
-                        return "Wrong Name";
+                        error = "Wrong Name";
                 }
                 
                 if (columnName == "Count")
                 {
                     if (Count<=0)
-                        return "Wrong Count";
+                        error = "Wrong Count";
                 }
                 if (columnName == "Price")
                 {
                     if (Price <= 0)
-                        return "Wrong Price";
+                        error = "Wrong Price";
                 }
-                return "";
+
+                ErrorProperties.Remove(columnName); // Keep only once
+                if (error != "")
+                    ErrorProperties.Add(columnName);
+
+                return error;
             }
         }
 
@@ -141,9 +150,10 @@ namespace WarframeMarketClient.Model
         public WarframeItem()
         {
             Name = "";
+            ErrorProperties.CollectionChanged += (_, __) => { OnPropertyChanged(nameof(ErrorProperties)); };
         }
 
-        public WarframeItem(string name,int price,int count,bool sellOffer)
+        public WarframeItem(string name,int price,int count,bool sellOffer):this()
         {
             this.Name = name;
             this.Price = price;
