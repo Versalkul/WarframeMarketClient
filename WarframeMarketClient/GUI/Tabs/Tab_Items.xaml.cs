@@ -33,6 +33,9 @@ namespace WarframeMarketClient.GUI.Tabs
         public static readonly DependencyProperty DecreaseItemTextProperty =
             DependencyProperty.Register("DecreaseItemText", typeof(string), typeof(Tab_Items), new PropertyMetadata(null));
 
+        public string TabName { get; set; }
+
+
         #endregion
 
         #region Autocompletion Behaviour
@@ -84,7 +87,9 @@ namespace WarframeMarketClient.GUI.Tabs
             if ((sender as Button).DataContext is WarframeItem)
             {
                 ItemList.CommitEdit();
-                ((sender as Button).DataContext as WarframeItem).CommitAdd();
+                WarframeItem item = ((sender as Button).DataContext as WarframeItem);
+                item.SellOffer = TabName == "Sell";
+                item.CommitAdd();
             }
             else
             {
