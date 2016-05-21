@@ -8,7 +8,7 @@
         xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
         mc:Ignorable="d"
         xmlns:tb="http://www.hardcodet.net/taskbar" 
-        Title="WarframeMarket Client" Height="350" Width="525" WindowStartupLocation="CenterScreen" Style="{DynamicResource MetroWindowStyle}" AllowsTransparency="True" StateChanged="Window_StateChanged">
+        Title="WarframeMarket Client" Height="375" Width="575" WindowStartupLocation="CenterScreen" Style="{DynamicResource MetroWindowStyle}" AllowsTransparency="True" StateChanged="Window_StateChanged">
 
 
 
@@ -224,11 +224,11 @@
             <TabItem Header="Settings" DataContext="{Binding ElementName=TabSettings}">
                 <tabs:Tab_Settings x:Name="TabSettings"/>
             </TabItem>
-            <TabItem Header="Buy" IsEnabled="{Binding IsValid}">
-                <tabs:Tab_Items x:Name="TabBuy" DecreaseItemText="Bought" TabName="Buy" Items="{Binding BuyItems}" />
-            </TabItem>
             <TabItem Header="Sell" IsEnabled="{Binding IsValid}">
                 <tabs:Tab_Items x:Name="TabSell" DecreaseItemText="Sold" TabName="Sell" Items="{Binding SellItems}"/>
+            </TabItem>
+            <TabItem Header="Buy" IsEnabled="{Binding IsValid}">
+                <tabs:Tab_Items x:Name="TabBuy" DecreaseItemText="Bought" TabName="Buy" Items="{Binding BuyItems}" />
             </TabItem>
             <TabItem Header="Chats" IsEnabled="{Binding IsValid}">
                 <tabs:Tab_Chats x:Name="TabChats" Chats="{Binding Chats}"/>

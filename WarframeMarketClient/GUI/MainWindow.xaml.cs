@@ -21,12 +21,13 @@ namespace WarframeMarketClient.GUI
             this.DataContext = ApplicationState.getInstance();
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
-
+            Console.WriteLine("To Tray Main" + toTray);
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)
         {
             WindowSizing.WindowInitialized(this);
+
         }
 
 
@@ -52,7 +53,7 @@ namespace WarframeMarketClient.GUI
 
         private void PART_CLOSE_Click(object sender, RoutedEventArgs e)
         {
-            if (ApplicationState.HasValidInstance) ApplicationState.getInstance().Market.setOffline();
+            if (ApplicationState.getInstance().IsValid) ApplicationState.getInstance().Market.setOffline();
             this.Close();
         }
 

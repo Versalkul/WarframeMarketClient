@@ -22,7 +22,6 @@ namespace WarframeMarketClient.Logic
         public static TimeSpan timeOffset;
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
-        System.Windows.Threading.Dispatcher dispatcher = System.Windows.Application.Current.Dispatcher;
 
         public MarketManager()
         {

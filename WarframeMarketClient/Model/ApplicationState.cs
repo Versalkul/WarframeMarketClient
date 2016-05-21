@@ -50,7 +50,7 @@ namespace WarframeMarketClient.Model
 
         #region Properties
 
-        public string sessionToken="";
+        private string sessionToken="";
 
         public string SessionToken
         {
@@ -74,7 +74,7 @@ namespace WarframeMarketClient.Model
                 #endregion
                 Username = "Temp";
                 sessionToken = value;
-                ValidationProgress = 0;
+                ValidationProgress = 5;
                 asynchRun(() =>
                 {
                     
@@ -159,9 +159,6 @@ namespace WarframeMarketClient.Model
             }
         }
         #region Validating etc props
-
-        public static bool HasInstance { get { return instance != null; } }
-        public static bool HasValidInstance { get { return HasInstance && instance.HasUsername; } }
 
         public bool HasUsername { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
 
