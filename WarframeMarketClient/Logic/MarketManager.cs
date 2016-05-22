@@ -151,7 +151,11 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string json = reader.ReadToEnd();
-                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
+
+                        JsonFrame<List<OnlineInfo>> frame = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json);
+                        if (frame.response.Count < 1) return OnlineState.ERROR;
+
+                    OnlineInfo info =frame.response.First();
 
                     OnlineState ret;
 

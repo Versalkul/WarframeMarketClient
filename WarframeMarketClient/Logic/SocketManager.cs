@@ -87,10 +87,10 @@ namespace WarframeMarketClient.Logic
         {
             lock (socket)
             {
-                if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None)
+                if (socket.State == WebSocketState.Closed || socket.State == WebSocketState.None|| socket.State == WebSocketState.Connecting)
                 {
                     jsonsToSend.Enqueue(json);
-                    socket.Open();
+                    if(socket.State != WebSocketState.Connecting) socket.Open();
                 }
                 else
                     socket.Send(json);
