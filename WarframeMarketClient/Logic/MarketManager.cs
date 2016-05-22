@@ -30,35 +30,35 @@ namespace WarframeMarketClient.Logic
             ApplicationState appState = ApplicationState.getInstance();
             Action[] initActions = new Action[4]
             {
-            ()=>
-            {
-                socket = new SocketManager();
-                socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
-                 ApplicationState.getInstance().ValidationProgress+=10;
-            },
-            ()=>
-            {
-                if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
-                 ApplicationState.getInstance().ValidationProgress+=10;
-            },
-            ()=>
-            {
-                List<string> users = GetChatUser();
-                result = new ViewModel.ChatViewModel[users.Count];
-                ApplicationState.getInstance().ValidationProgress+=10;
-                int valPerChat =45/users.Count;
-                Parallel.For(0, users.Count, (x) =>
+                ()=>
                 {
-                    List<ChatMessage> msg = GetMessages(users[x]);
-                    result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-                    ApplicationState.getInstance().ValidationProgress+=valPerChat;
-                });
-            },
-             ()=>
-            {
-                 offers = getOffers();
-                ApplicationState.getInstance().ValidationProgress+=10;
-            }
+                    socket = new SocketManager();
+                    socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+                     ApplicationState.getInstance().ValidationProgress+=10;
+                },
+                ()=>
+                {
+                    if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
+                     ApplicationState.getInstance().ValidationProgress+=10;
+                },
+                ()=>
+                {
+                    List<string> users = GetChatUser();
+                    result = new ViewModel.ChatViewModel[users.Count];
+                    ApplicationState.getInstance().ValidationProgress+=10;
+                    int valPerChat =45/users.Count;
+                    Parallel.For(0, users.Count, (x) =>
+                    {
+                        List<ChatMessage> msg = GetMessages(users[x]);
+                        result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+                        ApplicationState.getInstance().ValidationProgress+=valPerChat;
+                    });
+                },
+                ()=>
+                {
+                     offers = getOffers();
+                    ApplicationState.getInstance().ValidationProgress+=10;
+                }
 
             };
 

@@ -65,7 +65,7 @@ namespace WarframeMarketClient.Model
                 #region clean old
                 if(Market!=null)Market.Dispose();
                 Market = null;
-                if (Market != null) OnlineChecker.Dispose();
+                if (OnlineChecker != null) OnlineChecker.Dispose();
                 OnlineChecker = null;
                 Chats.Clear();
                 SellItems.Clear();
@@ -90,8 +90,6 @@ namespace WarframeMarketClient.Model
                     Username = verification.Item2;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
-
-                    Thread.Sleep(5000);
 
                     Market = new MarketManager();
                     ValidationProgress = 100;
