@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using WarframeMarketClient.GUI.Tabs;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
 {
     public class ChatNewViewModel : ChatTabContentViewModel
     {
+
+        private Tab_Chats parent;
+
         #region TabProperties
         public override string DisplayName { get { return "+";} }
         #endregion
@@ -27,11 +32,23 @@ namespace WarframeMarketClient.ViewModel
             get { return user; }
             set { user = value; OnPropertyChanged(nameof(User)); }
         }
+        
         #endregion
+
+        public ChatNewViewModel(Tab_Chats parent)
+        {
+            this.parent = parent;
+        }
 
         public void openChat()
         {
             Status = "Checking User";
+            IEnumerable<ChatViewModel> chatList = ApplicationState.getInstance().Chats.Where(chat => chat.User.Name == User);
+            if (chatList.Any())
+            {
+                Status = "Chat does already exist";
+                return;
+            }
             if (ApplicationState.getInstance().Market.getStatusOnSite(User) != OnlineState.ERROR)
             {
                 Status = "";

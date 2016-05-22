@@ -24,6 +24,8 @@ namespace WarframeMarketClient.Logic
             socket.Error += new EventHandler<SuperSocket.ClientEngine.ErrorEventArgs>(onError);
             socket.MessageReceived += new EventHandler<MessageReceivedEventArgs>(onMessage);
             socket.Closed += Socket_Closed;
+
+            // Timer checking Queue just to be sure ?
         }
 
 
@@ -93,7 +95,10 @@ namespace WarframeMarketClient.Logic
                     if(socket.State != WebSocketState.Connecting) socket.Open();
                 }
                 else
+                {
                     socket.Send(json);
+                }
+                    
             }
         }
 

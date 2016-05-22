@@ -153,7 +153,7 @@ namespace WarframeMarketClient.Logic
                     string json = reader.ReadToEnd();
 
                         JsonFrame<List<OnlineInfo>> frame = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json);
-                        if (frame.response.Count < 1) return OnlineState.ERROR;
+                        if (!frame.response.Any()) return OnlineState.ERROR;
 
                     OnlineInfo info =frame.response.First();
 
@@ -262,7 +262,7 @@ namespace WarframeMarketClient.Logic
         {
 
             ApplicationState appState = ApplicationState.getInstance();
-            var chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
+            IEnumerable<ChatViewModel> chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
             ChatMessage chatMsg = new ChatMessage()
             {
                 Message = args.message,
@@ -280,7 +280,7 @@ namespace WarframeMarketClient.Logic
             {
                 appState.Chats.Insert (0,new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
             }
-
+            // set Has Info
         }
 
         public List<ChatMessage> GetMessages(string user)
