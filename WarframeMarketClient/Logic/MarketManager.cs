@@ -25,6 +25,9 @@ namespace WarframeMarketClient.Logic
 
         public MarketManager()
         {
+            // Save Chats to HDD 
+            //Load them and call Update 
+
             List<WarframeItem> offers = null;
             ViewModel.ChatViewModel[] result = null;
             ApplicationState appState = ApplicationState.getInstance();

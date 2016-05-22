@@ -73,12 +73,13 @@ namespace WarframeMarketClient.Model
 
                 #endregion
                 Username = "Temp";
+                OnPropertyChanged(nameof(IsValid));
                 sessionToken = value;
                 ValidationProgress = 5;
+                OnlineState = OnlineState.VALIDATING;
                 asynchRun(() =>
                 {
                     
-                    OnlineState = OnlineState.VALIDATING;
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
                     ValidationProgress += 10;
                     if (!verification.Item1)
@@ -90,7 +91,6 @@ namespace WarframeMarketClient.Model
                     Username = verification.Item2;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
-
                     Market = new MarketManager();
                     ValidationProgress = 100;
                     OnlineChecker = new RunsGameChecker(); 
