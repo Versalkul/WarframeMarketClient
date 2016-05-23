@@ -82,8 +82,7 @@ namespace WarframeMarketClient.GUI.Tabs
             }
 
             ApplicationState.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ApplPropChanged);
-            // minimize if toTray
-
+            Console.WriteLine("To Tray Settings"+ToTray);
         }
 
         private void ApplPropChanged(object o, EventArgs args)
@@ -97,6 +96,7 @@ namespace WarframeMarketClient.GUI.Tabs
             if (ApplicationState.getInstance().IsValid) ApplicationState.getInstance().Market.Dispose();
             Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
+            
         }
 
         private void saveButton_Click(object sender, RoutedEventArgs e)
@@ -110,18 +110,18 @@ namespace WarframeMarketClient.GUI.Tabs
             if (e.Key == Key.Return)
             {
                 SetToken();
-
+                SaveSettings();
             }
         }
 
         private void SaveSettings()
         {
-            if (!ApplicationState.HasValidInstance) return;
+            if (!ApplicationState.getInstance().HasUsername) return;
             SaveLoadFile saver = new SaveLoadFile();
-            saver.saveString("Token", ApplicationState.getInstance().SessionToken);
             saver.autostart(Autostart);
             saver.saveBool("ToTray", ToTray);
             saver.saveBool("DefaultOnline",DefaultOnline);
+            if(ApplicationState.getInstance().SessionToken.Length>10) saver.saveString("Token", ApplicationState.getInstance().SessionToken);
             saver.Save();
             
         }

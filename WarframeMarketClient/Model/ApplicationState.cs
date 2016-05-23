@@ -50,7 +50,7 @@ namespace WarframeMarketClient.Model
 
         #region Properties
 
-        public string sessionToken="";
+        private string sessionToken="";
 
         public string SessionToken
         {
@@ -65,7 +65,7 @@ namespace WarframeMarketClient.Model
                 #region clean old
                 if(Market!=null)Market.Dispose();
                 Market = null;
-                if (Market != null) OnlineChecker.Dispose();
+                if (OnlineChecker != null) OnlineChecker.Dispose();
                 OnlineChecker = null;
                 Chats.Clear();
                 SellItems.Clear();
@@ -73,12 +73,13 @@ namespace WarframeMarketClient.Model
 
                 #endregion
                 Username = "Temp";
+                OnPropertyChanged(nameof(IsValid));
                 sessionToken = value;
-                ValidationProgress = 0;
+                ValidationProgress = 5;
+                OnlineState = OnlineState.VALIDATING;
                 asynchRun(() =>
                 {
                     
-                    OnlineState = OnlineState.VALIDATING;
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
                     ValidationProgress += 10;
                     if (!verification.Item1)
@@ -90,9 +91,6 @@ namespace WarframeMarketClient.Model
                     Username = verification.Item2;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
-
-                    Thread.Sleep(5000);
-
                     Market = new MarketManager();
                     ValidationProgress = 100;
                     OnlineChecker = new RunsGameChecker(); 
@@ -159,9 +157,6 @@ namespace WarframeMarketClient.Model
             }
         }
         #region Validating etc props
-
-        public static bool HasInstance { get { return instance != null; } }
-        public static bool HasValidInstance { get { return HasInstance && instance.HasUsername; } }
 
         public bool HasUsername { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
 

@@ -66,12 +66,13 @@ namespace WarframeMarketClient.GUI.Tabs
         #endregion
 
 
-        protected ChatNewViewModel newChat = new ChatNewViewModel();
+        protected ChatNewViewModel newChat;
         private Dispatcher _dispatcher;
 
 
         public Tab_Chats()
         {
+            newChat = new ChatNewViewModel(this);
             InitializeComponent();
             _dispatcher = Dispatcher.CurrentDispatcher;
         }

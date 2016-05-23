@@ -22,44 +22,46 @@ namespace WarframeMarketClient.Logic
         public static TimeSpan timeOffset;
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
-        System.Windows.Threading.Dispatcher dispatcher = System.Windows.Application.Current.Dispatcher;
 
         public MarketManager()
         {
+            // Save Chats to HDD 
+            //Load them and call Update 
+
             List<WarframeItem> offers = null;
             ViewModel.ChatViewModel[] result = null;
             ApplicationState appState = ApplicationState.getInstance();
             Action[] initActions = new Action[4]
             {
-            ()=>
-            {
-                socket = new SocketManager();
-                socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
-                 ApplicationState.getInstance().ValidationProgress+=10;
-            },
-            ()=>
-            {
-                if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
-                 ApplicationState.getInstance().ValidationProgress+=10;
-            },
-            ()=>
-            {
-                List<string> users = GetChatUser();
-                result = new ViewModel.ChatViewModel[users.Count];
-                ApplicationState.getInstance().ValidationProgress+=10;
-                int valPerChat =45/users.Count;
-                Parallel.For(0, users.Count, (x) =>
+                ()=>
                 {
-                    List<ChatMessage> msg = GetMessages(users[x]);
-                    result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-                    ApplicationState.getInstance().ValidationProgress+=valPerChat;
-                });
-            },
-             ()=>
-            {
-                 offers = getOffers();
-                ApplicationState.getInstance().ValidationProgress+=10;
-            }
+                    socket = new SocketManager();
+                    socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
+                     ApplicationState.getInstance().ValidationProgress+=10;
+                },
+                ()=>
+                {
+                    if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
+                     ApplicationState.getInstance().ValidationProgress+=10;
+                },
+                ()=>
+                {
+                    List<string> users = GetChatUser();
+                    result = new ViewModel.ChatViewModel[users.Count];
+                    ApplicationState.getInstance().ValidationProgress+=10;
+                    int valPerChat =45/users.Count;
+                    Parallel.For(0, users.Count, (x) =>
+                    {
+                        List<ChatMessage> msg = GetMessages(users[x]);
+                        result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+                        ApplicationState.getInstance().ValidationProgress+=valPerChat;
+                    });
+                },
+                ()=>
+                {
+                     offers = getOffers();
+                    ApplicationState.getInstance().ValidationProgress+=10;
+                }
 
             };
 
@@ -152,7 +154,11 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string json = reader.ReadToEnd();
-                    OnlineInfo info = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json).response.First();
+
+                        JsonFrame<List<OnlineInfo>> frame = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json);
+                        if (!frame.response.Any()) return OnlineState.ERROR;
+
+                    OnlineInfo info =frame.response.First();
 
                     OnlineState ret;
 
@@ -259,7 +265,7 @@ namespace WarframeMarketClient.Logic
         {
 
             ApplicationState appState = ApplicationState.getInstance();
-            var chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
+            IEnumerable<ChatViewModel> chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
             ChatMessage chatMsg = new ChatMessage()
             {
                 Message = args.message,
@@ -277,7 +283,7 @@ namespace WarframeMarketClient.Logic
             {
                 appState.Chats.Insert (0,new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
             }
-
+            // set Has Info
         }
 
         public List<ChatMessage> GetMessages(string user)

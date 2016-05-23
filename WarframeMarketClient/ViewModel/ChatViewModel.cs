@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -12,6 +13,13 @@ namespace WarframeMarketClient.ViewModel
     public class ChatViewModel : ChatTabContentViewModel
     {
         #region TabProperties
+
+        object chatLock = new object();
+        public ChatViewModel()
+        {
+            BindingOperations.EnableCollectionSynchronization(ChatMessages, chatLock);
+        }
+
         public override string DisplayName { get { return User.Name; } }
         
         public override OnlineState? OnlineStateInfo { get { return User.State; }  }
