@@ -52,18 +52,18 @@ namespace WarframeMarketClient.Logic
                         CheckAndUpdateChats();
                         appState.ValidationProgress+=20;
                     }
-                    else
+                    else // faster because loading new chats parallel
                     {
                         appState.ValidationProgress+=10;
-                    List<string> users = GetChatUser();
+                        List<string> users = GetChatUser();
                         int valPerUser =30/users.Count;
-                    result = new ViewModel.ChatViewModel[users.Count];
-                    Parallel.For(0, users.Count, (x) =>
-                    {
-                        List<ChatMessage> msg = GetMessages(users[x]);
-                        result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-                         appState.ValidationProgress+=valPerUser;
-                    });
+                        result = new ViewModel.ChatViewModel[users.Count];
+                        Parallel.For(0, users.Count, (x) =>
+                        {
+                            List<ChatMessage> msg = GetMessages(users[x]);
+                            result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+                             appState.ValidationProgress+=valPerUser;
+                        });
                         foreach(ViewModel.ChatViewModel chat in result)
                         {
                             appState.Chats.Add(chat);
@@ -86,7 +86,6 @@ namespace WarframeMarketClient.Logic
                 else appState.BuyItems.Add(item);
 
             }
-
             
 
             Console.WriteLine("Done paralell init");
