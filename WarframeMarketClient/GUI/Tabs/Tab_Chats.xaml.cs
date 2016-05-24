@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
+using System.Linq;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -114,7 +115,8 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             _dispatcher.InvokeAsync(new Action(() =>
             {
-                foreach (ChatViewModel c in Chats)
+                
+                foreach (ChatViewModel c in Chats.ToList())
                 {
                     c.PropertyChanged -= chatHasInfo;
                     c.PropertyChanged += chatHasInfo;

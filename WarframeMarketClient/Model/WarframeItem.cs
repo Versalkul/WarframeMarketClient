@@ -24,7 +24,6 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
-                Console.WriteLine("Name set to: "+value);
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;

@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using System.Timers;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 using Timer = System.Timers.Timer;
@@ -25,12 +25,13 @@ namespace WarframeMarketClient.Logic
 
         public MarketManager()
         {
-            // Save Chats to HDD 
-            //Load them and call Update 
 
+            SaveMsg msgSave = new SaveMsg();
+            msgSave.loadMessages().ForEach(x => ApplicationState.getInstance().Chats.Add(x));
+            ViewModel.ChatViewModel[] result;
             List<WarframeItem> offers = null;
-            ViewModel.ChatViewModel[] result = null;
             ApplicationState appState = ApplicationState.getInstance();
+
             Action[] initActions = new Action[4]
             {
                 ()=>
@@ -46,16 +47,22 @@ namespace WarframeMarketClient.Logic
                 },
                 ()=>
                 {
+                    if(ApplicationState.getInstance().Chats.Any()) CheckAndUpdateChats();
+                    else
+                    {
                     List<string> users = GetChatUser();
                     result = new ViewModel.ChatViewModel[users.Count];
-                    ApplicationState.getInstance().ValidationProgress+=10;
-                    int valPerChat =45/users.Count;
                     Parallel.For(0, users.Count, (x) =>
                     {
                         List<ChatMessage> msg = GetMessages(users[x]);
                         result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
-                        ApplicationState.getInstance().ValidationProgress+=valPerChat;
                     });
+                        foreach(ViewModel.ChatViewModel chat in result)
+                        {
+                            appState.Chats.Add(chat);
+                        }
+                    }
+                    msgSave.SaveMessages();
                 },
                 ()=>
                 {
@@ -66,10 +73,6 @@ namespace WarframeMarketClient.Logic
             };
 
             Parallel.Invoke(initActions);
-            foreach (ViewModel.ChatViewModel c in result)
-            {
-                appState.Chats.Add(c);
-            }
 
             foreach (WarframeItem item in offers)
             {
@@ -79,16 +82,15 @@ namespace WarframeMarketClient.Logic
 
             }
 
+
             Console.WriteLine("Done paralell init");
 
             onlineChecker = new Timer();
-            onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(forceUserState);
+            onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(StateChecker); // new check regulary not just forceState
             onlineChecker.Interval = 35000;
             onlineChecker.AutoReset = true;
             onlineChecker.Enabled = true;
             onlineChecker.Start();
-            //forceUserState(); will be done as soon as the userstate is set to offline or onfline from error
-
 
         }
 
@@ -97,17 +99,24 @@ namespace WarframeMarketClient.Logic
         #region ThreadStuff
 
 
-
-
-
-
-        public void forceUserState()
+        private void StateChecker(object o, ElapsedEventArgs args)
         {
-            (new Thread(() => forceUserState(null, null))).Start();
+            (new Thread(() => ForceUserStateSynchronous())).Start();
+            (new Thread(() => EnsureSocketState())).Start();
             (new Thread(() => CheckAndUpdateChats())).Start();
+            // update Listings
         }
 
-        private void forceUserState(object o, EventArgs args)
+
+
+        public void UpdateState() // change to parralell invoke
+        {
+            (new Thread(() => ForceUserStateSynchronous())).Start();
+            (new Thread(() => CheckAndUpdateChats())).Start();
+            (new Thread(() => EnsureSocketState())).Start();
+        }
+
+        private void ForceUserStateSynchronous()
         {
 
             OnlineState actualState = getStatusOnSite(ApplicationState.getInstance().Username);
@@ -134,9 +143,17 @@ namespace WarframeMarketClient.Logic
 
         }
 
+
+
         #endregion
 
         #region onlineOffline
+
+        public void EnsureSocketState()
+        {
+            OnlineState state = ApplicationState.getInstance().OnlineState;
+            if (state == OnlineState.ONLINE || state == OnlineState.INGAME) socket.EnsureOpenSocket();
+        }
 
         public OnlineState getStatusOnSite(string username)
         {
@@ -244,7 +261,7 @@ namespace WarframeMarketClient.Logic
                     else 
                     {
 
-                        msg.RemoveRange(0, ApplicationState.getInstance().Chats.Count);
+                        msg.RemoveRange(0, ApplicationState.getInstance().Chats.Count-1);
 
                         foreach(ChatMessage chat in msg)
                         {
@@ -474,6 +491,8 @@ namespace WarframeMarketClient.Logic
 
         public void Dispose()
         {
+            SaveMsg saver = new SaveMsg();
+            saver.SaveMessages();
             setOffline();
             onlineChecker.Dispose();
             socket.Dispose();

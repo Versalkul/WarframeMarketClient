@@ -61,7 +61,7 @@ namespace WarframeMarketClient.Model
             }
             set
             {
-                if (value.Length < 10) return;
+                if (value==null||value.Length < 10) return;
                 #region clean old
                 if(Market!=null)Market.Dispose();
                 Market = null;
@@ -91,11 +91,13 @@ namespace WarframeMarketClient.Model
                     Username = verification.Item2;
                     Console.WriteLine("Logged in as " + Username);
                     if (OnlineChecker != null) OnlineChecker.Dispose();
+                    
                     Market = new MarketManager();
                     ValidationProgress = 100;
                     OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
+
 
                 });
             }
@@ -115,7 +117,7 @@ namespace WarframeMarketClient.Model
             set {
                 if (onlineState == value) return;
                 onlineState = value;
-                if (Market != null) Market.forceUserState();
+                if (Market != null) Market.UpdateState();
                 OnPropertyChanged(nameof(OnlineState));
                 }
         }

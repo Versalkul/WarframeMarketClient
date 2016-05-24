@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Threading;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -14,11 +15,8 @@ namespace WarframeMarketClient.ViewModel
     {
         #region TabProperties
 
-        object chatLock = new object();
-        public ChatViewModel()
-        {
-            BindingOperations.EnableCollectionSynchronization(ChatMessages, chatLock);
-        }
+        object chatLock = new object(); // seems not to work if not static 
+
 
         public override string DisplayName { get { return User.Name; } }
         
@@ -40,7 +38,7 @@ namespace WarframeMarketClient.ViewModel
             OnPropertyChanged(nameof(OnlineStateInfo));
         }
 
-        public ObservableCollection<ChatMessage> ChatMessages { get; set; }
+        public ObservableCollection<ChatMessage> ChatMessages { get; private set; }
 
         
         private string newMessage;
@@ -51,15 +49,28 @@ namespace WarframeMarketClient.ViewModel
             set { newMessage = value; OnPropertyChanged("NewMessage"); }
         }
         #endregion
-        
+
+        public ChatViewModel()
+        {
+            ChatMessages = new ObservableCollection<ChatMessage>();
+            InitLockCollection();
+        }
 
         public ChatViewModel(User u,IEnumerable<ChatMessage> messages)
         {
             User = u;
             ChatMessages = new ObservableCollection<ChatMessage>(messages);
-            
+            InitLockCollection();
         }
 
+        private void InitLockCollection()
+        {
+            DispatcherOperation col = System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                BindingOperations.EnableCollectionSynchronization(ChatMessages, chatLock);
+            }));
+            col.Task.GetAwaiter().GetResult(); // you shall not deadlock ^^
+        }
 
         public void sendMessage()
         {
