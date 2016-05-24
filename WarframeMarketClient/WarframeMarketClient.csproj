@@ -100,8 +100,6 @@
     <Compile Include="GUI\Converter\OnlineStateToColorConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToAlignmentConverter.cs" />
     <Compile Include="GUI\FancyTabControl.cs" />
-    <Compile Include="GUI\MainWindow.Border.cs" />
-    <Compile Include="GUI\MainWindow.WindowSizing.cs" />
     <Compile Include="GUI\Tabs\Chat\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
