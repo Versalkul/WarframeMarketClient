@@ -28,12 +28,22 @@ namespace WarframeMarketClient.Logic
         #endregion
 
         private Data dat = new Data();
-        private RegistryKey autoReg = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
-        private string FilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketOnlineController.BinaryConfig");
+        private RegistryKey autoReg;
+        private string folderPath;
+        private string filePath;
+
+        public SaveLoadFile()
+        {
+            autoReg = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
+            folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
+
+            filePath = Path.Combine(folderPath, "Config.BinaryConfig");
+            Directory.CreateDirectory(folderPath);
+        }
 
         public bool FileExists()
         {
-            return File.Exists(FilePath);
+            return File.Exists(filePath);
         }
 
         #region Integer
@@ -120,8 +130,8 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         public void Save()
         {
-
-            DeflateStream WriteStream = new DeflateStream(new FileStream(FilePath, FileMode.Create),CompressionLevel.Optimal); 
+           
+            GZipStream WriteStream = new GZipStream(new FileStream(filePath, FileMode.Create),CompressionLevel.Optimal); 
             BinaryFormatter saver = new BinaryFormatter();
             saver.Serialize(WriteStream, dat);
             WriteStream.Close();
@@ -138,19 +148,17 @@ namespace WarframeMarketClient.Logic
         public void Read()
         {
 
-            if (!File.Exists(FilePath)) return;
+            if (!File.Exists(filePath)) return;
             try
             {
-
-                DeflateStream ReadStream = new DeflateStream(new FileStream(FilePath, FileMode.Open), CompressionMode.Decompress);
+                GZipStream ReadStream = new GZipStream(new FileStream(filePath, FileMode.Open), CompressionMode.Decompress);
                 BinaryFormatter Loader = new BinaryFormatter();
                 dat = (Data)Loader.Deserialize(ReadStream);
                 ReadStream.Close();
             }
             catch(EndOfStreamException e)
             {
-                MessageBox.Show("Found and removed invalid config file");
-                File.Delete(FilePath);
+                File.Delete(filePath);
 
             }
 

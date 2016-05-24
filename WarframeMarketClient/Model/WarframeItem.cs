@@ -24,7 +24,6 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
-                Console.WriteLine("Name set to: "+value);
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;
@@ -219,6 +218,13 @@ namespace WarframeMarketClient.Model
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
+        public override bool Equals(object obj)
+        {
+            if (!(obj is WarframeItem)) return false;
+
+            WarframeItem item = obj as WarframeItem;
+            return item.Id == Id && item.Name == Name && item.Count == Count && item.Price==Price &&item.SellOffer==SellOffer;
+        }
         #endregion
 
         #region OnPropertyChanged

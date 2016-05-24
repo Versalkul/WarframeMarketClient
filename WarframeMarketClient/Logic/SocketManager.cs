@@ -25,7 +25,6 @@ namespace WarframeMarketClient.Logic
             socket.MessageReceived += new EventHandler<MessageReceivedEventArgs>(onMessage);
             socket.Closed += Socket_Closed;
 
-            // Timer checking Queue just to be sure ?
         }
 
 
@@ -57,13 +56,15 @@ namespace WarframeMarketClient.Logic
                 SocketMessage msg = JsonConvert.DeserializeObject<SocketMessage>(args.Message);
                 recievedPM.Invoke(this, new PmArgs(msg.data.text, msg.data.from));
             }
-            if (!args.Message.Contains("online_counter")) Console.WriteLine(args.Message);
+            Console.WriteLine(args.Message);
         }
 
 
         private void onOpen(object sender, EventArgs args)
         {
             //Console.WriteLine("Socket opened!");
+            lock (socket)
+            {
 
             if (jsonsToSend.Count != 0)
                 while (jsonsToSend.Count > 0)
@@ -74,16 +75,25 @@ namespace WarframeMarketClient.Logic
                 socket.Close();
                 //Console.WriteLine("And offline again");
             }
+            }
         }
 
         #endregion
+
 
         public void sendMessage(string to, string text)
         {
             sendJson("{\"destination\":\"user.send_message\",\"data\":{\"text\":\"" + text + "\",\"message_to\":\"" + to + "\"}}");
         }
 
+        public void EnsureOpenSocket()
+        {
+            lock (socket)
+            {
 
+            if (socket.State == WebSocketState.Closed||socket.State==WebSocketState.None) socket.Open();
+            }
+        }
 
         private void sendJson(string json)
         {
