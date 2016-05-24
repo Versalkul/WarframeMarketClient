@@ -32,7 +32,7 @@
             </DataGrid.RowValidationRules>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True" ElementStyle="{StaticResource dgTextBlockStyle}" />
                 <DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -56,7 +56,7 @@
                 <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" />
+                            <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" Style="{StaticResource dgTextBlockStyle}" Padding="7,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
