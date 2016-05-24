@@ -14,8 +14,8 @@
                 <!-- Accent and AppTheme setting -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Teal.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                
-                
+
+
                 <ResourceDictionary Source="GUI/Styles/GeneralStyles.xaml" />
                 <ResourceDictionary Source="GUI/Styles/ChatStyles.xaml" />
                 <ResourceDictionary Source="GUI/Styles/GridStyles.xaml" />

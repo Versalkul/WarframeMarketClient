@@ -56,7 +56,7 @@
                 <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" />
+                            <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" Style="{StaticResource dgTextBlockStyle}" Padding="7,0" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                     <DataGridTemplateColumn.CellEditingTemplate>
