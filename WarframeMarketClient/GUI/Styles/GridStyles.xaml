@@ -14,6 +14,9 @@
     <!-- 1 of many places where the validation errors are styled... welcome to WPF-hell -->
     <Style x:Key="dgTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Padding" Value="3,0" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="true">
@@ -24,14 +27,17 @@
         </Style.Triggers>
     </Style>
     <Style x:Key="dgTextBoxStyle" TargetType="{x:Type TextBox}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate>
-                    <Grid Margin="0,1,0,0" Background="{TemplateBinding Background}">
-                        <ScrollViewer Margin="0" Padding="0,0,0,2" x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
+                    <Grid Margin="0" Background="{TemplateBinding Background}">
+                        <ScrollViewer Margin="0" Padding="0" x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
                         <!-- Draws over the Path drawn by the DataGridCell to be able to highlight binding errors like 'asdf' for numbers -->
                         <Path Name="EditUnderline"
-                                    Margin="-3,12,-3,0"
+                                    Margin="-3,15,-3,0"
                                     Stroke="{StaticResource BorderBrush}"
                                     StrokeThickness="2"
                                     Stretch="Fill"
@@ -48,8 +54,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="Validation.ErrorTemplate" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
                 <Setter Property="ToolTip" 
@@ -96,20 +100,20 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type DataGridCell}">
-                            <Grid Margin="0">
-                                <Path Name="EditUnderline"
-                                      Margin="3,15,3,0"
+                            <Border Padding="5,10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                <Grid Margin="0">
+                                    <Path Name="EditUnderline"
+                                      Margin="-3,15,-3,0"
                                       Stroke="{StaticResource BorderBrush}"
                                       StrokeThickness="1"
                                       Stretch="Fill"
                                       Data="M0,0 L0,5 5,5 5,0"
                                       HorizontalAlignment="Center"
                                       Visibility="Hidden"
-                                      VerticalAlignment="Center" />
-                                <Border Padding="5,10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                                    <ContentPresenter Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Center" />
-                                </Border>
-                            </Grid>
+                                      VerticalAlignment="Center"/>
+                                    <ContentPresenter Margin="0" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="Stretch" />
+                                </Grid>
+                            </Border>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
                                     <Setter Property="Background" Value="Transparent" />
@@ -117,6 +121,7 @@
                                     <Setter Property="BorderBrush" Value="Transparent" />
                                 </Trigger>
                                 <Trigger Property="IsEditing" Value="True">
+                                    <Setter TargetName="EditUnderline" Property="StrokeThickness" Value="2" />
                                 </Trigger>
                                 <DataTrigger Value="True">
                                     <DataTrigger.Binding>

@@ -32,7 +32,7 @@
             </DataGrid.RowValidationRules>
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True"/>
+                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True" ElementStyle="{StaticResource dgTextBlockStyle}" />
                 <DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
