@@ -120,8 +120,8 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         public void Save()
         {
-           
-            GZipStream WriteStream = new GZipStream(new FileStream(FilePath, FileMode.Create),CompressionLevel.Optimal); 
+
+            DeflateStream WriteStream = new DeflateStream(new FileStream(FilePath, FileMode.Create),CompressionLevel.Optimal); 
             BinaryFormatter saver = new BinaryFormatter();
             saver.Serialize(WriteStream, dat);
             WriteStream.Close();
@@ -141,7 +141,8 @@ namespace WarframeMarketClient.Logic
             if (!File.Exists(FilePath)) return;
             try
             {
-                GZipStream ReadStream = new GZipStream(new FileStream(FilePath, FileMode.Open), CompressionMode.Decompress);
+
+                DeflateStream ReadStream = new DeflateStream(new FileStream(FilePath, FileMode.Open), CompressionMode.Decompress);
                 BinaryFormatter Loader = new BinaryFormatter();
                 dat = (Data)Loader.Deserialize(ReadStream);
                 ReadStream.Close();
