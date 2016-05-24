@@ -21,7 +21,6 @@ namespace WarframeMarketClient.GUI
             this.DataContext = ApplicationState.getInstance();
             InitializeComponent();
             this.SourceInitialized += new EventHandler(Window1_SourceInitialized);
-            Console.WriteLine("To Tray Main" + toTray);
         }
 
         void Window1_SourceInitialized(object sender, EventArgs e)

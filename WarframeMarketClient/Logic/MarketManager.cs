@@ -43,19 +43,26 @@ namespace WarframeMarketClient.Logic
                 ()=>
                 {
                     if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
-                     ApplicationState.getInstance().ValidationProgress+=10;
+                     ApplicationState.getInstance().ValidationProgress+=15;
                 },
                 ()=>
                 {
-                    if(ApplicationState.getInstance().Chats.Any()) CheckAndUpdateChats();
+                    if(ApplicationState.getInstance().Chats.Any())
+                    {
+                        CheckAndUpdateChats();
+                        appState.ValidationProgress+=20;
+                    }
                     else
                     {
+                        appState.ValidationProgress+=10;
                     List<string> users = GetChatUser();
+                        int valPerUser =30/users.Count;
                     result = new ViewModel.ChatViewModel[users.Count];
                     Parallel.For(0, users.Count, (x) =>
                     {
                         List<ChatMessage> msg = GetMessages(users[x]);
                         result[x] = (new ViewModel.ChatViewModel(new User(users[x]), msg));
+                         appState.ValidationProgress+=valPerUser;
                     });
                         foreach(ViewModel.ChatViewModel chat in result)
                         {
@@ -67,13 +74,11 @@ namespace WarframeMarketClient.Logic
                 ()=>
                 {
                      offers = getOffers();
-                    ApplicationState.getInstance().ValidationProgress+=10;
+                    ApplicationState.getInstance().ValidationProgress+=20;
                 }
 
             };
-
             Parallel.Invoke(initActions);
-
             foreach (WarframeItem item in offers)
             {
 
@@ -82,6 +87,7 @@ namespace WarframeMarketClient.Logic
 
             }
 
+            
 
             Console.WriteLine("Done paralell init");
 
@@ -103,7 +109,7 @@ namespace WarframeMarketClient.Logic
         {
             (new Thread(() => ForceUserStateSynchronous())).Start();
             (new Thread(() => EnsureSocketState())).Start();
-            (new Thread(() => CheckAndUpdateChats())).Start();
+            (new Thread(() => CheckAndUpdateChats())).Start(); // really ? maybe just 1/minute ?
             // update Listings
         }
 
@@ -214,7 +220,7 @@ namespace WarframeMarketClient.Logic
 
         #region PM
 
-        public void CheckAndUpdateChats()
+        public void CheckAndUpdateChats() // if chat in app incorrect correct it (user send a msg via website)
         {
 
             if (ApplicationState.getInstance().Market==null) return;

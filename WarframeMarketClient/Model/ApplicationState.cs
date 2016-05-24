@@ -81,7 +81,7 @@ namespace WarframeMarketClient.Model
                 {
                     
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
-                    ValidationProgress += 10;
+                    ValidationProgress += 20;
                     if (!verification.Item1)
                     {
                         Username = "";

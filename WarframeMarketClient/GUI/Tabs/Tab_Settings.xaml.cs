@@ -82,7 +82,6 @@ namespace WarframeMarketClient.GUI.Tabs
             }
 
             ApplicationState.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(ApplPropChanged);
-            Console.WriteLine("To Tray Settings"+ToTray);
         }
 
         private void ApplPropChanged(object o, EventArgs args)
@@ -94,7 +93,6 @@ namespace WarframeMarketClient.GUI.Tabs
         {
 
             if (ApplicationState.getInstance().IsValid) ApplicationState.getInstance().Market.Dispose();
-            Console.WriteLine($"new token is {SessionTokenInput}");
             ApplicationState.getInstance().SessionToken = SessionTokenInput;
             
         }

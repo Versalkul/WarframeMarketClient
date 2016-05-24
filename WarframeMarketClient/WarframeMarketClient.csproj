@@ -94,9 +94,6 @@
     <Compile Include="GUI\FancyTabControl.cs" />
     <Compile Include="GUI\MainWindow.Border.cs" />
     <Compile Include="GUI\MainWindow.WindowSizing.cs" />
-    <Compile Include="GUI\Spinner.xaml.cs">
-      <DependentUpon>Spinner.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Tabs\Chat\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>
@@ -115,6 +112,7 @@
     </Compile>
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\SaveMsg.cs" />
+    <Compile Include="ViewModel\Settings.cs" />
     <Compile Include="ViewModel\Validation\ItemValidation.cs" />
     <Compile Include="Model\OnlineInfo.cs" />
     <Compile Include="ViewModel\ChatTabContentViewModel.cs" />
@@ -131,10 +129,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="GUI\Spinner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="GUI\Styles\ChatStyles.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
