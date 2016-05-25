@@ -53,7 +53,6 @@ namespace WarframeMarketClient.Logic
                         response.Close();
                     }
                 }
-            
             }
             return null;
 

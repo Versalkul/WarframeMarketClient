@@ -4,8 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WarframeMarketClient"
-               xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
+             xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
+             x:Name="self"
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <converter:ValidatingToVisibilityConverter x:Key="ValidatingToVisibilityConverter"/>
@@ -26,7 +27,7 @@
 
         <StackPanel  Grid.Row="2" Margin="20,10">
             <Label x:Name="label" Content="Session Token:"/>
-            <TextBox x:Name="tokenBox" Margin="0,10" Text="{Binding SessionTokenInput, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+            <TextBox x:Name="tokenBox" Margin="0,10"  Text="{Binding ElementName=self, Path=SessionTokenInput, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
             <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource ValidatingToVisibilityConverter}, ConverterParameter=B}"/>
             <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource ValidatingToVisibilityConverter}, ConverterParameter=P}"/>
         </StackPanel>

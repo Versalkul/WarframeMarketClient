@@ -27,6 +27,7 @@ namespace WarframeMarketClient.Model
                 instance = new ApplicationState();
             }
 
+
             return instance;
         }
 
@@ -122,7 +123,13 @@ namespace WarframeMarketClient.Model
                 }
         }
 
-        public OnlineState DefaultState { get; set; } = OnlineState.OFFLINE;
+        private OnlineState defaultState = OnlineState.OFFLINE;
+
+        public OnlineState DefaultState
+        {
+            get { return defaultState; }
+            set { defaultState = value; OnPropertyChanged(nameof(DefaultState)); if (OnlineState == OnlineState.ONLINE || OnlineState == OnlineState.OFFLINE) OnlineState = DefaultState; }
+        }
 
 
 
@@ -177,6 +184,7 @@ namespace WarframeMarketClient.Model
         #endregion
         public RunsGameChecker OnlineChecker { get; private set; }
 
+        public Settings Settings { get; set; } = new Settings();
 
         #endregion
 

@@ -25,7 +25,7 @@ namespace WarframeMarketClient.GUI
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            if (WindowState == WindowState.Minimized && this.IsMouseOver && TabSettings.ToTray)
+            if (WindowState == WindowState.Minimized && this.IsMouseOver && ApplicationState.getInstance().Settings.ToTray)
             {
                 Hide();
                 TrayIcon.Visibility = Visibility.Visible;
