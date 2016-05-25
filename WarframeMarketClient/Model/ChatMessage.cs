@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    public class ChatMessage
+    public class ChatMessage: IEquatable<ChatMessage>
     {
 
         public ChatMessage()
@@ -78,6 +78,11 @@ namespace WarframeMarketClient.Model
             {
                 return String.Format("{0:D2}:{1:D2}", Time.Hour, Time.Minute);
             }
+        }
+
+        public bool Equals(ChatMessage other)
+        {
+            return other.Message == Message && other.MessageFrom == MessageFrom &&(other.Time-Time).Duration().Minutes<=1 ; // time socket time may differ a few seconds from server time (if msg was received via socket)
         }
 
         #endregion

@@ -10,7 +10,7 @@ using System.Windows.Controls;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject 
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject,IEquatable<WarframeItem>
     {
         public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
 
@@ -212,19 +212,17 @@ namespace WarframeMarketClient.Model
 
         public void RemoveItem()
         {
-            Console.WriteLine("Remove!");
             if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().Market.RemoveItem(this);
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
-        public override bool Equals(object obj)
-        {
-            if (!(obj is WarframeItem)) return false;
 
-            WarframeItem item = obj as WarframeItem;
-            return item.Id == Id && item.Name == Name && item.Count == Count && item.Price==Price &&item.SellOffer==SellOffer;
+        public bool Equals(WarframeItem item)
+        {
+            return item.Id == Id && item.Name == Name && item.Count == Count && item.Price == Price && item.SellOffer == SellOffer;
         }
+
         #endregion
 
         #region OnPropertyChanged
@@ -236,6 +234,8 @@ namespace WarframeMarketClient.Model
             if (handler != null)
                 handler(this, new PropertyChangedEventArgs(property));
         }
+
+
         #endregion
     }
 }

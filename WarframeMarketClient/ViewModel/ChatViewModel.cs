@@ -12,7 +12,7 @@ using WarframeMarketClient.Extensions;
 
 namespace WarframeMarketClient.ViewModel
 {
-    public class ChatViewModel : ChatTabContentViewModel
+    public class ChatViewModel : ChatTabContentViewModel,IEquatable<ChatViewModel>
     {
         #region TabProperties
 
@@ -88,10 +88,10 @@ namespace WarframeMarketClient.ViewModel
             Console.WriteLine("Close Chat with "+User.Name);
         }
 
-        public override bool Equals(object obj)
-        {
-            return base.Equals(obj);
-        }
 
+        public bool Equals(ChatViewModel chat)
+        {
+            return chat.User.Name == User.Name && chat.ChatMessages.SequenceEqual(ChatMessages);
+        }
     }
 }
