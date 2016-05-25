@@ -30,7 +30,8 @@ namespace WarframeMarketClient.Extensions
                 if (!me[i].Equals(other[i])) return false;
             }
             return true;
-
         }
+
+
     }
 }

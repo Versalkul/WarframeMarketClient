@@ -160,44 +160,55 @@ namespace WarframeMarketClient.Logic
             if (state == OnlineState.ONLINE || state == OnlineState.INGAME) socket.EnsureOpenSocket();
         }
 
-        public OnlineState getStatusOnSite(string username)
+        public Dictionary<string,OnlineState> getStatusOnSite(List<string> users)
         {
+
             lock (userStatusCache)
             {
+                Dictionary<string, OnlineState> result = new Dictionary<string, OnlineState>(users.Count);
+                users.ForEach(x => result.Add(x, OnlineState.ERROR));
+                List<string> userCached = users.Where((username) => userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 30).ToList();
+                List<string> userCheckSite = users.Except(userCached).ToList();
 
-                if (userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 30)
+                userCached.ForEach(s => result[s] = userStatusCache[s].Item2);
+
+                if (userCheckSite.Count == 0) return result;
+
+                string param = JsonConvert.SerializeObject(userCheckSite);
+
+                using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users={param}"))
                 {
-                    return userStatusCache[username].Item2;
-                }
 
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users=[\"{username}\"]"))
-            {
-                if (response == null || response.StatusCode != HttpStatusCode.OK) return OnlineState.ERROR;
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-                    string json = reader.ReadToEnd();
-
+                    if (response == null || response.StatusCode != HttpStatusCode.OK) return result;
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    {
+                        string json = reader.ReadToEnd();
                         JsonFrame<List<OnlineInfo>> frame = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json);
-                        if (!frame.response.Any()) return OnlineState.ERROR;
+                        if (!frame.response.Any()||frame.code!=200) return result;
 
-                    OnlineInfo info =frame.response.First();
+                        foreach (OnlineInfo info in frame.response)
+                        {
 
-                    OnlineState ret;
+                            OnlineState state = info.Online ?
+                                info.Ingame ? OnlineState.INGAME : OnlineState.ONLINE
+                                : OnlineState.OFFLINE;
+                            result[info.Username] = state;
+                            if (!userStatusCache.ContainsKey(info.Username)) userStatusCache.Add(info.Username, new Tuple<DateTime, OnlineState>(DateTime.Now, state));
+                            else userStatusCache[info.Username] = new Tuple<DateTime, OnlineState>(DateTime.Now, state);
+                        }
 
-                    ret= info.Online ?
-                            info.Ingame ? OnlineState.INGAME : OnlineState.ONLINE
-                            : OnlineState.OFFLINE;
-
-                    if (!userStatusCache.ContainsKey(username)) userStatusCache.Add(username, new Tuple<DateTime, OnlineState>(DateTime.Now, ret));
-                    else userStatusCache[username] = new Tuple<DateTime, OnlineState>(DateTime.Now, ret);
-                    return ret;
-
-
+                    }
                 }
-
+                return result;
             }
 
-            }
+        }
+
+        public OnlineState getStatusOnSite(string username)
+        {
+
+            return getStatusOnSite(new List<string>() { username }).Values.First();
+           
         }
 
         public void setIngame()
@@ -234,7 +245,7 @@ namespace WarframeMarketClient.Logic
                 if (!ApplicationState.getInstance().Chats.ToList().Exists(x => x.User.Name == user))
                 {
                     List<ChatMessage> msg = GetMessages(user); // the init with the chat messages is part of the forech below
-                    ApplicationState.getInstance().Chats.Insert(0, new ChatViewModel(new User(user), msg));
+                    ApplicationState.getInstance().Chats.Insert(0, new ChatViewModel(new User(user), msg)); 
                     ApplicationState.getInstance().Chats.First().HasInfo = true;
                     elem--;
                 }
@@ -261,17 +272,13 @@ namespace WarframeMarketClient.Logic
                 if (first) // check for new chats
                 {
                     List<ChatMessage> msg = GetMessages(chatView.User.Name);
-                    if (msg.Count == chatView.ChatMessages.Count) first = false; // nothing new
+                    if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
 
                     else 
                     {
 
-                        msg.RemoveRange(0, ApplicationState.getInstance().Chats.Count-1);
-
-                        foreach(ChatMessage chat in msg)
-                        {
-                            chatView.ChatMessages.Add(chat);
-                        }
+                        chatView.ChatMessages.Clear(); // not nice but working 
+                        msg.ForEach(x => chatView.ChatMessages.Add(x));
                    }
 
                 }
@@ -283,7 +290,7 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        private void AddNewChat(object o, PmArgs args)
+        private void AddNewChat(object o, PmArgs args) // checkAndUpdate ?
         {
 
             ApplicationState appState = ApplicationState.getInstance();
