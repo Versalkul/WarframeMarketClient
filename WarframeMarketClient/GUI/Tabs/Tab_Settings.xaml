@@ -23,6 +23,7 @@
             <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
             <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
             <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+            <CheckBox x:Name="limitAutocomplete" Margin="0,10" Content="No Autocomplete-Scrollbar" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
         </StackPanel>
 
         <StackPanel  Grid.Row="2" Margin="20,10">
