@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converter:WarframeItemToVisibilityConverter x:Key="WarframeItemToVisibilityConverter"/>
         <converter:ModRankToStringConverter x:Key="ModRankToStringConverter"/>
+        <converter:ModRankToBooleanConverter x:Key="ModRankToBooleanConverter"/>
     </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
         <DataGrid
@@ -62,7 +63,8 @@
                     <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <ComboBox
-                                IsEditable="False" 
+                                IsEditable="False"
+                                IsEnabled="{Binding Path=ModRank, Converter={StaticResource ModRankToBooleanConverter}}"
                                 SelectedIndex="{Binding Path=ModRank}"
                                 ItemsSource="{Binding Path=ModRanks}"
                                 Loaded="EditView_Loaded" />

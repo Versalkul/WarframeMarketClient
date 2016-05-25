@@ -17,15 +17,7 @@
     <SolidColorBrush x:Key="SelectionStrongBrush" Color="{StaticResource SelectionStrongColor}"/>
 
 
-    <LinearGradientBrush x:Key="TabItemPanel_BackgroundBrush" StartPoint="0,0" EndPoint="1,0">
-        <LinearGradientBrush.GradientStops>
-            <GradientStop Offset="0.99" Color="Transparent"/>
-            <GradientStop Offset="0.995" Color="{StaticResource BorderColor}"/>
-        </LinearGradientBrush.GradientStops>
-    </LinearGradientBrush>
 
-
-    
 
     <Style TargetType="gui:FancyTabControl">
         <Style.Resources>
@@ -51,7 +43,8 @@
                                       Data="M0,0 L-10,10 0,20"
                                       HorizontalAlignment="Right"
                                       Visibility="Hidden"
-                                      VerticalAlignment="Center" />
+                                      VerticalAlignment="Center"
+                                      SnapsToDevicePixels="True" />
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
@@ -103,27 +96,27 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="gui:FancyTabControl">
-                    <Grid>
+                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
 
                         <!-- Tabs -->
-                        <Border Background="{StaticResource TabItemPanel_BackgroundBrush}" Padding="0" Margin="0">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
 
-                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden">
-                                    <TabPanel IsItemsHost="True"/>
-                                </ScrollViewer>
+                            <Border Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="{StaticResource BorderBrush}" />
 
-                                <ContentPresenter ContentSource="BelowTabsContent" Grid.Row="1" Margin="0"/>
-                            </Grid>
-                        </Border>
+                            <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden" Margin="0" Padding="0">
+                                <TabPanel IsItemsHost="True" Margin="0"/>
+                            </ScrollViewer>
+
+                            <ContentPresenter ContentSource="BelowTabsContent" Grid.Row="1" Margin="0"/>
+                        </Grid>
 
                         <!-- Content -->
                         <Border BorderThickness="0"
