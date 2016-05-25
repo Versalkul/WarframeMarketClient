@@ -45,7 +45,7 @@ namespace WarframeMarketClient.GUI.Tabs
                 return new AutoCompleteFilterPredicate<object>((s, e) =>
                 {
                     // returns only 5 items
-                    return (e as string).ToLower().Contains(s.ToLower()) && AutoCItemCount++ < 5;
+                    return (e as string).ToLower().Contains(s.ToLower()) && (AutoCItemCount++ < 7||!ApplicationState.getInstance().Settings.LimitAutoComplete);
                 });
             }
         }
