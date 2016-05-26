@@ -113,7 +113,7 @@ namespace WarframeMarketClient.GUI.Tabs
         /// <param name="e"></param>
         private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            _dispatcher.InvokeAsync(new Action(() =>
+            _dispatcher.Invoke(new Action(() =>
             {
                 
                 foreach (ChatViewModel c in Chats.ToList())

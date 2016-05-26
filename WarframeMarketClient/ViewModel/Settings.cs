@@ -42,13 +42,6 @@ namespace WarframeMarketClient.ViewModel
             set { autostart = value; OnPropertyChanged(nameof(Autostart)); SaveSettings(); }
         }
 
-        private bool startMinimized;
-
-        public bool StartMinimized
-        {
-            get { return startMinimized; }
-            set { startMinimized = value; OnPropertyChanged(nameof(StartMinimized)); SaveSettings(); }
-        }
 
         private bool limitAutoComplete;
 
@@ -72,7 +65,6 @@ namespace WarframeMarketClient.ViewModel
             SaveLoadFile saver = new SaveLoadFile();
             saver.autostart(Autostart);
             saver.saveBool(nameof(ToTray),ToTray);
-            saver.saveBool(nameof(StartMinimized), StartMinimized);
             saver.saveBool(nameof(LimitAutoComplete), LimitAutoComplete);
             saver.saveBool(nameof(DefaultOnline), DefaultOnline);
             saver.saveString("Token",ApplicationState.getInstance().SessionToken);
@@ -87,7 +79,6 @@ namespace WarframeMarketClient.ViewModel
             Autostart = loader.isAutostart();
             if (Autostart) loader.updateAutostart();
             ToTray = loader.loadBool(nameof(ToTray));
-            StartMinimized = loader.loadBool(nameof(StartMinimized));
             LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
             DefaultOnline = loader.loadBool(nameof(DefaultOnline));
             ApplicationState.getInstance().SessionToken = loader.loadString("Token");
