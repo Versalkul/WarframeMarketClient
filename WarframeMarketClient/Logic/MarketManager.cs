@@ -263,6 +263,8 @@ namespace WarframeMarketClient.Logic
                     continue;
                 }
 
+                if (chatView.ChatMessages.Count > 0) continue;
+
                 if (!users.Contains(chatView.User.Name))  // user closed chat
                 {
                    closedChats.Add(chatView); // cant remove elements in a foreach loop will do that later 
@@ -273,7 +275,6 @@ namespace WarframeMarketClient.Logic
                 {
                     List<ChatMessage> msg = GetMessages(chatView.User.Name);
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
-
                     else 
                     {
 
@@ -284,8 +285,6 @@ namespace WarframeMarketClient.Logic
                 }
 
             }
-            
-
            closedChats.ForEach(x => ApplicationState.getInstance().Chats.Remove(x));
 
         }
@@ -324,8 +323,8 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string json = reader.ReadToEnd();
+                    if (!json.Contains("200")) return new List<ChatMessage>();
                     JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
-                    if (result.code != 200) return new List<ChatMessage>();
                     result.response.ForEach(x => x.Time = x.Time + timeOffset);
 
                     return result.response;

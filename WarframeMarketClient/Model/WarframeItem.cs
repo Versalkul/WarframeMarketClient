@@ -48,7 +48,7 @@ namespace WarframeMarketClient.Model
             set { count = value; }
         }
 
-        public int ModRank { get; set; }
+        public int ModRank { get; set; } = -1;
         public bool SellOffer { get; set; }
         public string Id { get; set; }
         #endregion
