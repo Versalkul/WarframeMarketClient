@@ -13,6 +13,9 @@ namespace WarframeMarketClient.Logic
     {
         WebSocket socket;
         public event EventHandler<PmArgs> recievedPM;
+
+        public bool SocketWasClosed { get; set; } = false;
+
         private Queue<string> jsonsToSend = new Queue<string>(5);
 
         public SocketManager()
@@ -37,6 +40,7 @@ namespace WarframeMarketClient.Logic
         {
 
             Console.WriteLine("CLOSED");
+            SocketWasClosed = true;
 
         }
 
@@ -62,7 +66,7 @@ namespace WarframeMarketClient.Logic
 
         private void onOpen(object sender, EventArgs args)
         {
-            //Console.WriteLine("Socket opened!");
+            SocketWasClosed = true;
             lock (socket)
             {
 

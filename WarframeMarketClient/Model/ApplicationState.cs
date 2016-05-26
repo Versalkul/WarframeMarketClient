@@ -51,6 +51,10 @@ namespace WarframeMarketClient.Model
 
         #region Properties
 
+        private event EventHandler<List<ChatMessage>> newMessage;
+
+        public event EventHandler<List<ChatMessage>> NewMessage { add { newMessage += value; } remove { newMessage -= value; } }
+
         private string sessionToken="";
 
         public string SessionToken
@@ -198,6 +202,11 @@ namespace WarframeMarketClient.Model
             }
             )).Start();
 
+        }
+
+        public void InvokeNewMessage(object o,List<ChatMessage> msg)
+        {
+            newMessage?.Invoke(o, msg);
         }
 
 

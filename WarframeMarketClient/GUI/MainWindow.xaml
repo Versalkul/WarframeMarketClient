@@ -21,7 +21,7 @@
 
 
     <Window.Resources>
-
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
 
         
@@ -72,7 +72,7 @@
             </TabItem>
         </local:FancyTabControl>
 
-        <tb:TaskbarIcon x:Name="TrayIcon" TrayMouseDoubleClick="onTrayClick" ToolTipText="Doubleclick to Mazimize" />
+        <tb:TaskbarIcon x:Name="TrayIcon" TrayMouseDoubleClick="onTrayClick" ToolTipText="Doubleclick to Mazimize" Visibility="{Binding Settings.ToTray,Converter={StaticResource BooleanToVisibilityConverter}}"  />
 
     </Grid>
 </Metro:MetroWindow>

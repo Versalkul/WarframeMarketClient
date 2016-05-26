@@ -91,6 +91,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\ListFunctions.cs" />
+    <Compile Include="Extensions\OnlineStateFunctions.cs" />
     <Compile Include="GUI\Converter\BoolToNegatedBoolConverter.cs" />
     <Compile Include="GUI\Converter\ErrorPropertiesAndNameToHasErrorConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToColorConverter.cs" />
@@ -222,6 +223,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMsg.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\packages\Fody.1.28.3\build\Fody.targets')" />

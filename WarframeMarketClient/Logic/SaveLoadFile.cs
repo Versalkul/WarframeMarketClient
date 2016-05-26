@@ -210,6 +210,25 @@ namespace WarframeMarketClient.Logic
 
         #endregion autostart
 
+        #region extractFromAssembly
+
+        public void ExtractStandartSounds()
+        {
+
+            string newMsgPath = Path.Combine(folderPath, "NewMessage.wav");
+            if (!File.Exists(newMsgPath))
+            {
+                using (FileStream stream = new FileStream(newMsgPath, FileMode.Create))
+                {
+                    Properties.Resources.NewMsg.CopyTo(stream);
+
+                }
+            }
+
+        }
+
+        #endregion
+
     }
 
 

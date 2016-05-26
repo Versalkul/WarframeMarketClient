@@ -188,8 +188,11 @@ namespace WarframeMarketClient.Model
 
             if (messageBoxResult == MessageBoxResult.Yes)
             {
-                ApplicationState.getInstance().Market.AddItem(this);
-                ApplicationState.getInstance().Market.UpdateListing();
+                ApplicationState.getInstance().asynchRun(() =>
+                {
+                    ApplicationState.getInstance().Market.AddItem(this);
+                    ApplicationState.getInstance().Market.UpdateListing();
+                });
                 Console.WriteLine("Added!");
             }
 

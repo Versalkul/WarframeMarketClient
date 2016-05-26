@@ -52,9 +52,16 @@ namespace WarframeMarketClient.ViewModel
         }
 
         public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
-        
+
         #endregion
 
+        private string choosenSoundFile="NewMessage.wav";
+
+        public string ChoosenSoundFile
+        {
+            get { return choosenSoundFile; }
+            set { choosenSoundFile = value; }
+        }
 
 
         public void SaveSettings() // also SettingsChanged

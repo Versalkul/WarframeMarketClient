@@ -11,11 +11,14 @@ using System.Timers;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 using Timer = System.Timers.Timer;
+using WarframeMarketClient.Extensions;
 
 namespace WarframeMarketClient.Logic
 {
     public class MarketManager : IDisposable
     {
+
+        private bool diposed = false;
 
         SocketManager socket;
         Timer onlineChecker;
@@ -23,8 +26,13 @@ namespace WarframeMarketClient.Logic
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
 
+
         public MarketManager()
         {
+
+
+            //test
+
 
             SaveMsg msgSave = new SaveMsg();
             msgSave.loadMessages().ForEach(x => ApplicationState.getInstance().Chats.Add(x));
@@ -103,21 +111,31 @@ namespace WarframeMarketClient.Logic
 
         #region ThreadStuff
 
-
+        private int timerCount = 0;
         private void StateChecker(object o, ElapsedEventArgs args)
         {
+            timerCount++;
+            if ((socket.SocketWasClosed||timerCount%5==4)&&ApplicationState.getInstance().OnlineState.IsOnline()) // check for messages every two min 
+            {
+                (new Thread(() => CheckAndUpdateChats())).Start();
+                socket.SocketWasClosed = false;
+            }
+            
             (new Thread(() => ForceUserStateSynchronous())).Start();
             (new Thread(() => EnsureSocketState())).Start();
-            (new Thread(() => CheckAndUpdateChats())).Start(); // really ? maybe just 1/minute ?
-            // update Listings
+            if(timerCount%5==3)(new Thread(() => UpdateListing())).Start();
         }
 
 
 
         public void UpdateState() // change to parralell invoke
         {
+            if (socket.SocketWasClosed&&ApplicationState.getInstance().OnlineState.IsOnline())
+            {
+                (new Thread(() => CheckAndUpdateChats())).Start();
+                socket.SocketWasClosed = false;
+            }
             (new Thread(() => ForceUserStateSynchronous())).Start();
-            (new Thread(() => CheckAndUpdateChats())).Start();
             (new Thread(() => EnsureSocketState())).Start();
         }
 
@@ -125,6 +143,7 @@ namespace WarframeMarketClient.Logic
         {
 
             OnlineState actualState = getStatusOnSite(ApplicationState.getInstance().Username);
+            if (!onlineChecker.Enabled&& ApplicationState.getInstance().OnlineState!=OnlineState.DISABLED) onlineChecker.Enabled = true;
             if (actualState != ApplicationState.getInstance().OnlineState)
             {
                 switch (ApplicationState.getInstance().OnlineState)
@@ -139,7 +158,7 @@ namespace WarframeMarketClient.Logic
                         setIngame();
                         break;
                     case OnlineState.DISABLED:
-                        setOffline(); // just maybe also stop timer
+                        onlineChecker.Enabled = false;
                         break;
                     default:
                         break;
@@ -157,7 +176,7 @@ namespace WarframeMarketClient.Logic
         public void EnsureSocketState()
         {
             OnlineState state = ApplicationState.getInstance().OnlineState;
-            if (state == OnlineState.ONLINE || state == OnlineState.INGAME) socket.EnsureOpenSocket();
+            if (state.IsOnline()) socket.EnsureOpenSocket();
         }
 
         public Dictionary<string,OnlineState> getStatusOnSite(List<string> users)
@@ -243,8 +262,10 @@ namespace WarframeMarketClient.Logic
                 if (!ApplicationState.getInstance().Chats.ToList().Exists(x => x.User.Name == user))
                 {
                     List<ChatMessage> msg = GetMessages(user); // the init with the chat messages is part of the forech below
-                    ApplicationState.getInstance().Chats.Insert(0, new ChatViewModel(new User(user), msg)); 
-                    ApplicationState.getInstance().Chats.First().HasInfo = true;
+                    ChatViewModel chat = new ChatViewModel(new User(user), msg);
+                    chat.HasInfo = true;
+                    ApplicationState.getInstance().Chats.Insert(0,chat);
+                    ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
                     elem--;
                 }
 
@@ -275,9 +296,14 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else 
                     {
-
+                        List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
                         chatView.ChatMessages.Clear(); // not nice but working 
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
+                        if (newMsg.Any())
+                        {
+                            chatView.HasInfo = true;
+                            ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
+                        }
                    }
 
                 }
@@ -287,7 +313,7 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        private void AddNewChat(object o, PmArgs args) // checkAndUpdate ?
+        private void AddNewChat(object o, PmArgs args) 
         {
 
             ApplicationState appState = ApplicationState.getInstance();
@@ -304,10 +330,14 @@ namespace WarframeMarketClient.Logic
             if (chatList.Any())
             {
                 chatList.First().ChatMessages.Add(chatMsg);
+                chatList.First().HasInfo = true;
             }
             else
             {
-                appState.Chats.Insert (0,new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg }));
+                ChatViewModel chat = new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg });
+                ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
+                chat.HasInfo = true;
+                appState.Chats.Insert (0,chat);
             }
             // set Has Info
         }
@@ -396,13 +426,13 @@ namespace WarframeMarketClient.Logic
 
                 }
             }
-            foreach(WarframeItem item in ApplicationState.getInstance().BuyItems.ToList().Where(x=>x.Id!="")) // indirect clone here 
+            foreach(WarframeItem item in ApplicationState.getInstance().BuyItems.ToList().Where(x=>x.Id!=""))
             {
 
                 if (!itemsAll.Contains(item)) ApplicationState.getInstance().BuyItems.Remove(item);
 
             }
-            foreach (WarframeItem item in ApplicationState.getInstance().SellItems.Where(x => x.Id != "")) // indirect clone here 
+            foreach (WarframeItem item in ApplicationState.getInstance().SellItems.Where(x => x.Id != "")) 
             {
 
                 if (!itemsAll.Contains(item)) ApplicationState.getInstance().SellItems.ToList().Remove(item);
@@ -498,13 +528,22 @@ namespace WarframeMarketClient.Logic
             return map;
         }
 
+
+
         public void Dispose()
         {
+            this.diposed = true;
             SaveMsg saver = new SaveMsg();
             saver.SaveMessages();
             setOffline();
             onlineChecker.Dispose();
             socket.Dispose();
+        }
+
+
+        ~MarketManager() // finalizer Garbage Collector calls it when collecting the old object
+        {
+           if(!this.diposed) Dispose();
         }
     }
 }

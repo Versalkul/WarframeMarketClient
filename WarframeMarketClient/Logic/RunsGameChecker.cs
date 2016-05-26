@@ -52,6 +52,7 @@ namespace WarframeMarketClient.Logic
 
             if (!worker.Enabled)
             {
+                ApplicationState.getInstance().Market.setOffline();
                 ApplicationState.getInstance().OnlineState = OnlineState.DISABLED;
             }
             else
