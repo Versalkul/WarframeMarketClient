@@ -233,8 +233,6 @@ namespace WarframeMarketClient.Logic
         public void CheckAndUpdateChats() // if chat in app incorrect correct it (user send a msg via website)
         {
 
-            if (ApplicationState.getInstance().Market==null) return;
-
             List<string> users = GetChatUser();
             bool first = true;
             int elem = 0; // what elem am i looking at relevant for 2. foreach loop
@@ -263,7 +261,7 @@ namespace WarframeMarketClient.Logic
                     continue;
                 }
 
-                if (chatView.ChatMessages.Count > 0) continue;
+                if (chatView.ChatMessages.Count == 0) continue;
 
                 if (!users.Contains(chatView.User.Name))  // user closed chat
                 {
