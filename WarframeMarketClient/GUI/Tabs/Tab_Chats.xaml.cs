@@ -76,7 +76,26 @@ namespace WarframeMarketClient.GUI.Tabs
             newChat = new ChatNewViewModel(this);
             InitializeComponent();
             _dispatcher = Dispatcher.CurrentDispatcher;
+            chatTabs.SelectionChanged += tabChanged;
+            IsVisibleChanged += Tab_Chats_IsVisibleChanged;
         }
+
+        private void Tab_Chats_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(IsVisible)
+                tabChanged(null, null);
+
+        }
+        private void tabChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (chatTabs.SelectedIndex > 0)
+                Chats[chatTabs.SelectedIndex - 1].HasInfo = false;
+            // Make sure HasInfo is correct
+            HasInfo = false;
+            foreach (ChatViewModel v in Chats)
+                HasInfo = HasInfo || v.HasInfo;
+        }
+
 
 
         #region Chat Events
@@ -143,10 +162,18 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void chatHasInfo(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == "HasInfo")
+            if (args.PropertyName == "HasInfo" && sender is ChatViewModel && (sender as ChatViewModel).HasInfo)
+            {
+                int tIndex = Chats.IndexOf((sender as ChatViewModel)) + 1;
+                if (chatTabs.SelectedIndex == tIndex && IsVisible) // if currently in foreground
+                {
+                    (sender as ChatViewModel).HasInfo = false;
+                    return;
+                }
                 HasInfo = HasInfo || (sender as ChatViewModel).HasInfo;
-            if(!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
-                chatTabs.SelectedIndex = Chats.IndexOf((sender as ChatViewModel))+1;
+                if (!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
+                    chatTabs.SelectedIndex = tIndex;
+            }
         }
         #endregion
 
