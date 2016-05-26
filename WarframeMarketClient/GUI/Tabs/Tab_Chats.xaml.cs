@@ -115,12 +115,15 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             _dispatcher.Invoke(new Action(() =>
             {
-                
                 foreach (ChatViewModel c in Chats.ToList())
                 {
                     c.PropertyChanged -= chatHasInfo;
                     c.PropertyChanged += chatHasInfo;
                 }
+
+                // Reload Tabs before switching to new Tab
+                OnPropertyChanged(nameof(Tabs));
+
                 if (sender != null && e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
                 {
                     /*
@@ -135,7 +138,6 @@ namespace WarframeMarketClient.GUI.Tabs
                     foreach (ChatViewModel v in e.NewItems)
                         HasInfo = HasInfo || v.HasInfo;
                 }
-                OnPropertyChanged(nameof(Tabs));
             }));
         }
 
