@@ -64,6 +64,15 @@ namespace WarframeMarketClient.GUI.Tabs
             }
         }
 
+
+        public ChatViewModel SelectedChat
+        {
+            get
+            {
+                return (Chats.Count == 0 | chatTabs.SelectedIndex < 1) ? null : Chats[chatTabs.SelectedIndex - 1];
+            }
+        }
+
         #endregion
 
 

@@ -16,7 +16,10 @@ namespace WarframeMarketClient.GUI
     public partial class MainWindow : MetroWindow
     {
 
-        string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
+        private string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
+
+        private MediaPlayer PlimPlayer = new MediaPlayer();
+
 
         public MainWindow()
         {
@@ -42,30 +45,39 @@ namespace WarframeMarketClient.GUI
             // TestCall
             ApplicationState.getInstance().asynchRun(() =>
             {
-                System.Threading.Thread.Sleep(10000);
+                System.Threading.Thread.Sleep(5000);
                 Application.Current.Dispatcher.InvokeAsync(()=>
-                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "TestUser", Message = "Hello i just want to say Test" } }));
+                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "AnywayTheWindbro", Message = "Hello i just want to say Test" } }));
+                System.Threading.Thread.Sleep(1000);
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "AnywayTheWindbro", Message = "Hello i just want to say Test" }, new ChatMessage() { MessageFrom = "TestUser2", Message = "Hello i just want to say Test" } }));
+                System.Threading.Thread.Sleep(1000);
+                Application.Current.Dispatcher.InvokeAsync(() =>
+                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "TestUser2", Message = "Hello i just want to say Test" } }));
             });
 
+
+            PlimPlayer.Open(new Uri(Path.Combine(folderPath, ApplicationState.getInstance().Settings.ChoosenSoundFile)));
         }
 
         private void MainWindow_NewMessage(object sender, System.Collections.Generic.List<ChatMessage> e)
         {
+            //TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
+            //TaskbarItemInfo.ProgressValue = 0.5;
+            //TaskbarItemInfo.
+            //this.focus
+            // Make the window blink... WinAPI? :(
 
-
-            Console.WriteLine($"FocusState={IsKeyboardFocusWithin} and ChatFocus is {TabChats.IsKeyboardFocusWithin}");
-            Console.WriteLine($"Selected Tabname {((System.Windows.Controls.TabItem)TabChats.chatTabs.SelectedItem).Name} and it is Focused {((System.Windows.Controls.TabItem)TabChats.chatTabs.SelectedItem).IsKeyboardFocused}"); // imo this line should do something else -.-' Tabname very funny c# -.-'
-
-            if(!(IsKeyboardFocusWithin && TabChats.IsKeyboardFocusWithin)) // and selected chat is the user im chatting with (dont know how to find activeChattab)
+            if (!(IsKeyboardFocusWithin && TabChats.IsVisible && !e.Where(m => (TabChats.SelectedChat?.User?.Name != m.MessageFrom)).Any()))
             {
-
-                System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
-                player.Open(new Uri(Path.Combine(folderPath, ApplicationState.getInstance().Settings.ChoosenSoundFile)));
-                player.Position = new TimeSpan(0);
-                player.Play();
-
-                string title = "You got new Messages";
-                string text = String.Join("\n", e.Select(x=>($"{x.MessageFrom}:{x.Message}")));
+                Console.WriteLine("Plim");
+                PlimPlayer.Position = new TimeSpan(0);
+                PlimPlayer.Play();
+            }
+            if (!IsKeyboardFocusWithin)
+            {
+                string title = "You've got new Messages";
+                string text = String.Join("\n", e.Select(x => ($"{x.MessageFrom} : {x.Message}")));
 
                 TrayIcon.ShowBalloonTip(title, text, BalloonIcon.Info);
             }
@@ -81,9 +93,7 @@ namespace WarframeMarketClient.GUI
         private void Window_StateChanged(object sender, EventArgs e)
         {
             if (WindowState == WindowState.Minimized && this.IsMouseOver && ApplicationState.getInstance().Settings.ToTray)
-            {
                 Hide();
-            }
         }
 
         private void onTrayClick(object o, RoutedEventArgs args)
