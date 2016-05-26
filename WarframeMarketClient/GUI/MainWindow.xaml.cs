@@ -52,7 +52,11 @@ namespace WarframeMarketClient.GUI
         private void MainWindow_NewMessage(object sender, System.Collections.Generic.List<ChatMessage> e)
         {
 
-            if(WindowState != WindowState.Minimized) // change to isFocused
+
+            Console.WriteLine($"FocusState={IsKeyboardFocusWithin} and ChatFocus is {TabChats.IsKeyboardFocusWithin}");
+            Console.WriteLine($"Selected Tabname {((System.Windows.Controls.TabItem)TabChats.chatTabs.SelectedItem).Name} and it is Focused {((System.Windows.Controls.TabItem)TabChats.chatTabs.SelectedItem).IsKeyboardFocused}"); // imo this line should do something else -.-' Tabname very funny c# -.-'
+
+            if(!(IsKeyboardFocusWithin && TabChats.IsKeyboardFocusWithin)) // and selected chat is the user im chatting with (dont know how to find activeChattab)
             {
 
                 System.Windows.Media.MediaPlayer player = new System.Windows.Media.MediaPlayer();
