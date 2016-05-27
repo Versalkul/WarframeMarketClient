@@ -87,7 +87,7 @@
                                     Padding="4,5"
                                     Margin="0,0,5,0"
                                     Click="Add"
-                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=PA}"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=PAE}"
                                     Background="#afa"></Button>
                                 <Button
                                     Grid.Column="0"
@@ -107,7 +107,7 @@
                                     HorizontalAlignment="Right"
                                     Padding="4,5"
                                     Click="Remove"
-                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=NA}"
+                                    Visibility="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}, Path=DataContext, Converter={StaticResource WarframeItemToVisibilityConverter}, ConverterParameter=NAE}"
                                     Background="#faa"></Button>
                             </Grid>
                         </DataTemplate>

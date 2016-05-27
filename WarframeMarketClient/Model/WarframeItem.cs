@@ -181,6 +181,7 @@ namespace WarframeMarketClient.Model
             if (backUp != null) return;
             backUp = new WarframeItem(Name, Price, Count, ModRank, SellOffer, Id);
             Console.WriteLine("Begin Edit");
+            OnPropertyChanged(nameof(Editing));
         }
 
         public void EndEdit()
@@ -188,6 +189,7 @@ namespace WarframeMarketClient.Model
             HasChanged = true;
             // check if really edited
             Console.WriteLine("Commit Edit");
+            OnPropertyChanged(nameof(Editing));
         }
 
         public void CancelEdit()
@@ -201,6 +203,7 @@ namespace WarframeMarketClient.Model
             ModRank = backUp.ModRank;
             backUp = null;
             Console.WriteLine("Cancel Edit");
+            OnPropertyChanged(nameof(Editing));
         }
 
         #endregion
