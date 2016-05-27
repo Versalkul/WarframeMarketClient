@@ -12,7 +12,10 @@ namespace WarframeMarketClient.ViewModel
     public class Settings: INotifyPropertyChanged
     {
 
+
         #region properties
+
+        private SaveLoadFile saver = new SaveLoadFile();
 
         private bool loading = false;
         private bool init = true;
@@ -60,9 +63,19 @@ namespace WarframeMarketClient.ViewModel
         public string ChoosenSoundFile
         {
             get { return choosenSoundFile; }
-            set { choosenSoundFile = value; }
+            set { choosenSoundFile= value; OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings(); if (loading) return; ApplicationState.Plimper.UpdateSound(); ApplicationState.Plimper.MessageReceived(); }
         }
 
+
+        private List<string> availableSounds= new List<string>();
+        public List<string> AvailableSounds { get { if (!availableSounds.Any())
+                {
+                    List<string> names = saver.GetSounds();
+                    availableSounds = names;
+                }
+                    return availableSounds; } }
+
+        
 
         public void SaveSettings() // also SettingsChanged
         {
@@ -75,6 +88,7 @@ namespace WarframeMarketClient.ViewModel
             saver.saveBool(nameof(LimitAutoComplete), LimitAutoComplete);
             saver.saveBool(nameof(DefaultOnline), DefaultOnline);
             saver.saveString("Token",ApplicationState.getInstance().SessionToken);
+            saver.saveString(nameof(ChoosenSoundFile),ChoosenSoundFile);
             saver.Save();
         }
 
@@ -88,8 +102,25 @@ namespace WarframeMarketClient.ViewModel
             ToTray = loader.loadBool(nameof(ToTray));
             LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
             DefaultOnline = loader.loadBool(nameof(DefaultOnline));
+            ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
             ApplicationState.getInstance().SessionToken = loader.loadString("Token");
             loading = false;
+
+        }
+
+        public bool ImportSound(string path)
+        {
+
+
+
+            if (saver.ImportSound(path))
+            {
+                List<string> names = saver.GetSounds();
+                availableSounds = names;
+                OnPropertyChanged(nameof(AvailableSounds));
+                return true;  
+            }
+            return false;
 
         }
 

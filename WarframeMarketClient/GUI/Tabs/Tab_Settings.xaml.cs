@@ -7,6 +7,8 @@ using WarframeMarketClient.Model;
 using System.Windows.Input;
 using WarframeMarketClient.Logic;
 using System.ComponentModel;
+using Microsoft.Win32;
+using System.Windows.Media;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -19,7 +21,8 @@ namespace WarframeMarketClient.GUI.Tabs
 
 
         public string SessionTokenInput { get; set; }
-        
+
+
 
         public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
 
@@ -30,9 +33,11 @@ namespace WarframeMarketClient.GUI.Tabs
             InitializeComponent();
             this.DataContext = ApplicationState.Settings;
             ApplicationState.Settings.LoadSettings();
+            ApplicationState.Plimper = new ViewModel.SoundViewModel();
+            soundBox.SelectedIndex = ApplicationState.Settings.AvailableSounds.IndexOf(ApplicationState.Settings.ChoosenSoundFile);
             SessionTokenInput = ApplicationState.SessionToken;
             OnPropertyChanged(nameof(SessionTokenInput));
-
+            
         }
 
 
@@ -71,8 +76,22 @@ namespace WarframeMarketClient.GUI.Tabs
                 handler(this, new PropertyChangedEventArgs(property));
 
         }
+
         #endregion
 
+        private void importSound_Click(object sender, RoutedEventArgs e)
+        {
 
+
+                OpenFileDialog dialog = new OpenFileDialog();
+                dialog.Multiselect = false;
+                bool? dialogResult = dialog.ShowDialog();
+                if (dialogResult == true && ApplicationState.Settings.ImportSound(dialog.FileName))
+                {
+                    Console.WriteLine("New Sound Loaded");
+
+                }
+               
+        }
     }
 }

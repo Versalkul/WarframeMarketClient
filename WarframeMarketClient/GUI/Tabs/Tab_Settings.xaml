@@ -19,20 +19,50 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel  Grid.Row="0" Margin="20,10"  >
-            <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-            <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-            <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-            <CheckBox x:Name="limitAutocomplete" Margin="0,10" Content="No Autocomplete-Scrollbar" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+        <StackPanel  Grid.Row="0" Margin="10,0"  >
+            <Label Content="General settings:"/>
+            <Grid Margin="25,5,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel >
+                    <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="limitAutocomplete" Margin="0,10,0,0" Content="No Autocomplete-Scrollbar" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                </StackPanel>
+                <StackPanel Margin="25,0,0,0" Grid.Column="2">
+                    <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                    <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                </StackPanel>
+            </Grid>
+            
+            <Label Content="Sound when receiving new Message:"/>
+            <Grid Margin="25,5,0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox   x:Name="soundBox"
+                            Margin="0,0"
+                            Grid.Column="0"
+                            IsEditable="False"
+                            IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"
+                            ItemsSource="{Binding Path=AvailableSounds}"
+                            SelectedValue="{Binding ChoosenSoundFile}"
+                            />
+                <Button x:Name="importSound" Content="Add Own Sound File" Grid.Column="1" Margin="10,0" Click="importSound_Click" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+            </Grid>
         </StackPanel>
 
-        <StackPanel  Grid.Row="2" Margin="20,10">
+        <StackPanel  Grid.Row="2" Margin="10,5">
             <Label x:Name="label" Content="Session Token:"/>
-            <TextBox x:Name="tokenBox" Margin="0,10"  Text="{Binding ElementName=self, Path=SessionTokenInput, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-            <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource ValidatingToVisibilityConverter}, ConverterParameter=B}"/>
-            <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource ValidatingToVisibilityConverter}, ConverterParameter=P}"/>
+            <StackPanel  Margin="20,5">
+                
+                <TextBox x:Name="tokenBox" Margin="0,10"  Text="{Binding SessionTokenInput, ElementName=self, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, ConverterParameter=B, Converter={StaticResource ValidatingToVisibilityConverter}}"/>
+                <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, ConverterParameter=P, Converter={StaticResource ValidatingToVisibilityConverter}}"/>
+            </StackPanel>
         </StackPanel>
-
 
 
 

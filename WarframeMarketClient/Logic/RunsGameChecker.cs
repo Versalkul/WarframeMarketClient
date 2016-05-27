@@ -66,7 +66,7 @@ namespace WarframeMarketClient.Logic
         private void checker(object o,EventArgs args)
         {
 
-                GameOnline = Process.GetProcessesByName("Warframe.x64").Length > 0 || Process.GetProcessesByName("Warframe").Length > 0;
+            GameOnline = Process.GetProcessesByName("Warframe.x64").Length > 0 || Process.GetProcessesByName("Warframe").Length > 0;
             if (!isAFK&& GameOnline && ApplicationState.getInstance().OnlineState != OnlineState.INGAME) ApplicationState.getInstance().OnlineState = OnlineState.INGAME;
             if(!isAFK && !GameOnline && ApplicationState.getInstance().OnlineState == OnlineState.INGAME) ApplicationState.getInstance().OnlineState = ApplicationState.getInstance().DefaultState;
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();

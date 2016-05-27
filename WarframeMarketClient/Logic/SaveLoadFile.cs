@@ -6,6 +6,9 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows;
+using System.Linq;
+using System.Windows.Media;
+using System.Threading;
 
 namespace WarframeMarketClient.Logic
 {
@@ -31,14 +34,16 @@ namespace WarframeMarketClient.Logic
         private RegistryKey autoReg;
         private string folderPath;
         private string filePath;
-
+        string soundFolderPath;
         public SaveLoadFile()
         {
             autoReg = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Run");
             folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
 
             filePath = Path.Combine(folderPath, "Config.BinaryConfig");
+            soundFolderPath = Path.Combine(folderPath, "Sounds");
             Directory.CreateDirectory(folderPath);
+            Directory.CreateDirectory(soundFolderPath);
         }
 
         public bool FileExists()
@@ -210,12 +215,14 @@ namespace WarframeMarketClient.Logic
 
         #endregion autostart
 
-        #region extractFromAssembly
+        #region SoundStuff
 
         public void ExtractStandartSounds()
         {
 
-            string newMsgPath = Path.Combine(folderPath, "NewMessage.wav");
+            
+            string newMsgPath = Path.Combine(soundFolderPath, "NewMessage.wav");
+            
             if (!File.Exists(newMsgPath))
             {
                 using (FileStream stream = new FileStream(newMsgPath, FileMode.Create))
@@ -225,6 +232,31 @@ namespace WarframeMarketClient.Logic
                 }
             }
 
+        }
+
+
+
+        private bool IsPlayable(string file)
+        {
+            return file.ToLower().Contains(".wav") || file.ToLower().Contains(".mp3");
+
+        }
+
+        public bool ImportSound(string path)
+        {
+            if(IsPlayable(path))
+            {
+
+                string copyTo = Path.Combine(soundFolderPath, Path.GetFileName(path));
+                File.Copy(path, copyTo);
+                return true;
+            }
+            return false;
+        }
+
+        public List<string> GetSounds()
+        {
+            return Directory.GetFiles(soundFolderPath).ToList().Select(x=>Path.GetFileName(x)).ToList();
         }
 
         #endregion

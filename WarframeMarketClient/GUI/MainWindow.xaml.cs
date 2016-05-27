@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Media;
 using System.IO;
 using WarframeMarketClient.Logic;
+using WarframeMarketClient.ViewModel;
 
 namespace WarframeMarketClient.GUI
 {
@@ -15,10 +16,6 @@ namespace WarframeMarketClient.GUI
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
-
-        private string folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
-
-        private MediaPlayer PlimPlayer = new MediaPlayer();
 
 
         public MainWindow()
@@ -48,20 +45,13 @@ namespace WarframeMarketClient.GUI
                 System.Threading.Thread.Sleep(5000);
                 Application.Current.Dispatcher.InvokeAsync(()=>
                 MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "AnywayTheWindbro", Message = "Hello i just want to say Test" } }));
-                System.Threading.Thread.Sleep(1000);
-                Application.Current.Dispatcher.InvokeAsync(() =>
-                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "AnywayTheWindbro", Message = "Hello i just want to say Test" }, new ChatMessage() { MessageFrom = "TestUser2", Message = "Hello i just want to say Test" } }));
-                System.Threading.Thread.Sleep(1000);
-                Application.Current.Dispatcher.InvokeAsync(() =>
-                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "TestUser2", Message = "Hello i just want to say Test" } }));
             });
 
-
-            PlimPlayer.Open(new Uri(Path.Combine(folderPath, ApplicationState.getInstance().Settings.ChoosenSoundFile)));
         }
 
         private void MainWindow_NewMessage(object sender, System.Collections.Generic.List<ChatMessage> e)
         {
+            
             //TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
             //TaskbarItemInfo.ProgressValue = 0.5;
             //TaskbarItemInfo.
@@ -71,8 +61,7 @@ namespace WarframeMarketClient.GUI
             if (!(IsKeyboardFocusWithin && TabChats.IsVisible && !e.Where(m => (TabChats.SelectedChat?.User?.Name != m.MessageFrom)).Any()))
             {
                 Console.WriteLine("Plim");
-                PlimPlayer.Position = new TimeSpan(0);
-                PlimPlayer.Play();
+                ApplicationState.getInstance().Plimper.MessageReceived();
             }
             if (!IsKeyboardFocusWithin)
             {

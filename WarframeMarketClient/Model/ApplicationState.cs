@@ -25,6 +25,7 @@ namespace WarframeMarketClient.Model
             if (instance == null)
             {
                 instance = new ApplicationState();
+
             }
 
 
@@ -189,6 +190,8 @@ namespace WarframeMarketClient.Model
         public RunsGameChecker OnlineChecker { get; private set; }
 
         public Settings Settings { get; set; } = new Settings();
+
+        public SoundViewModel Plimper { get; set; } // initialized in Tab_settings havent found a better place where it doesnt stackoverflow
 
         #endregion
 
