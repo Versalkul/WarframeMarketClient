@@ -12,7 +12,7 @@ namespace WarframeMarketClient.GUI.Converter
         {
             string setting = parameter is string ? parameter as string : ""; // A: Add, P: Placeholder, N: Normal
             string status = value.GetType().Name == "NamedObject" ? "P" :
-                value is WarframeItem && ((value as WarframeItem).Id == null || (value as WarframeItem).Id == "") ? "A" :
+                value is WarframeItem &&  (String.IsNullOrWhiteSpace((value as WarframeItem).Id) || (value as WarframeItem).HasChanged) ? "A" :
                 "N";
             if (setting.Contains(status) || status == "N" && setting == "") // Placeholder
                 return Visibility.Visible;

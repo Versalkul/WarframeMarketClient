@@ -118,7 +118,28 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="NewMsg" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\NewMsg.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="NewMessage" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage2.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage3.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage4" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage4.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage5" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage5.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage6" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage6.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage7" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage7.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="NewMessage8" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NewMessage8.mp3;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

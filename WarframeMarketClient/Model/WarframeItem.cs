@@ -75,6 +75,8 @@ namespace WarframeMarketClient.Model
 
         public bool Editing { get { return backUp != null; } }
 
+        public bool HasChanged { get; private set; }
+
         #region IDataErrorInfo
 
 
@@ -183,15 +185,16 @@ namespace WarframeMarketClient.Model
 
         public void EndEdit()
         {
-            if (backUp == null) return;
-            backUp = null;
-            CommitAdd();
+            HasChanged = true;
+            // check if really edited
             Console.WriteLine("Commit Edit");
         }
 
         public void CancelEdit()
         {
+
             if (backUp == null) return;
+            HasChanged = false;
             Name = backUp.Name;
             Price = backUp.Price;
             Count = backUp.Count;
@@ -205,16 +208,36 @@ namespace WarframeMarketClient.Model
         public async void CommitAdd()
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
-            MessageDialogResult result=  await window.ShowMessageAsync("Confirm Additem", "Do you want to add the " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
-
-            if (result == MessageDialogResult.Affirmative)
+            if (Id != "") //editing an old item
             {
-                ApplicationState.getInstance().asynchRun(() =>
+                MessageDialogResult result = await window.ShowMessageAsync("Confirm Edititem", "Do you want to edit the item to " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum on the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result == MessageDialogResult.Affirmative)
                 {
-                    ApplicationState.getInstance().Market.AddItem(this);
-                    ApplicationState.getInstance().Market.UpdateListing();
-                });
-                Console.WriteLine("Added!");
+                    backUp = null;
+                    ApplicationState.getInstance().asynchRun(() =>
+                    {
+                        ApplicationState.getInstance().Market.EditItem(this);
+                        ApplicationState.getInstance().Market.UpdateListing();
+                    });
+                    Console.WriteLine("Added!");
+                }
+            }
+            else // new Item 
+            {
+
+                MessageDialogResult result=  await window.ShowMessageAsync("Confirm Additem", "Do you want to add the " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
+
+                if (result == MessageDialogResult.Affirmative)
+                {
+                    backUp = null;
+                    ApplicationState.getInstance().asynchRun(() =>
+                    {
+                        ApplicationState.getInstance().Market.AddItem(this);
+                        ApplicationState.getInstance().Market.UpdateListing();
+                    });
+                    Console.WriteLine("Added!");
+                }
             }
 
         }
@@ -236,6 +259,11 @@ namespace WarframeMarketClient.Model
 
         public void RemoveItem()
         {
+            if (HasChanged)
+            {
+                CancelEdit();
+                return;
+            }
             if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().asynchRun(()=> ApplicationState.getInstance().Market.RemoveItem(this));
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);

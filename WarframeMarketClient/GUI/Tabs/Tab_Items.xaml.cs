@@ -89,7 +89,7 @@ namespace WarframeMarketClient.GUI.Tabs
                 WarframeItem item = ((sender as Button).DataContext as WarframeItem);
                 item.SellOffer = TabName == "Sell";
                 ItemList.CommitEdit();
-                //item.CommitAdd();
+                item.CommitAdd();
             }
             else
             {

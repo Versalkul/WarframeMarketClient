@@ -240,9 +240,6 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\NewMsg.wav" />
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
@@ -253,6 +250,30 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage7.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage8.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage4.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage5.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\NewMessage6.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\packages\Fody.1.28.3\build\Fody.targets')" />

@@ -220,17 +220,16 @@ namespace WarframeMarketClient.Logic
         public void ExtractStandartSounds()
         {
 
-            
-            string newMsgPath = Path.Combine(soundFolderPath, "NewMessage.wav");
-            
-            if (!File.Exists(newMsgPath))
-            {
-                using (FileStream stream = new FileStream(newMsgPath, FileMode.Create))
-                {
-                    Properties.Resources.NewMsg.CopyTo(stream);
+           
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage.mp3"),Properties.Resources.NewMessage);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage2.mp3"), Properties.Resources.NewMessage2);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage3.mp3"), Properties.Resources.NewMessage3);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage4.mp3"), Properties.Resources.NewMessage4);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage5.mp3"), Properties.Resources.NewMessage5);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage6.mp3"), Properties.Resources.NewMessage6);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage7.mp3"), Properties.Resources.NewMessage7);
+            File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage8.mp3"), Properties.Resources.NewMessage8);
 
-                }
-            }
 
         }
 

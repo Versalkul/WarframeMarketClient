@@ -61,11 +61,82 @@ namespace WarframeMarketClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
+        ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream NewMsg {
+        internal static byte[] NewMessage {
             get {
-                return ResourceManager.GetStream("NewMsg", resourceCulture);
+                object obj = ResourceManager.GetObject("NewMessage", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage2 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage2", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage3 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage3", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage4 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage4", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage5 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage5", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage6 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage6", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage7 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage7", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Byte[].
+        /// </summary>
+        internal static byte[] NewMessage8 {
+            get {
+                object obj = ResourceManager.GetObject("NewMessage8", resourceCulture);
+                return ((byte[])(obj));
             }
         }
     }
