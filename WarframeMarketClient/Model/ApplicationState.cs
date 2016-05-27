@@ -25,7 +25,7 @@ namespace WarframeMarketClient.Model
             if (instance == null)
             {
                 instance = new ApplicationState();
-
+                instance.Initialize();
             }
 
 
@@ -42,9 +42,15 @@ namespace WarframeMarketClient.Model
             BindingOperations.EnableCollectionSynchronization(sellItems, sellItemsLock);
             BindingOperations.EnableCollectionSynchronization(buyItems, buyItemsLock);
             BindingOperations.EnableCollectionSynchronization(chats, chatLock);
-            asynchRun(() => WarframeItem.itemInfoMap=MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
+        }
 
-
+        private void Initialize() // Initializes that need the ApplicationState
+        {
+            asynchRun(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
+            (new SaveLoadFile()).ExtractStandartSounds();
+            Settings = new Settings();
+            Settings.LoadSettings();
+            Plimper = new SoundViewModel();
         }
 
         #endregion
@@ -189,11 +195,12 @@ namespace WarframeMarketClient.Model
         #endregion
         public RunsGameChecker OnlineChecker { get; private set; }
 
-        public Settings Settings { get; set; } = new Settings();
+        public Settings Settings { get; set; } 
 
-        public SoundViewModel Plimper { get; set; } // initialized in Tab_settings havent found a better place where it doesnt stackoverflow
+        public SoundViewModel Plimper { get; set; } 
 
         #endregion
+
 
 
         public  void asynchRun(Action function)

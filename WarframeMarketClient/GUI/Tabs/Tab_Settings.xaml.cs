@@ -32,8 +32,6 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             InitializeComponent();
             this.DataContext = ApplicationState.Settings;
-            ApplicationState.Settings.LoadSettings();
-            ApplicationState.Plimper = new ViewModel.SoundViewModel();
             soundBox.SelectedIndex = ApplicationState.Settings.AvailableSounds.IndexOf(ApplicationState.Settings.ChoosenSoundFile);
             SessionTokenInput = ApplicationState.SessionToken;
             OnPropertyChanged(nameof(SessionTokenInput));

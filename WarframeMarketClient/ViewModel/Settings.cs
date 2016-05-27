@@ -96,14 +96,17 @@ namespace WarframeMarketClient.ViewModel
         {
             loading = true;
             SaveLoadFile loader = new SaveLoadFile();
-            loader.Read();
-            Autostart = loader.isAutostart();
-            if (Autostart) loader.updateAutostart();
-            ToTray = loader.loadBool(nameof(ToTray));
-            LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
-            DefaultOnline = loader.loadBool(nameof(DefaultOnline));
-            ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
-            ApplicationState.getInstance().SessionToken = loader.loadString("Token");
+            if (loader.FileExists())
+            {
+                loader.Read();
+                Autostart = loader.isAutostart();
+                if (Autostart) loader.updateAutostart();
+                ToTray = loader.loadBool(nameof(ToTray));
+                LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
+                DefaultOnline = loader.loadBool(nameof(DefaultOnline));
+                ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
+                ApplicationState.getInstance().SessionToken = loader.loadString("Token");
+            }
             loading = false;
 
         }

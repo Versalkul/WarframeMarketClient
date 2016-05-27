@@ -35,17 +35,14 @@ namespace WarframeMarketClient.GUI
                     WindowState = WindowState.Minimized;
                 }
             }
-            (new SaveLoadFile()).ExtractStandartSounds();
+            else
+            {
+                WindowState = WindowState.Normal;
+            }
+            
 
             ApplicationState.getInstance().NewMessage += MainWindow_NewMessage;
 
-            // TestCall
-            ApplicationState.getInstance().asynchRun(() =>
-            {
-                System.Threading.Thread.Sleep(5000);
-                Application.Current.Dispatcher.InvokeAsync(()=>
-                MainWindow_NewMessage(null, new System.Collections.Generic.List<ChatMessage>() { new ChatMessage() { MessageFrom = "AnywayTheWindbro", Message = "Hello i just want to say Test" } }));
-            });
 
         }
 

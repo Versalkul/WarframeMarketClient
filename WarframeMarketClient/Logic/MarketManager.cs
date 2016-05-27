@@ -198,8 +198,9 @@ namespace WarframeMarketClient.Logic
                     using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         string json = reader.ReadToEnd();
+                        if (!json.Contains("200")) return result;
                         JsonFrame<List<OnlineInfo>> frame = JsonConvert.DeserializeObject<JsonFrame<List<OnlineInfo>>>(json);
-                        if (!frame.response.Any()||frame.code!=200) return result;
+                        if (!frame.response.Any()) return result;
 
                         foreach (OnlineInfo info in frame.response)
                         {
