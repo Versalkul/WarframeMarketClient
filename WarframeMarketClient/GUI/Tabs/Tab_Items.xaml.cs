@@ -86,20 +86,20 @@ namespace WarframeMarketClient.GUI.Tabs
             Console.WriteLine("Add! : "+ (sender as Button).DataContext);
             if ((sender as Button).DataContext is WarframeItem)
             {
-                ItemList.CommitEdit();
                 WarframeItem item = ((sender as Button).DataContext as WarframeItem);
                 item.SellOffer = TabName == "Sell";
-                item.CommitAdd();
+                ItemList.CommitEdit();
+                //item.CommitAdd();
             }
             else
             {
                 ItemList.CurrentCell = new DataGridCellInfo(ItemList.CurrentCell.Item, ItemList.Columns[1]);
-                ItemList.BeginEdit();
+                //ItemList.BeginEdit();
             }
         }
         private void Decrease(object sender, RoutedEventArgs e)
         {
-            ItemList.CancelEdit();
+            //ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).DecreaseCount();
         }
         private void Remove(object sender, RoutedEventArgs e)

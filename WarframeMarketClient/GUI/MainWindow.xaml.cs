@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 using WarframeMarketClient.Model;
 using Hardcodet.Wpf.TaskbarNotification;
 using System.Linq;
@@ -42,7 +43,6 @@ namespace WarframeMarketClient.GUI
             
 
             ApplicationState.getInstance().NewMessage += MainWindow_NewMessage;
-
 
         }
 

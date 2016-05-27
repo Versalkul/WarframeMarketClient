@@ -52,7 +52,7 @@ namespace WarframeMarketClient.GUI.Tabs
             SetToken();
             ApplicationState.Settings.SaveSettings();
         }
-
+         
         private void tokenBox_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
         {
             if (e.Key == Key.Return)

@@ -7,13 +7,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using MahApps.Metro.Controls;
 
 namespace WarframeMarketClient.Model
 {
     public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject,IEquatable<WarframeItem>
     {
-        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000); 
+        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000);
 
+        private WarframeItem backUp;
 
         #region Properties
 
@@ -24,6 +27,7 @@ namespace WarframeMarketClient.Model
         {
             get { return name; }
             set {
+                if (value == null) return;
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;
@@ -68,6 +72,8 @@ namespace WarframeMarketClient.Model
         }
         
         public List<string> AllItemNames { get { return itemInfoMap.Keys.ToList(); } }
+
+        public bool Editing { get { return backUp != null; } }
 
         #region IDataErrorInfo
 
@@ -119,22 +125,6 @@ namespace WarframeMarketClient.Model
 
         #endregion
 
-        // implement Bigin and cancel safe data in backup to restore for cancel edit for existing items
-        public void BeginEdit()
-        {
-            Console.WriteLine("Begin Edit");
-        }
-
-        public void EndEdit()
-        {
-            Console.WriteLine("Commit Edit");
-        }
-
-        public void CancelEdit()
-        {
-            Console.WriteLine("Cancel Edit");
-        }
-
 
         #endregion
 
@@ -182,11 +172,42 @@ namespace WarframeMarketClient.Model
 
         #region Methods
 
-        public void CommitAdd()
-        {
-            MessageBoxResult messageBoxResult = System.Windows.MessageBox.Show("Do you want to add the "+(SellOffer?"Sell":"Buy")+$" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", "Confirm Additem", System.Windows.MessageBoxButton.YesNo);
+        #region IEditableObject
 
-            if (messageBoxResult == MessageBoxResult.Yes)
+        public void BeginEdit()
+        {
+            if (backUp != null) return;
+            backUp = new WarframeItem(Name, Price, Count, ModRank, SellOffer, Id);
+            Console.WriteLine("Begin Edit");
+        }
+
+        public void EndEdit()
+        {
+            if (backUp == null) return;
+            backUp = null;
+            CommitAdd();
+            Console.WriteLine("Commit Edit");
+        }
+
+        public void CancelEdit()
+        {
+            if (backUp == null) return;
+            Name = backUp.Name;
+            Price = backUp.Price;
+            Count = backUp.Count;
+            ModRank = backUp.ModRank;
+            backUp = null;
+            Console.WriteLine("Cancel Edit");
+        }
+
+        #endregion
+
+        public async void CommitAdd()
+        {
+            MetroWindow window = (MetroWindow)Application.Current.MainWindow;
+            MessageDialogResult result=  await window.ShowMessageAsync("Confirm Additem", "Do you want to add the " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
             {
                 ApplicationState.getInstance().asynchRun(() =>
                 {
@@ -215,7 +236,7 @@ namespace WarframeMarketClient.Model
 
         public void RemoveItem()
         {
-            if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().Market.RemoveItem(this);
+            if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().asynchRun(()=> ApplicationState.getInstance().Market.RemoveItem(this));
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
