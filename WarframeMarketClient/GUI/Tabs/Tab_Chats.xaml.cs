@@ -171,18 +171,21 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void chatHasInfo(object sender, PropertyChangedEventArgs args)
         {
-            if (args.PropertyName == "HasInfo" && sender is ChatViewModel && (sender as ChatViewModel).HasInfo)
+            _dispatcher.Invoke(new Action(() =>
             {
-                int tIndex = Chats.IndexOf((sender as ChatViewModel)) + 1;
-                if (chatTabs.SelectedIndex == tIndex && IsVisible) // if currently in foreground
+                if (args.PropertyName == "HasInfo" && sender is ChatViewModel && (sender as ChatViewModel).HasInfo)
                 {
-                    (sender as ChatViewModel).HasInfo = false;
-                    return;
+                    int tIndex = Chats.IndexOf((sender as ChatViewModel)) + 1;
+                    if (chatTabs.SelectedIndex == tIndex && IsVisible) // if currently in foreground
+                    {
+                        (sender as ChatViewModel).HasInfo = false;
+                        return;
+                    }
+                    HasInfo = HasInfo || (sender as ChatViewModel).HasInfo;
+                    if (!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
+                        chatTabs.SelectedIndex = tIndex;
                 }
-                HasInfo = HasInfo || (sender as ChatViewModel).HasInfo;
-                if (!IsVisible && (sender as ChatViewModel).HasInfo) // Only change Tab if not visible
-                    chatTabs.SelectedIndex = tIndex;
-            }
+            }));
         }
         #endregion
 
