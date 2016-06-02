@@ -60,7 +60,7 @@ namespace WarframeMarketClient.Logic
                     {
                         appState.ValidationProgress+=10;
                         List<string> users = GetChatUser();
-                        int valPerUser =30/users.Count;
+                        int valPerUser =30/(users.Count+1);
                         result = new ViewModel.ChatViewModel[users.Count];
                         Parallel.For(0, users.Count, (x) =>
                         {
