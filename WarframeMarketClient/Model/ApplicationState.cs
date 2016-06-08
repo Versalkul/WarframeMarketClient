@@ -20,13 +20,21 @@ namespace WarframeMarketClient.Model
         private static object buyItemsLock = new object();
         private static object sellItemsLock = new object();
         private static object chatLock = new object();
+        private static bool init=false;
         public static ApplicationState getInstance()
         {
+
+
+
             if (instance == null)
             {
+                if (init) Console.WriteLine("WARNING SECOND init Instance");
+                init = true;
                 instance = new ApplicationState();
                 instance.Initialize();
+
             }
+
 
 
             return instance;
@@ -46,10 +54,10 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
-            Task.Factory.StartNew(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
             (new SaveLoadFile()).ExtractStandartSounds();
             Settings = new Settings();
             Settings.LoadSettings();
+            if(String.IsNullOrWhiteSpace(SessionToken))Task.Factory.StartNew(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
             Plimper = new SoundViewModel();
         }
 
