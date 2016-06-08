@@ -75,7 +75,7 @@ namespace WarframeMarketClient.ViewModel
 
         public void sendMessage()
         {
-            ApplicationState.getInstance().asynchRun(()=> ApplicationState.getInstance().Market.SendMessage(User.Name, NewMessage));
+            Task.Factory.StartNew(()=> ApplicationState.getInstance().Market.SendMessage(User.Name, NewMessage));
             ApplicationState.getInstance().Chats.Where(user => user.User.Name == User.Name).First().ChatMessages.Add(new ChatMessage() { Message = NewMessage, MessageFrom = ApplicationState.getInstance().Username, SendHour = DateTime.Now.Hour.ToString(), SendMinute = DateTime.Now.Minute.ToString() }); // wir brauchen eine Chatmsg.GetMsg die automatisch sich um die zeit + differenz kümmert das hier ist nur ein workaround
             Console.WriteLine("Send Message to "+User.Name+" : "+NewMessage);
             NewMessage = "";
@@ -83,7 +83,7 @@ namespace WarframeMarketClient.ViewModel
 
         public void closeChat()
         {
-            ApplicationState.getInstance().asynchRun(()=>ApplicationState.getInstance().Market.CloseChat(User.Name));
+            Task.Factory.StartNew(()=>ApplicationState.getInstance().Market.CloseChat(User.Name));
             ApplicationState.getInstance().Chats.Remove(this);
             Console.WriteLine("Close Chat with "+User.Name);
         }

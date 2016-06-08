@@ -58,7 +58,7 @@ namespace WarframeMarketClient.ViewModel
 
         #endregion
 
-        private string choosenSoundFile="NewMessage.wav";
+        private string choosenSoundFile="";
 
         public string ChoosenSoundFile
         {
@@ -107,6 +107,8 @@ namespace WarframeMarketClient.ViewModel
                 ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
                 ApplicationState.getInstance().SessionToken = loader.loadString("Token");
             }
+            if (!AvailableSounds.Contains(ChoosenSoundFile) & AvailableSounds.Any()) ChoosenSoundFile = AvailableSounds.First();
+            
             loading = false;
 
         }

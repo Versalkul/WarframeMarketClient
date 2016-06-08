@@ -42,13 +42,13 @@ namespace WarframeMarketClient.GUI
             }
             
 
-            ApplicationState.getInstance().NewMessage += MainWindow_NewMessage;
+            ApplicationState.getInstance().NewMessage +=(x,y)=> Dispatcher.InvokeAsync(()=> MainWindow_NewMessage(x,y));
 
         }
 
         private void MainWindow_NewMessage(object sender, System.Collections.Generic.List<ChatMessage> e)
         {
-            
+
             //TaskbarItemInfo.ProgressState = System.Windows.Shell.TaskbarItemProgressState.Indeterminate;
             //TaskbarItemInfo.ProgressValue = 0.5;
             //TaskbarItemInfo.
