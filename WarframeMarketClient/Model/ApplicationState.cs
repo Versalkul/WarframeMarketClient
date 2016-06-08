@@ -28,7 +28,10 @@ namespace WarframeMarketClient.Model
 
             if (instance == null)
             {
-                if (init) Console.WriteLine("WARNING SECOND init Instance");
+                if (init)
+                {
+                    Console.WriteLine("WARNING SECOND init Instance");
+                }
                 init = true;
                 instance = new ApplicationState();
                 instance.Initialize();
