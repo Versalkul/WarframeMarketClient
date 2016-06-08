@@ -31,6 +31,7 @@ namespace WarframeMarketClient.Logic
         {
 
             SaveMsg msgSave = new SaveMsg();
+            
             msgSave.loadMessages().ForEach(x => ApplicationState.getInstance().Chats.Add(x));
             ViewModel.ChatViewModel[] result;
             List<WarframeItem> offers = null;

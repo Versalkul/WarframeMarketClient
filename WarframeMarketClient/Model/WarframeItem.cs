@@ -218,7 +218,7 @@ namespace WarframeMarketClient.Model
                 if (result == MessageDialogResult.Affirmative)
                 {
                     backUp = null;
-                    ApplicationState.getInstance().asynchRun(() =>
+                    Task.Factory.StartNew(() =>
                     {
                         ApplicationState.getInstance().Market.EditItem(this);
                         ApplicationState.getInstance().Market.UpdateListing();
@@ -234,7 +234,7 @@ namespace WarframeMarketClient.Model
                 if (result == MessageDialogResult.Affirmative)
                 {
                     backUp = null;
-                    ApplicationState.getInstance().asynchRun(() =>
+                    Task.Factory.StartNew(() =>
                     {
                         ApplicationState.getInstance().Market.AddItem(this);
                         ApplicationState.getInstance().Market.UpdateListing();
@@ -267,7 +267,7 @@ namespace WarframeMarketClient.Model
                 CancelEdit();
                 return;
             }
-            if(!String.IsNullOrWhiteSpace(Id))ApplicationState.getInstance().asynchRun(()=> ApplicationState.getInstance().Market.RemoveItem(this));
+            if(!String.IsNullOrWhiteSpace(Id)) Task.Factory.StartNew(()=> ApplicationState.getInstance().Market.RemoveItem(this));
             if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }

@@ -46,7 +46,7 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
-            asynchRun(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
+            Task.Factory.StartNew(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
             (new SaveLoadFile()).ExtractStandartSounds();
             Settings = new Settings();
             Settings.LoadSettings();
@@ -89,7 +89,7 @@ namespace WarframeMarketClient.Model
                 sessionToken = value;
                 ValidationProgress = 5;
                 OnlineState = OnlineState.VALIDATING;
-                asynchRun(() =>
+                Task.Factory.StartNew(() =>
                 {
                     
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
@@ -201,18 +201,6 @@ namespace WarframeMarketClient.Model
 
         #endregion
 
-
-
-        public  void asynchRun(Action function)
-        {
-            (new Thread(() =>
-            {
-                // add try catch
-                function.Invoke();
-            }
-            )).Start();
-
-        }
 
         public void InvokeNewMessage(object o,List<ChatMessage> msg)
         {
