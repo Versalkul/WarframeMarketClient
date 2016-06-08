@@ -23,6 +23,7 @@ namespace WarframeMarketClient.GUI
         {
             this.DataContext = ApplicationState.getInstance();
             InitializeComponent();
+            
             TimeSpan uptime = TimeSpan.FromMilliseconds(Environment.TickCount & Int32.MaxValue);
             if (uptime.Minutes < 5)
             {
