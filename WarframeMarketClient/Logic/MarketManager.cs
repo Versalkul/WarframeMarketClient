@@ -409,14 +409,18 @@ namespace WarframeMarketClient.Logic
                         if (sameItem.Any()) // do i know the itemid => item changed
                         {
                             WarframeItem updateItem = sameItem.First();
-                            if(updateItem.Price == item.Price) updateItem.Price = item.Price;
-                            if(updateItem.Count == item.Count) updateItem.Count = item.Count;
-                            if (updateItem.Name == item.Name) updateItem.Name = item.Name; // nut sure if this case can happen 
+                            if(updateItem.Price != item.Price) updateItem.Price = item.Price;
+                            if(updateItem.Count != item.Count) updateItem.Count = item.Count;
+                            if (updateItem.Name != item.Name) updateItem.Name = item.Name; // nut sure if this case can happen 
 
 
                         }
+                        else
+                        {
                         item.Id = id;
                         ApplicationState.getInstance().SellItems.Add(item);
+
+                        }
                     }
 
                 }
