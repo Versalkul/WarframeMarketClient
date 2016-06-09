@@ -294,7 +294,15 @@
                                                         <TranslateTransform X="-1" Y="-1"/>
                                                     </TransformGroup>
                                                 </Border.RenderTransform>
-                                                <ListBox x:Name="Selector" BorderThickness="0" Background="{TemplateBinding Background}" Foreground="{TemplateBinding Foreground}" ScrollViewer.HorizontalScrollBarVisibility="Auto" ItemTemplate="{TemplateBinding ItemTemplate}" ItemContainerStyle="{TemplateBinding ItemContainerStyle}" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                                                <ListBox x:Name="Selector"
+                                                         BorderThickness="0"
+                                                         Background="{TemplateBinding Background}"
+                                                         Foreground="{TemplateBinding Foreground}"
+                                                         ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                                                         ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                         ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
+                                                         ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                                         MaxHeight="450"/>
                                             </Border>
                                         </Border>
                                     </Grid>
