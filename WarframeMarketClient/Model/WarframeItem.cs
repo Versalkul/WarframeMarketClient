@@ -28,6 +28,13 @@ namespace WarframeMarketClient.Model
             get { return name; }
             set {
                 if (value == null) return;
+
+                if (!itemInfoMap.Any())
+                {
+                    // if MapNotLoaded and NameUnknown=> (as soon as save and load is implemented)
+                    while (!itemInfoMap.Any()) System.Threading.Thread.Yield();
+                }
+
                 if (itemInfoMap.ContainsKey(value))
                 {
                     name = value;

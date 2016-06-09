@@ -136,6 +136,7 @@
     <Compile Include="GUI\Tabs\Tab_Settings.xaml.cs">
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Logic\ItemMap.cs" />
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\SaveMsg.cs" />
     <Compile Include="ViewModel\Settings.cs" />

@@ -74,9 +74,7 @@ namespace WarframeMarketClient.GUI.Tabs
         public Tab_Items()
         {
             InitializeComponent();
-            Items = new ObservableCollection<WarframeItem>() {
-                new WarframeItem("Test", 1, 2, true)
-            };
+            Items = new ObservableCollection<WarframeItem>();
         }
 
 
