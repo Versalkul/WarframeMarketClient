@@ -59,8 +59,19 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Volume" Grid.Column="0"></Label>
-                <Slider Value="{Binding Volume}" Grid.Column="1" Minimum="0" Maximum="1" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" ></Slider>
+                <Label Content="Volume" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0"></Label>
+                <Slider Value="{Binding Volume}" 
+                        Grid.Column="1" 
+                        VerticalAlignment="Center" 
+                        Minimum="0" Maximum="1" 
+                        IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" 
+                        TickFrequency="0.01" 
+                        LargeChange="0.1" 
+                        SmallChange="0.05" 
+                        IsMoveToPointEnabled="True" 
+                        AutoToolTipPlacement="TopLeft" 
+                        AutoToolTipPrecision="2"
+                        />
             </Grid>
 
 
