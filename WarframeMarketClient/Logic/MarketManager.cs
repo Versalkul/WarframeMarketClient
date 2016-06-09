@@ -395,15 +395,26 @@ namespace WarframeMarketClient.Logic
             {
                 string id = item.Id;
                 item.Id = "";
-                if (item.SellOffer)
+                if (item.SellOffer) 
                 {
                     int itemIndex = ApplicationState.getInstance().SellItems.IndexOf(item);
-                    if (itemIndex>0)
+                    if (itemIndex>0) // i just added the item i just need to add its id
                     {
                         ApplicationState.getInstance().SellItems[itemIndex].Id = id;
                     }
                     else
                     {
+
+                        IEnumerable<WarframeItem> sameItem = ApplicationState.getInstance().SellItems.Where(x => x.Id == id);
+                        if (sameItem.Any()) // do i know the itemid => item changed
+                        {
+                            WarframeItem updateItem = sameItem.First();
+                            if(updateItem.Price == item.Price) updateItem.Price = item.Price;
+                            if(updateItem.Count == item.Count) updateItem.Count = item.Count;
+                            if (updateItem.Name == item.Name) updateItem.Name = item.Name; // nut sure if this case can happen 
+
+
+                        }
                         item.Id = id;
                         ApplicationState.getInstance().SellItems.Add(item);
                     }
