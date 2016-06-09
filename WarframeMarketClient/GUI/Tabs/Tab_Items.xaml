@@ -48,7 +48,9 @@
                                 ItemFilter="{Binding ElementName=self, Path=AutoCItemFilter}"
                                 Populating="AutoCItemPopulating"
                                 IsTextCompletionEnabled="True"
-                                Loaded="EditView_Loaded" />
+                                Loaded="EditView_Loaded" 
+                                
+                                />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellEditingTemplate>
                 </DataGridTemplateColumn>

@@ -6,6 +6,7 @@
                     xmlns:tabs="clr-namespace:WarframeMarketClient.GUI.Tabs"
                     xmlns:vm="clr-namespace:WarframeMarketClient.ViewModel"
                     xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
+                    xmlns:attProp="clr-namespace:WarframeMarketClient.GUI.AttachedProperties"
                     
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
@@ -302,7 +303,8 @@
                                                          ItemTemplate="{TemplateBinding ItemTemplate}"
                                                          ItemContainerStyle="{TemplateBinding ItemContainerStyle}"
                                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                                         MaxHeight="450"/>
+                                                         MaxHeight="450"
+                                                         attProp:ListBoxExtenders.AutoScrollToSelectedItem="True"/>
                                             </Border>
                                         </Border>
                                     </Grid>

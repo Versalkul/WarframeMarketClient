@@ -106,6 +106,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\OnlineStateFunctions.cs" />
+    <Compile Include="GUI\AttachedProperties\ListBoxExtenders.cs" />
     <Compile Include="GUI\Converter\BoolToNegatedBoolConverter.cs" />
     <Compile Include="GUI\Converter\ErrorPropertiesAndNameToHasErrorConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToColorConverter.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="GUI\Tabs\Chat\ChatNewView.xaml.cs">
       <DependentUpon>ChatNewView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Tabs\TabItemGeneratorBehaviour.cs" />
+    <Compile Include="GUI\AttachedProperties\TabItemGeneratorBehaviour.cs" />
     <Compile Include="GUI\Tabs\Tab_Chats.xaml.cs">
       <DependentUpon>Tab_Chats.xaml</DependentUpon>
     </Compile>
