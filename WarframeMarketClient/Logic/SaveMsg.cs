@@ -24,13 +24,13 @@ namespace WarframeMarketClient.Logic
         }
         
 
-        private List<KeyValuePair<string,List<ChatMessage>>> getMsg()
+        private List<KeyValuePair<string,List<ChatMessage>>> getMsg() // returns all messages with users who have 1 or more chats
         {
 
             List<KeyValuePair<string, List<ChatMessage>>> ret = new List<KeyValuePair<string, List<ChatMessage>>>();
             foreach (ChatViewModel chat  in ApplicationState.getInstance().Chats.ToArray())
             {
-                ret.Add(new KeyValuePair<string, List<ChatMessage>>( chat.User.Name, chat.ChatMessages.ToList()));
+                if(chat.ChatMessages.Any()) ret.Add(new KeyValuePair<string, List<ChatMessage>>( chat.User.Name, chat.ChatMessages.ToList()));
             }
 
             return ret;
@@ -52,9 +52,9 @@ namespace WarframeMarketClient.Logic
             File.Move(path + "2", path);
             
         }
-        public List<ChatViewModel> loadMessages() // care exception
+        public List<ChatViewModel> loadMessages()
         {
-            if (File.Exists(path + 2))
+            if (File.Exists(path + 2)) // may lead to problems when crash WHILE saveing 
             {
                 if(File.Exists(path))File.Delete(path);
                 File.Move(path + "2", path);
