@@ -52,6 +52,18 @@
                             />
                 <Button x:Name="importSound" Content="Add Own Sound File" Grid.Column="1" Margin="10,0,0,0" Click="importSound_Click" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
             </Grid>
+
+            <Grid Margin="25,5,25,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Volume" Grid.Column="0"></Label>
+                <Slider Value="{Binding Volume}" Grid.Column="1" Minimum="0" Maximum="1" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" ></Slider>
+            </Grid>
+
+
         </StackPanel>
 
         <StackPanel  Grid.Row="2" Margin="10,5">

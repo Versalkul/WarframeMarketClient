@@ -24,7 +24,7 @@ namespace WarframeMarketClient.Logic
             public Dictionary<string, bool> bools = new Dictionary<string, bool>();
             public Dictionary<string, int> ints = new Dictionary<string, int>();
             public Dictionary<string, string> strings = new Dictionary<string,string>();
-
+            public Dictionary<string, double> doubles = new Dictionary<string, double>();
 
 
         }
@@ -78,6 +78,28 @@ namespace WarframeMarketClient.Logic
         }
 
         #endregion Integer
+
+        #region doubles
+        
+        public void saveDouble(String name, double d)
+        {
+            dat.doubles.Add(name, d);
+        }
+        /// <summary>
+        /// loads a bool from the regestry
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public double loadDouble(String name)
+        {
+            if (!dat.doubles.ContainsKey(name))
+            {
+                return 0;
+            }
+            return dat.doubles[name];
+
+        }
+        #endregion
 
         #region booleans
 

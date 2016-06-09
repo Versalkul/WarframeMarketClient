@@ -17,6 +17,7 @@ namespace WarframeMarketClient.ViewModel
         public SoundViewModel()
         {
             PlimPlayer.Open(new Uri(Path.Combine(folderPath, ApplicationState.getInstance().Settings.ChoosenSoundFile)));
+            PlimPlayer.Volume = ApplicationState.getInstance().Settings.Volume; 
         }
 
         public void MessageReceived()
@@ -29,5 +30,11 @@ namespace WarframeMarketClient.ViewModel
         {
             if (!PlimPlayer.Source.OriginalString.Contains(ApplicationState.getInstance().Settings.ChoosenSoundFile)) PlimPlayer.Open(new Uri(Path.Combine(folderPath, ApplicationState.getInstance().Settings.ChoosenSoundFile)));
         }
+
+        public void SetVolume(double vol)
+        {
+            PlimPlayer.Volume = vol;
+        }
+
     }
 }

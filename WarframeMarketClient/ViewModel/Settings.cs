@@ -63,7 +63,7 @@ namespace WarframeMarketClient.ViewModel
         public string ChoosenSoundFile
         {
             get { return choosenSoundFile; }
-            set { choosenSoundFile= value; OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings(); if (loading) return; ApplicationState.Plimper.UpdateSound(); ApplicationState.Plimper.MessageReceived(); }
+            set { choosenSoundFile= value; OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings();  ApplicationState.Plimper?.UpdateSound(); if (loading) return; ApplicationState.Plimper.MessageReceived(); }
         }
 
 
@@ -75,7 +75,14 @@ namespace WarframeMarketClient.ViewModel
                 }
                     return availableSounds; } }
 
-        
+        private double volume=0.5;
+
+        public double Volume
+        {
+            get { return volume; }
+            set { volume = value;ApplicationState.getInstance().Plimper?.SetVolume(value); OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings(); }
+        }
+
 
         public void SaveSettings() // also SettingsChanged
         {
@@ -89,6 +96,7 @@ namespace WarframeMarketClient.ViewModel
             saver.saveBool(nameof(DefaultOnline), DefaultOnline);
             saver.saveString("Token",ApplicationState.getInstance().SessionToken);
             saver.saveString(nameof(ChoosenSoundFile),ChoosenSoundFile);
+            saver.saveDouble(nameof(Volume), Volume);
             saver.Save();
         }
 
@@ -105,6 +113,7 @@ namespace WarframeMarketClient.ViewModel
                 LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
                 DefaultOnline = loader.loadBool(nameof(DefaultOnline));
                 ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
+                Volume = loader.loadDouble(nameof(Volume));
                 ApplicationState.getInstance().SessionToken = loader.loadString("Token");
             }
             if (!AvailableSounds.Contains(ChoosenSoundFile) & AvailableSounds.Any()) ChoosenSoundFile = AvailableSounds.First();
