@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.GUI.Tabs
@@ -66,6 +67,16 @@ namespace WarframeMarketClient.GUI.Tabs
             {
                 TextBox textbox = (sender as AutoCompleteBox).Template.FindName("Text", sender as AutoCompleteBox) as TextBox;
                 if (textbox != null) textbox.Focus();
+            }
+        }
+
+        private void OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) // Block all Enter keys; User has tu use Arrow Keys for navigation
+            {
+                if (ItemList.CurrentCell != null && !ItemList.CurrentCell.Column.IsReadOnly) // Only start Editing in editable columns
+                    ItemList.BeginEdit();
+                e.Handled = true;
             }
         }
         #endregion

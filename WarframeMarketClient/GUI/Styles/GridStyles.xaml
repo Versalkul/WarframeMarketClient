@@ -124,6 +124,9 @@
                                 <Trigger Property="IsEditing" Value="True">
                                     <Setter TargetName="EditUnderline" Property="StrokeThickness" Value="2" />
                                 </Trigger>
+                                <Trigger Property="IsFocused" Value="True">
+                                    <Setter Property="BorderBrush" Value="{x:Null}" />
+                                </Trigger>
                                 <DataTrigger Value="True">
                                     <DataTrigger.Binding>
                                         <MultiBinding Converter="{StaticResource ErrorPropertiesAndNameToHasErrorConverter}">
@@ -166,6 +169,7 @@
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
+
 
             <Style TargetType="DataGridColumnHeader">
                 <Setter Property="FontWeight" Value="Bold" />
@@ -211,6 +215,12 @@
                                 </Trigger>
                                 <Trigger Property="SortDirection" Value="Descending">
                                     <Setter TargetName="SortArrow" Property="Visibility" Value="Visible" />
+                                </Trigger>
+                                <Trigger Property="CanUserSort" Value="True">
+                                    <Setter Property="Focusable" Value="True" />
+                                </Trigger>
+                                <Trigger Property="Name" Value="PART_FillerColumnHeader">
+                                    <Setter Property="Focusable" Value="False" />
                                 </Trigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>

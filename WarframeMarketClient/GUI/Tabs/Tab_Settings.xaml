@@ -71,6 +71,8 @@
                         IsMoveToPointEnabled="True" 
                         AutoToolTipPlacement="TopLeft" 
                         AutoToolTipPrecision="2"
+                        Focusable="True"
+                        IsTabStop="True"
                         />
             </Grid>
 

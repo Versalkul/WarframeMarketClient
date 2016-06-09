@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -50,7 +51,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
         }
 
 
-        private void closeChat(object sender, MouseEventArgs e)
+        private void closeChat(object sender, RoutedEventArgs e)
         {
             ((ChatViewModel)this.DataContext).closeChat();
         }

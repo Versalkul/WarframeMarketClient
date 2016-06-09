@@ -17,6 +17,10 @@
     <SolidColorBrush x:Key="SelectionStrongBrush" Color="{StaticResource SelectionStrongColor}"/>
 
 
+    <!-- Stop whole Tabs from getting selected... -->
+    <Style TargetType="ContentControl">
+        <Setter Property="IsTabStop" Value="False" />
+    </Style>
 
 
     <Style TargetType="gui:FancyTabControl">
@@ -122,7 +126,7 @@
                         <Border BorderThickness="0"
                                 Grid.Column="1"
                                 Margin="{TemplateBinding ContentMargin}">
-                            <ContentPresenter ContentSource="SelectedContent" Margin="0"/>
+                            <ContentPresenter ContentSource="SelectedContent" Margin="0" />
                         </Border>
                     </Grid>
                 </ControlTemplate>

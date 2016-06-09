@@ -26,7 +26,8 @@
             CanUserReorderColumns="False"
             CanUserResizeColumns="False"
             CanUserResizeRows="False"
-            SelectionMode="Single">
+            SelectionMode="Single"
+            PreviewKeyDown="OnPreviewKeyDown">
 
             <DataGrid.RowValidationRules>
                 <validation:ItemValidation ValidationStep="UpdatedValue" />
