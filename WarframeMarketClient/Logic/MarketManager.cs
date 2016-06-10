@@ -304,12 +304,12 @@ namespace WarframeMarketClient.Logic
                 {
                     List<ChatMessage> msg = GetMessages(chatView.User.Name);
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
-                    else 
+                    else // this is not really what i want ...
                     {
-                        List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
+                        List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe)+1 ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
                         chatView.ChatMessages.Clear(); // not nice but working 
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
-                        if (newMsg.Any())
+                        if (newMsg.Any()) 
                         {
                             chatView.HasInfo = true;
                             ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
@@ -345,10 +345,11 @@ namespace WarframeMarketClient.Logic
             else
             {
                 ChatViewModel chat = new ViewModel.ChatViewModel(new User(args.fromUser), new List<ChatMessage>() { chatMsg });
-                ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
                 chat.HasInfo = true;
                 appState.Chats.Insert (0,chat);
+                Task.Factory.StartNew(UpdateChatOnlineState);
             }
+                ApplicationState.getInstance().InvokeNewMessage(this, new List<ChatMessage>() { chatMsg });
             // set Has Info
         }
 

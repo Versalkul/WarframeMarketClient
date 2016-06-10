@@ -58,7 +58,7 @@ namespace WarframeMarketClient.GUI
 
             if (!(IsKeyboardFocusWithin && TabChats.IsVisible && !e.Where(m => (TabChats.SelectedChat?.User?.Name != m.MessageFrom)).Any()))
             {
-                Console.WriteLine("Plim");
+                Console.WriteLine("Plim: Main Window");
                 ApplicationState.getInstance().Plimper.MessageReceived();
             }
             if (!IsKeyboardFocusWithin)

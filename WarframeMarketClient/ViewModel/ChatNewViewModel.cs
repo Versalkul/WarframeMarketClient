@@ -43,12 +43,20 @@ namespace WarframeMarketClient.ViewModel
         public void openChat()
         {
             Status = "Checking User";
+
+            if (user == ApplicationState.getInstance().Username)
+            {
+                Status = "You cant chat with yourself";
+            }
+
             IEnumerable<ChatViewModel> chatList = ApplicationState.getInstance().Chats.Where(chat => chat.User.Name == User);
             if (chatList.Any())
             {
                 Status = "Chat does already exist";
                 return;
             }
+
+
             if (ApplicationState.getInstance().Market.getStatusOnSite(User) != OnlineState.ERROR)
             {
                 Status = "";
