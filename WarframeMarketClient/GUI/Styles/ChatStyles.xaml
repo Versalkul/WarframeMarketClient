@@ -27,9 +27,9 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/> <!-- Left Padding -->
-                <ColumnDefinition Width="Auto"/> <!-- Left Spacing for UserMsg -->
+                <ColumnDefinition Width="40"/> <!-- Left Spacing for UserMsg -->
                 <ColumnDefinition Width="20*"/> <!-- Common Space -->
-                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
             <TextBlock

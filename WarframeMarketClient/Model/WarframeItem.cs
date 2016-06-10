@@ -86,7 +86,7 @@ namespace WarframeMarketClient.Model
         
         public List<string> AllItemNames { get { return ItemMap.GetValidItemNames(); } }
 
-        public bool Editing { get { return backUp != null; } }
+        public bool IsEditing { get { return backUp != null; } }
 
         public bool HasChanged { get { return Editing && !Equals(backUp); } }
 
@@ -193,7 +193,7 @@ namespace WarframeMarketClient.Model
             if (backUp != null) return;
             backUp = new WarframeItem(Name, Price, Count, ModRank, SellOffer, Id);
             Console.WriteLine("Begin Edit");
-            OnPropertyChanged(nameof(Editing));
+            OnPropertyChanged(nameof(IsEditing));
         }
 
         public void EndEdit()
@@ -206,7 +206,7 @@ namespace WarframeMarketClient.Model
             // check if really edited
             Console.WriteLine("Commit Edit");
             backUp = null;
-            OnPropertyChanged(nameof(Editing));
+            OnPropertyChanged(nameof(IsEditing));
         }
 
         public void CancelEdit()
@@ -219,7 +219,7 @@ namespace WarframeMarketClient.Model
             ModRank = backUp.ModRank;
             backUp = null;
             Console.WriteLine("Cancel Edit");
-            OnPropertyChanged(nameof(Editing));
+            OnPropertyChanged(nameof(IsEditing));
         }
 
         #endregion

@@ -103,12 +103,12 @@ namespace WarframeMarketClient.GUI.Tabs
             else
             {
                 ItemList.CurrentCell = new DataGridCellInfo(ItemList.CurrentCell.Item, ItemList.Columns[1]);
-                //ItemList.BeginEdit();
+                ItemList.BeginEdit();
             }
         }
         private void Decrease(object sender, RoutedEventArgs e)
         {
-            //ItemList.CancelEdit();
+            ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).DecreaseCount();
         }
         private void Remove(object sender, RoutedEventArgs e)

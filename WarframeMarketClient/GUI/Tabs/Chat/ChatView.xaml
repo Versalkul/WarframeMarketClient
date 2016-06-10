@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             KeyboardNavigation.TabNavigation="Local">
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="Me">
             <Setter Property="HorizontalAlignment" Value="Right"></Setter>

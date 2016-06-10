@@ -65,6 +65,7 @@ namespace WarframeMarketClient.ViewModel
             }
             else Status = "Username does not exist";
             Console.WriteLine("Open Chat with: "+User);
+            User = "";
         }
     }
 }
