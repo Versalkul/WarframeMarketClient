@@ -67,6 +67,9 @@ namespace WarframeMarketClient.Model
 
         public int ModRank { get; set; } = -1;
         public bool SellOffer { get; set; }
+
+
+
         public string Id { get; set; }
         #endregion
 
@@ -88,7 +91,7 @@ namespace WarframeMarketClient.Model
 
         public bool IsEditing { get { return backUp != null; } }
 
-        public bool HasChanged { get { return Editing && !Equals(backUp); } }
+        public bool HasChanged { get { return IsEditing && !Equals(backUp); } }
 
         #region IDataErrorInfo
 
@@ -243,6 +246,7 @@ namespace WarframeMarketClient.Model
                     {
                         ApplicationState.getInstance().Market.AddItem(this);
                         ApplicationState.getInstance().Market.UpdateListing();
+                        OnPropertyChanged(nameof(IsEditing));
                     });
                     Console.WriteLine("Added!");
                 }
