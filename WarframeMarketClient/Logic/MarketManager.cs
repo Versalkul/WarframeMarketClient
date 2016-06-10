@@ -50,7 +50,7 @@ namespace WarframeMarketClient.Logic
                     if(ApplicationState.getInstance().Chats.Any())
                     {
                         CheckAndUpdateChats();
-                        appState.ValidationProgress+=20;
+                        appState.ValidationProgress+=30;
                     }
                     else // faster because loading new chats parallel
                     {
@@ -69,12 +69,13 @@ namespace WarframeMarketClient.Logic
                             appState.Chats.Add(chat);
                         }
                     }
+                    Task.Factory.StartNew(UpdateChatOnlineState);
                     msgSave.SaveMessages();
                 },
                 ()=>
                 {
                      offers = getOffers();
-                    ApplicationState.getInstance().ValidationProgress+=20;
+                    ApplicationState.getInstance().ValidationProgress+=30;
                 }
 
             };
@@ -107,15 +108,17 @@ namespace WarframeMarketClient.Logic
         private void StateChecker(object o, ElapsedEventArgs args)
         {
             timerCount++;
-            if ((socket.SocketWasClosed||timerCount%5==4)&&ApplicationState.getInstance().OnlineState.IsOnline()) // check for messages every two min 
+            if ((socket.SocketWasClosed||timerCount%5==3)&&ApplicationState.getInstance().OnlineState.IsOnline()) // check for messages every two min 
             {
-                (new Thread(() => CheckAndUpdateChats())).Start();
+                Task.Factory.StartNew(() => { CheckAndUpdateChats(); UpdateChatOnlineState(); });
                 socket.SocketWasClosed = false;
             }
-            
-            (new Thread(() => ForceUserStateSynchronous())).Start();
-            (new Thread(() => EnsureSocketState())).Start();
-            if(timerCount%5==3)(new Thread(() => UpdateListing())).Start();
+            Task.Factory.StartNew(ForceUserStateSynchronous);
+            Task.Factory.StartNew(EnsureSocketState);
+            if (timerCount % 5 == 4) {
+                Task.Factory.StartNew(UpdateListing);
+                
+            }
         }
 
 
@@ -124,11 +127,11 @@ namespace WarframeMarketClient.Logic
         {
             if (socket.SocketWasClosed&&ApplicationState.getInstance().OnlineState.IsOnline())
             {
-                (new Thread(() => CheckAndUpdateChats())).Start();
+                Task.Factory.StartNew(CheckAndUpdateChats);
                 socket.SocketWasClosed = false;
             }
-            (new Thread(() => ForceUserStateSynchronous())).Start();
-            (new Thread(() => EnsureSocketState())).Start();
+            Task.Factory.StartNew(ForceUserStateSynchronous);
+            Task.Factory.StartNew(EnsureSocketState);
         }
 
         private void ForceUserStateSynchronous()
@@ -241,6 +244,20 @@ namespace WarframeMarketClient.Logic
         #endregion
 
         #region PM
+
+        public void UpdateChatOnlineState()
+        {
+            List<string> names = ApplicationState.getInstance().Chats.Select(x => x.User.Name).ToList();
+            
+
+            Dictionary<string, OnlineState> stateInfo = getStatusOnSite(names);
+
+            foreach (ChatViewModel chat in ApplicationState.getInstance().Chats)
+            {
+                if (stateInfo.ContainsKey(chat.User.Name)) chat.User.State = stateInfo[chat.User.Name];
+             }
+
+        }
 
         public void CheckAndUpdateChats() // if chat in app incorrect correct it (user send a msg via website)
         {
@@ -368,7 +385,7 @@ namespace WarframeMarketClient.Logic
 
         public void CloseChat(string user)
         {
-            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/messages/close/" + user)) // no compiler dont remove that pls ^^
+            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/messages/close/" + user))
             {
 
 

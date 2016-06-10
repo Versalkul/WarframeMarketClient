@@ -28,7 +28,7 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel >
                     <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="limitAutocomplete" Margin="0,10,0,0" Content="No Autocomplete-Scrollbar" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="limitAutocomplete" Margin="0,10,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                 </StackPanel>
                 <StackPanel Margin="25,0,0,0" Grid.Column="2">
                     <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />

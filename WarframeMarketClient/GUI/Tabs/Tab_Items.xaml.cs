@@ -72,9 +72,9 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) // Block all Enter keys; User has tu use Arrow Keys for navigation
+            if (e.Key == Key.Enter && ItemList.CurrentCell != null && ItemList.CurrentCell.Column != null) // Block all Enter keys; User has tu use Arrow Keys for navigation
             {
-                if (ItemList.CurrentCell != null && !ItemList.CurrentCell.Column.IsReadOnly) // Only start Editing in editable columns
+                if (!ItemList.CurrentCell.Column.IsReadOnly) // Only start Editing in editable columns
                     ItemList.BeginEdit();
                 e.Handled = true;
             }

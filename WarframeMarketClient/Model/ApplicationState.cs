@@ -105,7 +105,7 @@ namespace WarframeMarketClient.Model
                 {
                     
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
-                    ValidationProgress += 20;
+                    ValidationProgress += 35;
                     if (!verification.Item1)
                     {
                         Username = "";
@@ -121,8 +121,6 @@ namespace WarframeMarketClient.Model
                     OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
-
-
                 });
             }
         } 

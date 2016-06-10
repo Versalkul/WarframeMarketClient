@@ -16,6 +16,7 @@ namespace WarframeMarketClient.Model
     public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject,IEquatable<WarframeItem>
     {
 
+
         private WarframeItem backUp;
 
         #region Properties
@@ -283,6 +284,7 @@ namespace WarframeMarketClient.Model
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
+ 
 
         public bool Equals(WarframeItem item)
         {
