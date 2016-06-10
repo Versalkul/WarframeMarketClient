@@ -33,7 +33,18 @@
             VerticalAlignment="Bottom"
             Foreground="{Binding User.State, Converter={StaticResource OnlineStateToColorConverter}, ConverterParameter='strong'}"
             FontWeight="Bold"/>
-        <Label Grid.Row="0" Padding="10,0" x:Name="Close" Content="Close Chat" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="10" Foreground="#FFFF7200" Cursor="Hand" MouseUp="closeChat"/>
+        <Button Grid.Row="0"
+                Margin="10,0"
+                x:Name="Close"
+                Content="Close Chat"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                FontSize="10"
+                Foreground="#FFFF7200"
+                Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}"
+                Cursor="Hand"
+                Click="closeChat"
+                TabIndex="2"/>
 
         <Border Grid.Row="1"
             Margin="0,7,0,10"
@@ -66,6 +77,7 @@
             BorderThickness="0,1,0,0"
             BorderBrush="{StaticResource BorderBrush}"
             Margin="0"
-            Padding="10"/>
+            Padding="10"
+            TabIndex="1"/>
     </Grid>
 </UserControl>

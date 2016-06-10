@@ -50,14 +50,18 @@ namespace WarframeMarketClient.Model
             }
         }
 
-        
-        public int Price { get; set; }
+        private int price;
+
+        public int Price {
+            get { return price; }
+            set { price = value; OnPropertyChanged(nameof(Price)); } }
+
         private int count;
 
         public int Count
         {
             get { return count; }
-            set { count = value; }
+            set { count = value;OnPropertyChanged(nameof(Count)); }
         }
 
         public int ModRank { get; set; } = -1;

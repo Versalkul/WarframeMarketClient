@@ -38,6 +38,7 @@
                         Padding="4,8"
                         BorderThickness="0,1,1,0"
                         IsEnabled="{Binding IsValid}"
+                        TabIndex="1"
                         >
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource CleanButton}">
@@ -57,7 +58,7 @@
 
 
     <Grid>
-        <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}">
+        <local:FancyTabControl x:Name="mainTabs" Style="{StaticResource MainTabsStyle}" TabIndex="2">
 
             <TabItem Header="Settings" DataContext="{Binding ElementName=TabSettings}">
                 <tabs:Tab_Settings x:Name="TabSettings"/>
