@@ -9,36 +9,37 @@ using System.Windows;
 using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
+using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.Model
 {
     public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject,IEquatable<WarframeItem>
     {
-        public static Dictionary<string, Tuple<string, int>> itemInfoMap = new Dictionary<string, Tuple<string, int>>(1000);
 
         private WarframeItem backUp;
 
         #region Properties
 
         #region Native Properties
-        private string name;
+        private string name="";
 
         public string Name
         {
             get { return name; }
             set {
-                if (value == null) return;
+                if (String.IsNullOrWhiteSpace(value)) return;
 
-                if (!itemInfoMap.Any())
+                if (!ItemMap.initialized&& !ItemMap.IsValidItemName(value))
                 {
-                    // if MapNotLoaded and NameUnknown=> (as soon as save and load is implemented)
-                    while (!itemInfoMap.Any()) System.Threading.Thread.Yield();
+                    Task.Factory.StartNew(() => ItemMap.getTypeMap());
+                    // if MapNotLoaded and NameUnknown=> wait till i can be sure about it
+                    while (!ItemMap.initialized) System.Threading.Thread.Yield();
                 }
 
-                if (itemInfoMap.ContainsKey(value))
+                if (ItemMap.IsValidItemName(value))
                 {
                     name = value;
-                    ModRank = Math.Min(0, itemInfoMap[name].Item2);
+                    ModRank = Math.Min(0, ItemMap.GetMaxModRank(value));
                 }
                 //name = value;
                 // else name = ""; // Keep old name
@@ -65,7 +66,7 @@ namespace WarframeMarketClient.Model
         #endregion
 
         #region Derivated Properties
-        public int MaxRank { get { return (Name==null||!itemInfoMap.ContainsKey(name))? -1: itemInfoMap[Name].Item2; } }
+        public int MaxRank { get { return (Name==null||!ItemMap.IsValidItemName(name))? -1: ItemMap.GetMaxModRank(name); } }
 
         public IEnumerable<int> ModRanks { get {
                 return Enumerable.Range(0, MaxRank+1);
@@ -74,11 +75,11 @@ namespace WarframeMarketClient.Model
 
         public string Category { get
             {
-                return WarframeMarketClient.Logic.MarketManager.GetCategory(Name);
+                return ItemMap.GetCategory(Name);
             }
         }
         
-        public List<string> AllItemNames { get { return itemInfoMap.Keys.ToList(); } }
+        public List<string> AllItemNames { get { return ItemMap.GetValidItemNames(); } }
 
         public bool Editing { get { return backUp != null; } }
 
@@ -94,7 +95,6 @@ namespace WarframeMarketClient.Model
         {
             get
             {
-                Console.WriteLine(" Called Error");
                 if (Name == "" || Count <= 0 || Price <= 0) return "Single DATA ERROR";
                 return null;
             }
@@ -109,7 +109,7 @@ namespace WarframeMarketClient.Model
                 // apply property level validation rules
                 if (columnName == "Name")
                 {
-                    if (Name==null||!itemInfoMap.ContainsKey(Name))
+                    if (Name==null||!ItemMap.IsValidItemName(Name))
                         error = "Wrong Name";
                 }
                 

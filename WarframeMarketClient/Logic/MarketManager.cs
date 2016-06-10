@@ -37,18 +37,13 @@ namespace WarframeMarketClient.Logic
             List<WarframeItem> offers = null;
             ApplicationState appState = ApplicationState.getInstance();
 
-            Action[] initActions = new Action[4]
+            Action[] initActions = new Action[3]
             {
                 ()=>
                 {
                     socket = new SocketManager();
                     socket.recievedPM += new EventHandler<PmArgs>(AddNewChat);
                      ApplicationState.getInstance().ValidationProgress+=10;
-                },
-                ()=>
-                {
-                    if (WarframeItem.itemInfoMap.Keys.Count < 100) WarframeItem.itemInfoMap = getTypeMap();
-                     ApplicationState.getInstance().ValidationProgress+=15;
                 },
                 ()=>
                 {
@@ -486,10 +481,10 @@ namespace WarframeMarketClient.Logic
 
         public bool AddItem(WarframeItem item)
         {
-            if (!WarframeItem.itemInfoMap.ContainsKey(item.Name)) return false;
+            if (!ItemMap.IsValidItemName(item.Name)) return false;
             string sellType = item.SellOffer ? "sell" : "buy";
 
-            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={WarframeItem.itemInfoMap[item.Name].Item1}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
+            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={item.Category}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
 
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/place_order", postData))
@@ -501,42 +496,14 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        public static string GetCategory(string name)
-        {
-            if (String.IsNullOrWhiteSpace(name)) return "";
-            if (WarframeItem.itemInfoMap == null|| WarframeItem.itemInfoMap.Count<50) WarframeItem.itemInfoMap = getTypeMap();
-            if (WarframeItem.itemInfoMap.ContainsKey(name)) return WarframeItem.itemInfoMap[name].Item1;
-            return "";
-        }
+
 
         #endregion
 
 
 
 
-        public static Dictionary<string, Tuple<string,int>> getTypeMap()
-        {
-            Dictionary<string, Tuple<string, int>> map = new Dictionary<string, Tuple<string, int>>(1000);
-            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/api/get_all_items_v2"))
-            {
-                if (response == null || response.StatusCode != HttpStatusCode.OK) return new Dictionary<string, Tuple<string, int>>();
-
-                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                {
-
-                    List<ItemTypeMap> mapList = JsonConvert.DeserializeObject<List<ItemTypeMap>>(reader.ReadToEnd());
-
-                    foreach (ItemTypeMap elem in mapList)
-                    {
-                        map.Add(elem.item_name,new Tuple<string, int>(elem.item_type,elem.mod_max_rank));
-                    }
-                }
-
-
-            }
-            return map;
-        }
-
+ 
 
 
         public void Dispose()

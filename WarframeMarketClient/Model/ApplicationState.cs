@@ -57,10 +57,11 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
+            ItemMap.LoadMap();
             (new SaveLoadFile()).ExtractStandartSounds();
             Settings = new Settings();
             Settings.LoadSettings();
-            if(String.IsNullOrWhiteSpace(SessionToken))Task.Factory.StartNew(() => WarframeItem.itemInfoMap = MarketManager.getTypeMap()); // inits the webapi and gets an usefull result
+            Task.Factory.StartNew(() => { ItemMap.getTypeMap();ItemMap.SaveMap(); }); // inits the webapi and gets an usefull result
             Plimper = new SoundViewModel();
         }
 
