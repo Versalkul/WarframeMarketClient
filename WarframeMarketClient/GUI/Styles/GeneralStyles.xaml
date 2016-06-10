@@ -64,6 +64,7 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False"/>
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
                                         <Condition Value="True">
                                             <Condition.Binding>
                                                 <MultiBinding Converter="{StaticResource TabInfoToHasInfoConverter}">
@@ -74,12 +75,15 @@
                                         </Condition>
                                     </MultiDataTrigger.Conditions>
                                     <MultiDataTrigger.EnterActions>
-                                        <BeginStoryboard>
+                                        <BeginStoryboard Name="InfoBlinker">
                                             <Storyboard Storyboard.TargetName="Border" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="Background.Color">
-                                                <ColorAnimation To="{StaticResource SelectionColor}" AutoReverse="True" Duration="0:0:1" />
+                                                <ColorAnimation From="{StaticResource SelectionColor}" To="{StaticResource SelectionStrongColor}" AutoReverse="True" Duration="0:0:1" />
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </MultiDataTrigger.EnterActions>
+                                    <MultiDataTrigger.ExitActions>
+                                        <StopStoryboard BeginStoryboardName="InfoBlinker" />
+                                    </MultiDataTrigger.ExitActions>
                                 </MultiDataTrigger>
                                 <Trigger Property="IsEnabled" Value="False">
                                     <Setter TargetName="Border" Property="Opacity" Value="0.3" />

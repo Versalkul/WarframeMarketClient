@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -22,6 +18,7 @@ namespace WarframeMarketClient.ViewModel
             set
             {
                 hasInfo = value;
+                Console.WriteLine("HasInfo for " + DisplayName + " Set to: " + value);
                 OnPropertyChanged("HasInfo");
             }
         }
