@@ -208,7 +208,6 @@ namespace WarframeMarketClient.Model
             }
             // check if really edited
             Console.WriteLine("Commit Edit");
-            backUp = null;
             OnPropertyChanged(nameof(IsEditing));
         }
 
@@ -216,11 +215,16 @@ namespace WarframeMarketClient.Model
         {
 
             if (backUp == null) return;
-            Name = backUp.Name;
-            Price = backUp.Price;
-            Count = backUp.Count;
-            ModRank = backUp.ModRank;
-            backUp = null;
+            lock (backUp)
+            {
+
+                if (backUp == null) return;
+                Name = backUp.Name;
+                Price = backUp.Price;
+                Count = backUp.Count;
+                ModRank = backUp.ModRank;
+                backUp = null;
+            }
             Console.WriteLine("Cancel Edit");
             OnPropertyChanged(nameof(IsEditing));
         }
@@ -230,12 +234,6 @@ namespace WarframeMarketClient.Model
         public async void CommitAdd()
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
-            if (!String.IsNullOrWhiteSpace(Id)&&HasChanged) //editing an old item
-            {
-                EndEdit();
-            }
-            else // new Item 
-            {
 
                 MessageDialogResult result=  await window.ShowMessageAsync("Confirm Additem", "Do you want to add the " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
 
@@ -250,8 +248,6 @@ namespace WarframeMarketClient.Model
                     });
                     Console.WriteLine("Added!");
                 }
-            }
-
         }
 
         public async void CommitEdit()
@@ -302,7 +298,7 @@ namespace WarframeMarketClient.Model
 
         public bool Equals(WarframeItem item)
         {
-            return (item.Id ?? "") == (Id ?? "") && (item.Name ?? "") == (Name ?? "") && item.Count == Count && item.Price == Price && item.SellOffer == SellOffer;
+            return (item.Id ?? "") == (Id ?? "") && (item.Name ?? "") == (Name ?? "") && item.Count == Count && item.Price == Price && ModRank==item.ModRank && item.SellOffer == SellOffer;
         }
 
         #endregion
