@@ -10,14 +10,17 @@ using System.Windows.Data;
 
 namespace WarframeMarketClient.ViewModel.Validation
 {
-    class ItemValidation:ValidationRule
+    class ItemValidation : ValidationRule
 
     {
+        /// <summary>
+        /// Validates WarframeItem Input
+        /// </summary>
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            BindingGroup group = (BindingGroup)value;
+            BindingGroup group = (BindingGroup) value;
 
-            StringBuilder error = null;
+            StringBuilder error = new StringBuilder();
             foreach (var item in group.Items)
             {
                 // aggregate errors
@@ -25,33 +28,15 @@ namespace WarframeMarketClient.ViewModel.Validation
                 if (info != null)
                 {
                     if (!string.IsNullOrEmpty(info.Error))
-                    {
-                        if (error == null)
-                            error = new StringBuilder();
                         error.Append((error.Length != 0 ? ", " : "") + info.Error);
-                    }
                 }
             }
 
-            if (error != null)
+            if (error.Length > 0)
                 return new ValidationResult(false, error.ToString());
 
             return ValidationResult.ValidResult;
         }
-
-        /// <summary>
-
-        /// Validates the proposed value.
-
-        /// </summary>
-
-        /// <param name="value">The proposed value.</param>
-
-        /// <param name="cultureInfo">A CultureInfo.</param>
-
-        /// <returns>The result of the validation.</returns>
-
-
 
     }
 
