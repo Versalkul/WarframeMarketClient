@@ -121,8 +121,8 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void Save(object sender, RoutedEventArgs e)
         {
-            //ItemList.CommitEdit();
-            ((sender as Button).DataContext as WarframeItem).EndEdit();
+            ItemList.CommitEdit();
+            ((sender as Button).DataContext as WarframeItem).CommitEdit();
         }
 
         #endregion

@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
-             xmlns:toolkitGrid="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
              xmlns:local="clr-namespace:WarframeMarketClient.GUI.Tabs"
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              xmlns:validation="clr-namespace:WarframeMarketClient.ViewModel.Validation"
@@ -17,7 +16,7 @@
         <converter:ModRankToBooleanConverter x:Key="ModRankToBooleanConverter"/>
     </UserControl.Resources>
     <Grid Background="White" DataContext="{Binding ElementName=self}">
-        <toolkitGrid:DataGrid
+        <DataGrid
             x:Name="ItemList"
             ItemsSource="{Binding Path=Items}"
             AutoGenerateColumns="False"
@@ -30,19 +29,19 @@
             SelectionMode="Single"
             PreviewKeyDown="OnPreviewKeyDown">
 
-            <toolkitGrid:DataGrid.RowValidationRules>
+            <DataGrid.RowValidationRules>
                 <validation:ItemValidation ValidationStep="UpdatedValue" />
-            </toolkitGrid:DataGrid.RowValidationRules>
+            </DataGrid.RowValidationRules>
 
-            <toolkitGrid:DataGrid.Columns>
-                <toolkitGrid:DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True" ElementStyle="{StaticResource dgTextBlockStyle}" />
-                <toolkitGrid:DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
-                    <toolkitGrid:DataGridTemplateColumn.CellTemplate>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Category" Width="2*" Binding="{Binding Path=Category}" IsReadOnly="True" ElementStyle="{StaticResource dgTextBlockStyle}" />
+                <DataGridTemplateColumn Header="Name" Width="3*" SortMemberPath="Name">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=Name}" Style="{StaticResource dgTextBlockStyle}" />
                         </DataTemplate>
-                    </toolkitGrid:DataGridTemplateColumn.CellTemplate>
-                    <toolkitGrid:DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <toolkit:AutoCompleteBox
                                 ItemsSource="{Binding AllItemNames}"
@@ -54,17 +53,17 @@
                                 
                                 />
                         </DataTemplate>
-                    </toolkitGrid:DataGridTemplateColumn.CellEditingTemplate>
-                </toolkitGrid:DataGridTemplateColumn>
-                <toolkitGrid:DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" ElementStyle="{StaticResource dgTextBlockStyle}" EditingElementStyle="{StaticResource dgTextBoxStyle}" />
-                <toolkitGrid:DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" ElementStyle="{StaticResource dgTextBlockStyle}" EditingElementStyle="{StaticResource dgTextBoxStyle}" />
-                <toolkitGrid:DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
-                    <toolkitGrid:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Price" Width="1*" Binding="{Binding Path=Price, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" ElementStyle="{StaticResource dgTextBlockStyle}" EditingElementStyle="{StaticResource dgTextBoxStyle}" />
+                <DataGridTextColumn Header="Count" Width="1*" Binding="{Binding Path=Count, UpdateSourceTrigger=LostFocus, ValidatesOnExceptions=True, ValidatesOnDataErrors=True}" ElementStyle="{StaticResource dgTextBlockStyle}" EditingElementStyle="{StaticResource dgTextBoxStyle}" />
+                <DataGridTemplateColumn Header="Rank" Width="1*" SortMemberPath="ModRank">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Path=ModRank, Converter={StaticResource ModRankToStringConverter}}" Style="{StaticResource dgTextBlockStyle}" Padding="7,0" />
                         </DataTemplate>
-                    </toolkitGrid:DataGridTemplateColumn.CellTemplate>
-                    <toolkitGrid:DataGridTemplateColumn.CellEditingTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellEditingTemplate>
                         <DataTemplate>
                             <ComboBox
                                 IsEditable="False"
@@ -73,10 +72,10 @@
                                 ItemsSource="{Binding Path=ModRanks}"
                                 Loaded="EditView_Loaded" />
                         </DataTemplate>
-                    </toolkitGrid:DataGridTemplateColumn.CellEditingTemplate>
-                </toolkitGrid:DataGridTemplateColumn>
-                <toolkitGrid:DataGridTemplateColumn IsReadOnly="True">
-                    <toolkitGrid:DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn.CellEditingTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn IsReadOnly="True">
+                    <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Grid HorizontalAlignment="Stretch">
                                 <Grid.ColumnDefinitions>
@@ -149,10 +148,10 @@
                                 </Button>
                             </Grid>
                         </DataTemplate>
-                    </toolkitGrid:DataGridTemplateColumn.CellTemplate>
-                </toolkitGrid:DataGridTemplateColumn>
-            </toolkitGrid:DataGrid.Columns>
-        </toolkitGrid:DataGrid>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
 
     </Grid>
 </UserControl>

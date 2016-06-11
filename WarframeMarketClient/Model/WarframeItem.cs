@@ -215,11 +215,16 @@ namespace WarframeMarketClient.Model
         {
 
             if (backUp == null) return;
-            Name = backUp.Name;
-            Price = backUp.Price;
-            Count = backUp.Count;
-            ModRank = backUp.ModRank;
-            backUp = null;
+            lock (backUp)
+            {
+
+                if (backUp == null) return;
+                Name = backUp.Name;
+                Price = backUp.Price;
+                Count = backUp.Count;
+                ModRank = backUp.ModRank;
+                backUp = null;
+            }
             Console.WriteLine("Cancel Edit");
             OnPropertyChanged(nameof(IsEditing));
         }
