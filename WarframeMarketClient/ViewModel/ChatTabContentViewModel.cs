@@ -1,5 +1,4 @@
-﻿using System;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -11,14 +10,12 @@ namespace WarframeMarketClient.ViewModel
 
 
         protected bool hasInfo = false;
-
         public bool HasInfo
         {
             get { return hasInfo; }
             set
             {
                 hasInfo = value;
-                Console.WriteLine("HasInfo for " + DisplayName + " Set to: " + value);
                 OnPropertyChanged("HasInfo");
             }
         }
