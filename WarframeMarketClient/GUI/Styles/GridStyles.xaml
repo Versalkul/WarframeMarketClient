@@ -14,7 +14,7 @@
 
 
 
-    <!-- 1 of many places where the validation errors are styled... welcome to WPF-hell -->
+    <!-- One of many places where the validation errors are styled... welcome to WPF-hell -->
     <Style x:Key="dgTextBlockStyle" TargetType="{x:Type TextBlock}">
         <Setter Property="Padding" Value="3,0" />
         <Setter Property="Margin" Value="0" />
@@ -38,7 +38,7 @@
                 <ControlTemplate>
                     <Grid Margin="0" Background="{TemplateBinding Background}">
                         <ScrollViewer Margin="0" Padding="0" x:Name="PART_ContentHost" SnapsToDevicePixels="True"/>
-                        <!-- Draws over the Path drawn by the DataGridCell to be able to highlight binding errors like 'asdf' for numbers -->
+                        <!-- Draws over the Path drawn by the DataGridCell to be able to highlight binding errors like 'asdf' for numbers ( those are not normal validation errors... ) -->
                         <Path Name="EditUnderline"
                                     Margin="-3,15,-3,0"
                                     Stroke="{StaticResource BorderBrush}"
@@ -235,6 +235,7 @@
 
 
 
+            <!-- Overwrite AutoCompleteBox to remove Background, Border (of inputbox only), style TextBlock, reduce size to fit in the DataGrid -->
             <Style TargetType="toolkit:AutoCompleteBox">
                 <Setter Property="Margin" Value="0" />
                 <Setter Property="Padding" Value="1,1" />
@@ -320,6 +321,7 @@
                                                          ScrollViewer.VerticalScrollBarVisibility="Auto"
                                                          MaxHeight="450"
                                                          attProp:ListBoxExtenders.AutoScrollToSelectedItem="True"/>
+                                                <!-- MaxHeight magically improves Performance ( enables View Virtualization => no Lag in huge list ) -->
                                             </Border>
                                         </Border>
                                     </Grid>
@@ -333,9 +335,9 @@
 
 
 
-           
 
 
+            <!-- Overwrite Combobox to remove Background, Border (of inputbox only), style TextBlock, reduce size to fit in the DataGrid -->
             <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}" >
                 <Setter Property="Padding" Value="0" />
                 <Setter Property="Background" Value="Transparent" />

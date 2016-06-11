@@ -45,8 +45,8 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
                     int caretIndex = InputText.CaretIndex;
                     InputText.Text = InputText.Text.Insert(InputText.CaretIndex, "\r\n");
                     InputText.CaretIndex = caretIndex+1;
-                }else
-                {
+                }
+                else{
                     ((ChatViewModel) this.DataContext).SendMessage();
                 }
             }

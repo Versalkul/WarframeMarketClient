@@ -103,6 +103,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="gui:FancyTabControl">
+                    <!-- UseLayoutRounding has opposite effect on Win10?! Need to investigate further -->
                     <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
