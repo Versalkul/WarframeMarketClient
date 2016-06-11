@@ -11,18 +11,21 @@ using System.Linq;
 namespace WarframeMarketClient.GUI.Tabs
 {
     /// <summary>
-    /// Interaktionslogik für Tab_Chats.xaml
+    /// Code behind for Tab_Chats.xaml
     /// </summary>
     public partial class Tab_Chats : UserControl, TabInfoInterface, INotifyPropertyChanged
     {
 
         #region Properties
-
+        
+        /// <summary>
+        /// This contains all Chats as ChatViewModel (not the new Chat Tab!)
+        /// </summary>
         public ObservableCollection<ChatViewModel> Chats
         {
             get { return (ObservableCollection<ChatViewModel>)GetValue(ChatsProperty); }
             set {
-                chatChanged(GetValue(ChatsProperty), value);
+                ChatChanged(GetValue(ChatsProperty), value);
                 SetValue(ChatsProperty, value);
             }
         }
@@ -32,14 +35,16 @@ namespace WarframeMarketClient.GUI.Tabs
             DependencyProperty.Register(nameof(Chats), typeof(ObservableCollection<ChatViewModel>), typeof(Tab_Chats), new PropertyMetadata(new PropertyChangedCallback(
                 (Obj, a) => {
                     DependencyPropertyChangedEventArgs? args = (a as DependencyPropertyChangedEventArgs?);
-                    (Obj as Tab_Chats).chatChanged(
+                    (Obj as Tab_Chats).ChatChanged(
                         args.HasValue ? args.Value.OldValue : null,
                         args.HasValue ? args.Value.NewValue : null);
                 }
                 )));
 
-
-
+        
+        /// <summary>
+        /// This contains all Chats PLUS the new Chat Tab in the first place
+        /// </summary>
         public ReadOnlyObservableCollection<ChatTabContentViewModel> Tabs
         {
             get {
@@ -53,7 +58,6 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
         protected bool hasInfo = false;
-
         public bool HasInfo
         {
             get { return hasInfo; }
@@ -85,17 +89,21 @@ namespace WarframeMarketClient.GUI.Tabs
             newChat = new ChatNewViewModel(this);
             InitializeComponent();
             _dispatcher = Dispatcher.CurrentDispatcher;
-            chatTabs.SelectionChanged += tabChanged;
+            chatTabs.SelectionChanged += TabChanged;
             IsVisibleChanged += Tab_Chats_IsVisibleChanged;
         }
 
+
+        #region Tab Events
         private void Tab_Chats_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             if(IsVisible)
-                tabChanged(null, null);
-
+                TabChanged(null, null);
         }
-        private void tabChanged(object sender, SelectionChangedEventArgs e)
+        /// <summary>
+        /// Called when the visibility of the tabs changes (Also when the whole Chat Tab becomes visible)
+        /// </summary>
+        private void TabChanged(object sender, SelectionChangedEventArgs e)
         {
             if (chatTabs.SelectedIndex > 0)
                 Chats[chatTabs.SelectedIndex - 1].HasInfo = false;
@@ -104,49 +112,48 @@ namespace WarframeMarketClient.GUI.Tabs
             foreach (ChatViewModel v in Chats)
                 HasInfo = HasInfo || v.HasInfo;
         }
-
+        #endregion
 
 
         #region Chat Events
         /// <summary>
         /// Called when chat changes completely
+        /// Updates all the Event Listeners
         /// </summary>
-        /// <param name="oldChat"></param>
-        /// <param name="newChat"></param>
-        private void chatChanged(object oldChat, object newChat) {
+        private void ChatChanged(object oldChat, object newChat) {
             ObservableCollection<ChatViewModel> oC = oldChat as ObservableCollection<ChatViewModel>,
                 nC = newChat as ObservableCollection<ChatViewModel>;
             if (nC == oC)
                 return;
             if (oC != null)
             {
-                oC.CollectionChanged -= chatUpdated;
+                oC.CollectionChanged -= ChatUpdated;
                 foreach (ChatViewModel c in oC)
-                    c.PropertyChanged -= chatHasInfo;
+                    c.PropertyChanged -= ChatHasInfo;
             }
             if (nC != null)
             {
-                nC.CollectionChanged += chatUpdated;
+                nC.CollectionChanged += ChatUpdated;
                 HasInfo = false;
                 foreach (ChatViewModel v in nC)
                     HasInfo = HasInfo || v.HasInfo;
             }
-            chatUpdated(null, null);
+            ChatUpdated(null, null);
         }
 
         /// <summary>
         /// Called when chat content changes
+        /// Checks HasInfo and switches to tab if applicable
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void chatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void ChatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
+            // Dispatcher neccessary because Chats is owned by the GUI thread
             _dispatcher.Invoke(new Action(() =>
             {
                 foreach (ChatViewModel c in Chats.ToList())
                 {
-                    c.PropertyChanged -= chatHasInfo;
-                    c.PropertyChanged += chatHasInfo;
+                    c.PropertyChanged -= ChatHasInfo;
+                    c.PropertyChanged += ChatHasInfo;
                 }
 
                 // Reload Tabs before switching to new Tab
@@ -169,8 +176,13 @@ namespace WarframeMarketClient.GUI.Tabs
             }));
         }
 
-        private void chatHasInfo(object sender, PropertyChangedEventArgs args)
+        /// <summary>
+        /// Called when HasInfo of a Chat changes
+        /// Checks HasInfo and switches to tab if applicable
+        /// </summary>
+        private void ChatHasInfo(object sender, PropertyChangedEventArgs args)
         {
+            // Dispatcher neccessary because Chats is owned by the GUI thread
             _dispatcher.Invoke(new Action(() =>
             {
                 if (args.PropertyName == "HasInfo" && sender is ChatViewModel && (sender as ChatViewModel).HasInfo)

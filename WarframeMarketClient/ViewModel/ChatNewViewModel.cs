@@ -40,13 +40,15 @@ namespace WarframeMarketClient.ViewModel
             this.parent = parent;
         }
 
+
         public void openChat()
         {
             Status = "Checking User";
 
             if (user == ApplicationState.getInstance().Username)
             {
-                Status = "You cant chat with yourself";
+                Status = "You can't chat with yourself";
+                return;
             }
 
             IEnumerable<ChatViewModel> chatList = ApplicationState.getInstance().Chats.Where(chat => chat.User.Name == User);

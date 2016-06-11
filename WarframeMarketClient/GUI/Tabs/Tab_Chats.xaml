@@ -13,6 +13,8 @@
     <UserControl.Resources>
         <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
         <converter:OnlineStateToVisibilityConverter x:Key="OnlineStateToVisibilityConverter"/>
+        
+        <!-- Displays Name and OnlineStatus of User in the TabItem -->
         <DataTemplate x:Key="ChatTabItemTemplate">
             <Grid>
                 <Grid.ColumnDefinitions>

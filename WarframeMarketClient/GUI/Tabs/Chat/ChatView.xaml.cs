@@ -23,6 +23,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
 
         private void OnChatChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
+            // Scroll to the bottom on new message (if already was at bottom)
             if (chatScroll == null)
             {
                 if (VisualTreeHelper.GetChildrenCount(ChatList) > 0)
@@ -38,6 +39,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
 
         private void Input_KeyDown(object sender, KeyEventArgs e)
         {
+            // Behaviour: Enter sends message; Shift-Enter or Ctrl-Enter inserts Newline
             if (e.Key == Key.Return){
                 if((e.KeyboardDevice.Modifiers & (ModifierKeys.Shift | ModifierKeys.Control)) != 0) {
                     int caretIndex = InputText.CaretIndex;
@@ -45,7 +47,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
                     InputText.CaretIndex = caretIndex+1;
                 }else
                 {
-                    ((ChatViewModel) this.DataContext).sendMessage();
+                    ((ChatViewModel) this.DataContext).SendMessage();
                 }
             }
         }
@@ -53,7 +55,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
 
         private void closeChat(object sender, RoutedEventArgs e)
         {
-            ((ChatViewModel)this.DataContext).closeChat();
+            ((ChatViewModel)this.DataContext).CloseChat();
         }
     }
 }

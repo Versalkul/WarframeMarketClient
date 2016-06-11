@@ -14,7 +14,7 @@
 
 
 
-    <!-- Control Templates -->
+    <!-- Template for Single Chat Message -->
     <DataTemplate x:Key="ChatItemTemplate">
         <DataTemplate.Resources>
             <converter:FromMeToAlignmentConverter x:Key="FromMeToAlignmentConverter"/>
@@ -27,7 +27,7 @@
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/> <!-- Left Padding -->
-                <ColumnDefinition Width="40"/> <!-- Left Spacing for UserMsg -->
+                <ColumnDefinition Width="40"/> <!-- Left Spacing for Timestamp -->
                 <ColumnDefinition Width="20*"/> <!-- Common Space -->
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="1*"/>
