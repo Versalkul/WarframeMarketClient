@@ -14,8 +14,8 @@ namespace WarframeMarketClient.GUI.Converter
             object val = value[0];
             string setting = parameter is string ? parameter as string : ""; // A: Add, E: Edit, P: Placeholder, N: Normal
             string status = val.GetType().Name == "NamedObject" ? "P" :
-                val is WarframeItem &&  (String.IsNullOrWhiteSpace((val as WarframeItem).Id) || (val as WarframeItem).HasChanged) ? "A" :
-                val is WarframeItem && ((val as WarframeItem).IsEditing) ? "E" :
+                val is WarframeItem &&  (String.IsNullOrWhiteSpace((val as WarframeItem).Id) ) ? "A" :
+                val is WarframeItem && ((val as WarframeItem).IsEditing || (val as WarframeItem).HasChanged) ? "E" :
                 "N";
             if (setting.Contains(status) || status == "N" && setting == "") // Placeholder
                 return Visibility.Visible;

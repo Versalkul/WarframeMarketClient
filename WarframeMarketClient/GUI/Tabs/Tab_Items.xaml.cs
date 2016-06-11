@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using WarframeMarketClient.Model;
+using DataGridCellInfo = Microsoft.Windows.Controls.DataGridCellInfo;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -116,7 +117,17 @@ namespace WarframeMarketClient.GUI.Tabs
             ItemList.CancelEdit();
             ((sender as Button).DataContext as WarframeItem).RemoveItem();
         }
+
+
+        private void Save(object sender, RoutedEventArgs e)
+        {
+            //ItemList.CommitEdit();
+            ((sender as Button).DataContext as WarframeItem).EndEdit();
+        }
+
         #endregion
+
+
     }
 
 }
