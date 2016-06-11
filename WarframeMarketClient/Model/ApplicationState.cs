@@ -57,6 +57,7 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
+            logger = new Logger();
             ItemMap.LoadMap();
             (new SaveLoadFile()).ExtractStandartSounds();
             Settings = new Settings();
@@ -69,6 +70,9 @@ namespace WarframeMarketClient.Model
 
 
         #region Properties
+
+
+        private Logger logger;
 
         private event EventHandler<List<ChatMessage>> newMessage;
 
@@ -103,7 +107,6 @@ namespace WarframeMarketClient.Model
                 OnlineState = OnlineState.VALIDATING;
                 Task.Factory.StartNew(() =>
                 {
-                    
                     Tuple<bool, string> verification = HtmlParser.verifyToken();
                     ValidationProgress += 35;
                     if (!verification.Item1)
