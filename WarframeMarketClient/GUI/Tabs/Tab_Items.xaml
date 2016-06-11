@@ -94,7 +94,7 @@
                                     Background="#FFA">
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="PA">
-                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}" Path="DataContext"/>
+                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>
                                             <Binding Path="IsEditing"/>
                                         </MultiBinding>
                                     </Button.Visibility>
@@ -110,7 +110,7 @@
                                     Background="#FFA">
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="E">
-                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}" Path="DataContext"/>
+                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>
                                             <Binding Path="IsEditing"/>
                                         </MultiBinding>
                                     </Button.Visibility>
@@ -126,7 +126,7 @@
                                     Background="#afa">
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="N">
-                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}" Path="DataContext"/>
+                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>
                                             <Binding Path="IsEditing"/>
                                         </MultiBinding>
                                     </Button.Visibility>
@@ -142,7 +142,7 @@
                                     Background="#faa">
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="NAE">
-                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=DataGridRow}" Path="DataContext"/>
+                                            <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>
                                             <Binding Path="IsEditing"/>
                                         </MultiBinding>
                                     </Button.Visibility>

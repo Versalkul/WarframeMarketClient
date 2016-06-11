@@ -7,6 +7,8 @@
                     xmlns:vm="clr-namespace:WarframeMarketClient.ViewModel"
                     xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
                     xmlns:attProp="clr-namespace:WarframeMarketClient.GUI.AttachedProperties"
+                    xmlns:toolkitGrid="clr-namespace:Microsoft.Windows.Controls;assembly=WPFToolkit"
+                    xmlns:toolkitGridPrim="clr-namespace:Microsoft.Windows.Controls.Primitives;assembly=WPFToolkit"
                     
                     xmlns:System="clr-namespace:System;assembly=mscorlib">
 
@@ -65,7 +67,7 @@
     </Style>
 
 
-    <Style TargetType="DataGrid">
+    <Style TargetType="toolkitGrid:DataGrid">
 
         <Setter Property="HeadersVisibility" Value="Column"/>
 
@@ -97,10 +99,10 @@
         <Style.Resources>
             <converter:ErrorPropertiesAndNameToHasErrorConverter x:Key="ErrorPropertiesAndNameToHasErrorConverter"/>
 
-            <Style TargetType="DataGridCell">
+            <Style TargetType="toolkitGrid:DataGridCell">
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="{x:Type DataGridCell}">
+                        <ControlTemplate TargetType="{x:Type toolkitGrid:DataGridCell}">
                             <Border Padding="5,10" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
                                 <Grid Margin="0">
                                     <Path Name="EditUnderline"
@@ -127,6 +129,9 @@
                                 <Trigger Property="IsFocused" Value="True">
                                     <Setter Property="BorderBrush" Value="{x:Null}" />
                                 </Trigger>
+                                <Trigger Property="IsReadOnly" Value="True">
+                                    <Setter Property="Focusable" Value="False" />
+                                </Trigger>
                                 <DataTrigger Value="True">
                                     <DataTrigger.Binding>
                                         <MultiBinding Converter="{StaticResource ErrorPropertiesAndNameToHasErrorConverter}">
@@ -139,7 +144,7 @@
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
                                         <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsReadOnly}" Value="False" />
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=IsEditing}" Value="True" />
+                                        <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType=toolkitGrid:DataGridRow}, Path=IsEditing}" Value="True" />
                                     </MultiDataTrigger.Conditions>
                                     <Setter TargetName="EditUnderline" Property="Visibility" Value="Visible" />
                                 </MultiDataTrigger>
@@ -149,7 +154,7 @@
                 </Setter>
             </Style>
 
-            <Style TargetType="DataGridRow">
+            <Style TargetType="toolkitGrid:DataGridRow">
                 <Style.Triggers>
                     <Trigger Property="ItemsControl.AlternationIndex" Value="0">
                         <Setter Property="Background" Value="#fff" />
@@ -171,12 +176,12 @@
             </Style>
 
 
-            <Style TargetType="DataGridColumnHeader">
+            <Style TargetType="toolkitGridPrim:DataGridColumnHeader">
                 <Setter Property="FontWeight" Value="Bold" />
                 <Setter Property="Foreground" Value="Gray" />
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="DataGridColumnHeader">
+                        <ControlTemplate TargetType="toolkitGridPrim:DataGridColumnHeader">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
