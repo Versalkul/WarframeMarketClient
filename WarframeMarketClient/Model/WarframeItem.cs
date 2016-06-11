@@ -65,7 +65,13 @@ namespace WarframeMarketClient.Model
             set { count = value;OnPropertyChanged(nameof(Count)); }
         }
 
-        public int ModRank { get; set; } = -1;
+        private int modRank = -1;
+
+        public int ModRank
+        {
+            get { return modRank; }
+            set { modRank = value; OnPropertyChanged(nameof(ModRank)); }
+        }
         public bool SellOffer { get; set; }
 
 
@@ -201,14 +207,14 @@ namespace WarframeMarketClient.Model
 
         public void EndEdit()
         {
-
-            if (!String.IsNullOrWhiteSpace(Id) && HasChanged)
+            if (!HasChanged)
             {
-                CommitEdit();
+                backUp = null;
+                OnPropertyChanged(nameof(IsEditing));
+
             }
-            // check if really edited
             Console.WriteLine("Commit Edit");
-            OnPropertyChanged(nameof(IsEditing));
+            
         }
 
         public void CancelEdit()
@@ -258,6 +264,7 @@ namespace WarframeMarketClient.Model
             if (result == MessageDialogResult.Affirmative)
             {
                 backUp = null;
+                OnPropertyChanged(nameof(IsEditing));
                 Task.Factory.StartNew(() =>
                 {
                     ApplicationState.getInstance().Market.EditItem(this);

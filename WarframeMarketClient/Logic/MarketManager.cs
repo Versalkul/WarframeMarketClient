@@ -188,7 +188,7 @@ namespace WarframeMarketClient.Logic
 
                 if (userCheckSite.Count == 0) return result;
 
-                string param = JsonConvert.SerializeObject(userCheckSite);
+                string param = JsonConvert.SerializeObject(users); // check every user always (better 1 request for 5 than 3 requests for 1 each)
 
                 using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/check_status", $"users={param}"))
                 {
@@ -281,6 +281,7 @@ namespace WarframeMarketClient.Logic
 
             }
 
+            if (elem < 0) UpdateChatOnlineState();
             List<ChatViewModel> closedChats = new List<ChatViewModel>();
 
             foreach(ChatViewModel chatView  in ApplicationState.getInstance().Chats)
@@ -398,7 +399,7 @@ namespace WarframeMarketClient.Logic
 
         #region buy sell stuff
 
-        public void UpdateListing() // may fail HORRIBLY if the cloning doesnt do clone
+        public void UpdateListing() 
         {
             List<WarframeItem> items = getOffers();
             List<WarframeItem> itemsAll = items.ToList(); // cloning that list;
@@ -424,7 +425,8 @@ namespace WarframeMarketClient.Logic
                             WarframeItem updateItem = sameItem.First();
                             if(updateItem.Price != item.Price) updateItem.Price = item.Price;
                             if(updateItem.Count != item.Count) updateItem.Count = item.Count;
-                            if (updateItem.Name != item.Name) updateItem.Name = item.Name; // nut sure if this case can happen 
+                            if (updateItem.ModRank != item.ModRank) updateItem.ModRank = item.ModRank;
+                            if (updateItem.Name != item.Name) updateItem.Name = item.Name; // not sure if this case can happen 
 
 
                         }
@@ -494,7 +496,8 @@ namespace WarframeMarketClient.Logic
 
         public bool EditItem(WarframeItem item)
         {
-            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/edit_order", $"id={item.Id}&new_count={item.Count}&new_price={item.Price}"))
+            string modRank = item.ModRank >= 0 ? $"new_mod_rank={item.ModRank}&" : "";
+            using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/edit_order", modRank+ $"id={item.Id}&new_count={item.Count}&new_price={item.Price}"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream())) return reader.ReadToEnd().Contains("200");
@@ -505,7 +508,6 @@ namespace WarframeMarketClient.Logic
         {
             if (!ItemMap.IsValidItemName(item.Name)) return false;
             string sellType = item.SellOffer ? "sell" : "buy";
-
             string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={item.Category}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
 
 
