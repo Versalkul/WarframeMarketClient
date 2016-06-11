@@ -41,7 +41,7 @@ namespace WarframeMarketClient.ViewModel
         }
 
 
-        public void openChat()
+        public void OpenChat()
         {
             Status = "Checking User";
 

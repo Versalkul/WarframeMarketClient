@@ -20,7 +20,7 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
             if (e.Key == Key.Return)
             {
                 ChatNewViewModel chat = (ChatNewViewModel) (this.DataContext);
-                Task.Factory.StartNew(()=>chat.openChat());
+                Task.Factory.StartNew(()=>chat.OpenChat());
             }
         }
     }
