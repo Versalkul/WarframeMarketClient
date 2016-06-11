@@ -3,34 +3,36 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using MahApps.Metro.Controls;
 using WarframeMarketClient.Logic;
 
 namespace WarframeMarketClient.Model
 {
-    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject,IEquatable<WarframeItem>
+    public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject, IEquatable<WarframeItem>
     {
-
-
+        /// <summary>
+        /// Backup for Editing
+        /// </summary>
         private WarframeItem backUp;
 
         #region Properties
 
         #region Native Properties
-        private string name="";
-
+        private string name = "";
+        /// <summary>
+        /// Name of the Item
+        /// Setter Updates all the other Properties according to ItemMap Info
+        /// </summary>
         public string Name
         {
             get { return name; }
             set {
                 if (String.IsNullOrWhiteSpace(value)) return;
 
-                if (!ItemMap.initialized&& !ItemMap.IsValidItemName(value))
+                if (!ItemMap.initialized && !ItemMap.IsValidItemName(value))
                 {
                     Task.Factory.StartNew(() => ItemMap.getTypeMap());
                     // if MapNotLoaded and NameUnknown=> wait till i can be sure about it
@@ -52,13 +54,11 @@ namespace WarframeMarketClient.Model
         }
 
         private int price;
-
         public int Price {
             get { return price; }
             set { price = value; OnPropertyChanged(nameof(Price)); } }
 
         private int count;
-
         public int Count
         {
             get { return count; }
@@ -66,21 +66,23 @@ namespace WarframeMarketClient.Model
         }
 
         private int modRank = -1;
-
         public int ModRank
         {
             get { return modRank; }
             set { modRank = value; OnPropertyChanged(nameof(ModRank)); }
         }
-        public bool SellOffer { get; set; }
 
+        public bool IsSellOffer { get; set; }
 
-
+        /// <summary>
+        /// Offer Id from Website
+        /// Null if Item only local ( not yet synced )
+        /// </summary>
         public string Id { get; set; }
         #endregion
 
         #region Derivated Properties
-        public int MaxRank { get { return (Name==null||!ItemMap.IsValidItemName(name))? -1: ItemMap.GetMaxModRank(name); } }
+        public int MaxRank { get { return (Name==null || !ItemMap.IsValidItemName(name)) ? -1 : ItemMap.GetMaxModRank(name); } }
 
         public IEnumerable<int> ModRanks { get {
                 return Enumerable.Range(0, MaxRank+1);
@@ -99,9 +101,13 @@ namespace WarframeMarketClient.Model
 
         public bool HasChanged { get { return IsEditing && !Equals(backUp); } }
 
+        #endregion
+
         #region IDataErrorInfo
 
-
+        /// <summary>
+        /// List of all Properties that currently have validation errors
+        /// </summary>
         public ObservableCollection<string> ErrorProperties { get; } = new ObservableCollection<string>();
 
 
@@ -122,21 +128,16 @@ namespace WarframeMarketClient.Model
 
                 // apply property level validation rules
                 if (columnName == "Name")
-                {
-                    if (Name==null||!ItemMap.IsValidItemName(Name))
+                    if (Name==null || !ItemMap.IsValidItemName(Name))
                         error = "Wrong Name";
-                }
                 
                 if (columnName == "Count")
-                {
                     if (Count<=0)
                         error = "Wrong Count";
-                }
+
                 if (columnName == "Price")
-                {
                     if (Price <= 0)
                         error = "Wrong Price";
-                }
 
                 ErrorProperties.Remove(columnName); // Keep only once
                 if (error != "")
@@ -148,9 +149,7 @@ namespace WarframeMarketClient.Model
 
         #endregion
 
-
-        #endregion
-
+        
         #endregion
 
 
@@ -170,7 +169,7 @@ namespace WarframeMarketClient.Model
             this.Name = name;
             this.Price = price;
             this.Count = count;
-            this.SellOffer = sellOffer;
+            this.IsSellOffer = sellOffer;
             ModRank = -1;
         }
 
@@ -200,7 +199,7 @@ namespace WarframeMarketClient.Model
         public void BeginEdit()
         {
             if (backUp != null) return;
-            backUp = new WarframeItem(Name, Price, Count, ModRank, SellOffer, Id);
+            backUp = new WarframeItem(Name, Price, Count, ModRank, IsSellOffer, Id);
             Console.WriteLine("Begin Edit");
             OnPropertyChanged(nameof(IsEditing));
         }
@@ -211,19 +210,15 @@ namespace WarframeMarketClient.Model
             {
                 backUp = null;
                 OnPropertyChanged(nameof(IsEditing));
-
             }
             Console.WriteLine("Commit Edit");
-            
         }
 
         public void CancelEdit()
         {
-
             if (backUp == null) return;
             lock (backUp)
             {
-
                 if (backUp == null) return;
                 Name = backUp.Name;
                 Price = backUp.Price;
@@ -237,29 +232,34 @@ namespace WarframeMarketClient.Model
 
         #endregion
 
+        /// <summary>
+        /// Sends Data to the Server
+        /// </summary>
         public async void CommitAdd()
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
+            MessageDialogResult result = await window.ShowMessageAsync("Confirm offer placement", "Do you want to place the " + (IsSellOffer ? "SELL" : "BUY") + $" offer for \n - {Name}" + (ModRank >= 0 ? " (Rank "+ModRank+")" : "") + $"\n - {Count} times for\n - {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
 
-                MessageDialogResult result=  await window.ShowMessageAsync("Confirm Additem", "Do you want to add the " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
-
-                if (result == MessageDialogResult.Affirmative)
+            if (result == MessageDialogResult.Affirmative)
+            {
+                backUp = null;
+                Task.Factory.StartNew(() =>
                 {
-                    backUp = null;
-                    Task.Factory.StartNew(() =>
-                    {
-                        ApplicationState.getInstance().Market.AddItem(this);
-                        ApplicationState.getInstance().Market.UpdateListing();
-                        OnPropertyChanged(nameof(IsEditing));
-                    });
-                    Console.WriteLine("Added!");
-                }
+                    ApplicationState.getInstance().Market.AddItem(this);
+                    ApplicationState.getInstance().Market.UpdateListing();
+                    OnPropertyChanged(nameof(IsEditing));
+                });
+                Console.WriteLine("Added!");
+            }
         }
 
+        /// <summary>
+        /// Sends Changes to the server
+        /// </summary>
         public async void CommitEdit()
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
-            MessageDialogResult result = await window.ShowMessageAsync("Confirm Edititem", "Do you want to edit the item to " + (SellOffer ? "Sell" : "Buy") + $" offer {Name} {Count}-times for {Price} Platinum on the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
+            MessageDialogResult result = await window.ShowMessageAsync("Confirm offer change", "Do you want to place the " + (IsSellOffer ? "SELL" : "BUY") + $" offer for \n - {Name}" + (ModRank >= 0 ? " (Rank " + ModRank + ")" : "") + $"\n - {Count} times for\n - {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -270,7 +270,7 @@ namespace WarframeMarketClient.Model
                     ApplicationState.getInstance().Market.EditItem(this);
                     ApplicationState.getInstance().Market.UpdateListing();
                 });
-                Console.WriteLine("Added!");
+                Console.WriteLine("Changes Committed!");
             }
          }
 
@@ -284,7 +284,7 @@ namespace WarframeMarketClient.Model
             }
             else
             {
-                if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
+                if (IsSellOffer) ApplicationState.getInstance().SellItems.Remove(this);
                 else ApplicationState.getInstance().BuyItems.Remove(this);
             }
         }
@@ -297,7 +297,7 @@ namespace WarframeMarketClient.Model
                 return;
             }
             if(!String.IsNullOrWhiteSpace(Id)) Task.Factory.StartNew(()=> ApplicationState.getInstance().Market.RemoveItem(this));
-            if (SellOffer) ApplicationState.getInstance().SellItems.Remove(this);
+            if (IsSellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
@@ -305,7 +305,7 @@ namespace WarframeMarketClient.Model
 
         public bool Equals(WarframeItem item)
         {
-            return (item.Id ?? "") == (Id ?? "") && (item.Name ?? "") == (Name ?? "") && item.Count == Count && item.Price == Price && ModRank==item.ModRank && item.SellOffer == SellOffer;
+            return (item.Id ?? "") == (Id ?? "") && (item.Name ?? "") == (Name ?? "") && item.Count == Count && item.Price == Price && ModRank==item.ModRank && item.IsSellOffer == IsSellOffer;
         }
 
         #endregion

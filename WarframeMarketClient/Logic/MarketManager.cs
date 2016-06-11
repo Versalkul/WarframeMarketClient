@@ -83,7 +83,7 @@ namespace WarframeMarketClient.Logic
             foreach (WarframeItem item in offers)
             {
 
-                if (item.SellOffer) appState.SellItems.Add(item);
+                if (item.IsSellOffer) appState.SellItems.Add(item);
                 else appState.BuyItems.Add(item);
 
             }
@@ -409,7 +409,7 @@ namespace WarframeMarketClient.Logic
             {
                 string id = item.Id;
                 item.Id = "";
-                if (item.SellOffer) 
+                if (item.IsSellOffer) 
                 {
                     int itemIndex = ApplicationState.getInstance().SellItems.IndexOf(item);
                     if (itemIndex>0) // i just added the item i just need to add its id
@@ -507,7 +507,7 @@ namespace WarframeMarketClient.Logic
         public bool AddItem(WarframeItem item)
         {
             if (!ItemMap.IsValidItemName(item.Name)) return false;
-            string sellType = item.SellOffer ? "sell" : "buy";
+            string sellType = item.IsSellOffer ? "sell" : "buy";
             string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={item.Category}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
 
 
