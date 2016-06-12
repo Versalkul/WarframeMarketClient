@@ -32,11 +32,12 @@
                 <ColumnDefinition Width="40"/>
                 <ColumnDefinition Width="1*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock
+            <TextBox
                 x:Name="Time"
                 Grid.Column="{Binding IsFromMe, Converter={StaticResource FromMeToColumnConverter}, ConverterParameter='3,1'}"
                 TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
-                Text="{Binding TimeString}"
+                Text="{Binding TimeString, Mode=OneWay}"
+                Style="{StaticResource SelectableTextBlockLikeStyle}"
                 VerticalAlignment="Center"
                 FontSize="7"
                 Foreground="#999"
@@ -47,11 +48,12 @@
                 Background="{Binding IsFromMe, Converter={StaticResource FromMeToColorConverter}}"
                 CornerRadius="2"
                 Padding="5,2">
-            <TextBlock
+            <TextBox
                 x:Name="Message"
                 TextAlignment="{Binding IsFromMe, Converter={StaticResource FromMeToAlignmentConverter}}"
                 TextWrapping="Wrap"
-                Text="{Binding Message}"
+                Text="{Binding Message, Mode=OneWay}"
+                Style="{StaticResource SelectableTextBlockLikeStyle}"
                 HorizontalAlignment="Stretch"
                 VerticalAlignment="Top"/>
             </Border>

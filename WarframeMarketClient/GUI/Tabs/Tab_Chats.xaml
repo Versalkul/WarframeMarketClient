@@ -32,9 +32,10 @@
                     Visibility="{Binding Path=OnlineStateInfo, Converter={StaticResource OnlineStateToVisibilityConverter}}"
                     Background="{Binding Path=OnlineStateInfo, Converter={StaticResource OnlineStateToColorConverter}}"/>
 
-                <ContentPresenter 
+                <TextBox 
                     Grid.Column="1"
-                    Content="{Binding Path=DisplayName}" 
+                    Style="{StaticResource SelectableTextBlockLikeStyle}"
+                    Text="{Binding Path=DisplayName, Mode=OneWay}" 
                     VerticalAlignment="Center" 
                     />
                 

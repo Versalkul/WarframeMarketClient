@@ -1,7 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
-                    xmlns:gui="clr-namespace:WarframeMarketClient.GUI">
+                    xmlns:gui="clr-namespace:WarframeMarketClient.GUI" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
     <Color x:Key="BorderColor">#CCC</Color>
     <SolidColorBrush x:Key="BorderBrush" Color="{StaticResource BorderColor}"/>
@@ -18,36 +18,36 @@
 
 
     <!-- Stop whole Tabs from getting selected... -->
-    <Style TargetType="ContentControl">
+    <Style TargetType="{x:Type ContentControl}">
         <Setter Property="IsTabStop" Value="False" />
     </Style>
 
 
-    <Style TargetType="gui:FancyTabControl">
+    <Style TargetType="{x:Type gui:FancyTabControl}">
         <Style.Resources>
             <converter:TabInfoToHasInfoConverter x:Key="TabInfoToHasInfoConverter"/>
-            <Style TargetType="TabItem">
+            <Style TargetType="{x:Type TabItem}">
                 <Setter Property="Template">
                     <Setter.Value>
-                        <ControlTemplate TargetType="TabItem">
-                            <Grid Name="Panel" Margin="0" SnapsToDevicePixels="True" UseLayoutRounding="True">
-                                <Border Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0" SnapsToDevicePixels="True" Padding="10,5">
+                        <ControlTemplate TargetType="{x:Type TabItem}">
+                            <Grid x:Name="Panel" Margin="0" SnapsToDevicePixels="True" UseLayoutRounding="True">
+                                <Border x:Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0" SnapsToDevicePixels="True" Padding="10,5">
                                     <ContentPresenter x:Name="ContentSite"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Stretch"
-                                            MinWidth="50"
-                                            ContentSource="Header"
-                                            Margin="{Binding RelativeSource={RelativeSource AncestorType=gui:FancyTabControl}, Path=TabNameMargin}"/>
+										VerticalAlignment="Center"
+										HorizontalAlignment="Stretch"
+										MinWidth="50"
+										ContentSource="Header"
+										Margin="{Binding TabNameMargin, RelativeSource={RelativeSource AncestorType={x:Type gui:FancyTabControl}}}"/>
                                 </Border>
-                                <Path Name="BorderPath"
-                                      Margin="0"
-                                      Stroke="{StaticResource BorderBrush}"
-                                      Fill="White"
-                                      StrokeThickness="1"
-                                      Data="M0,0 L-10,10 0,20"
-                                      HorizontalAlignment="Right"
-                                      Visibility="Hidden"
-                                      VerticalAlignment="Center" />
+                                <Path x:Name="BorderPath"
+									Margin="0"
+									Stroke="{StaticResource BorderBrush}"
+									Fill="White"
+									StrokeThickness="1"
+									Data="M0,0 L-10,10 0,20"
+									HorizontalAlignment="Right"
+									Visibility="Hidden"
+									VerticalAlignment="Center" />
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
@@ -63,8 +63,8 @@
                                 </MultiTrigger>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsMouseOver}" Value="False"/>
-                                        <Condition Binding="{Binding RelativeSource={RelativeSource Self}, Path=IsSelected}" Value="False"/>
+                                        <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="False"/>
+                                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="False"/>
                                         <Condition Value="True">
                                             <Condition.Binding>
                                                 <MultiBinding Converter="{StaticResource TabInfoToHasInfoConverter}">
@@ -75,7 +75,7 @@
                                         </Condition>
                                     </MultiDataTrigger.Conditions>
                                     <MultiDataTrigger.EnterActions>
-                                        <BeginStoryboard Name="InfoBlinker">
+                                        <BeginStoryboard x:Name="InfoBlinker">
                                             <Storyboard Storyboard.TargetName="Border" AutoReverse="True" RepeatBehavior="Forever" Storyboard.TargetProperty="Background.Color">
                                                 <ColorAnimation From="{StaticResource SelectionColor}" To="{StaticResource SelectionStrongColor}" AutoReverse="True" Duration="0:0:1" />
                                             </Storyboard>
@@ -102,7 +102,7 @@
         <Setter Property="TabStripPlacement" Value="Left"/>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="gui:FancyTabControl">
+                <ControlTemplate TargetType="{x:Type gui:FancyTabControl}">
                     <!-- UseLayoutRounding has opposite effect on Win10?! Need to investigate further -->
                     <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
@@ -120,7 +120,7 @@
                             <Border Grid.RowSpan="2" BorderThickness="0,0,1,0" BorderBrush="{StaticResource BorderBrush}" />
 
                             <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Hidden"
-                                          Margin="0" Padding="0">
+								Margin="0" Padding="0">
                                 <TabPanel IsItemsHost="True" Margin="0"/>
                             </ScrollViewer>
 
@@ -129,8 +129,8 @@
 
                         <!-- Content -->
                         <Border BorderThickness="0"
-                                Grid.Column="1"
-                                Margin="{TemplateBinding ContentMargin}">
+							Grid.Column="1"
+							Margin="{TemplateBinding ContentMargin}">
                             <ContentPresenter ContentSource="SelectedContent" Margin="0" />
                         </Border>
                     </Grid>
@@ -141,7 +141,7 @@
 
 
 
-    <Style x:Key="CleanButton" TargetType="Button">
+    <Style x:Key="CleanButton" TargetType="{x:Type Button}">
         <Setter Property="OverridesDefaultStyle" Value="True" />
         <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Foreground" Value="#BF000000" />
@@ -149,21 +149,21 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
-                        <Trigger Property="Button.IsMouseOver" Value="True">
+                        <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border" Property="Background">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background.Color}" Opacity="0.5"/>
+                                    <SolidColorBrush Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.5"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
-                        <Trigger Property="Button.IsPressed" Value="True">
+                        <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="border" Property="Background">
                                 <Setter.Value>
-                                    <SolidColorBrush Color="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Background.Color}" Opacity="0.2"/>
+                                    <SolidColorBrush Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.2"/>
                                 </Setter.Value>
                             </Setter>
                             <Setter TargetName="border" Property="BorderBrush" Value="#aaa" />
@@ -173,5 +173,22 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+
+    <Style x:Key="SelectableTextBlockLikeStyle" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="IsTabStop" Value="False"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <ScrollViewer x:Name="PART_ContentHost" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
 
 </ResourceDictionary>
