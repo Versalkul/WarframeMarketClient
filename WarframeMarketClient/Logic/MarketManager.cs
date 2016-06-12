@@ -427,8 +427,6 @@ namespace WarframeMarketClient.Logic
                             if(updateItem.Count != item.Count) updateItem.Count = item.Count;
                             if (updateItem.ModRank != item.ModRank) updateItem.ModRank = item.ModRank;
                             if (updateItem.Name != item.Name) updateItem.Name = item.Name; // not sure if this case can happen 
-
-
                         }
                         else
                         {
@@ -448,8 +446,21 @@ namespace WarframeMarketClient.Logic
                     }
                     else
                     {
-                        item.Id = id;
-                        ApplicationState.getInstance().SellItems.Add(item);
+                        IEnumerable<WarframeItem> sameItem = ApplicationState.getInstance().BuyItems.Where(x => x.Id == id);
+                        if (sameItem.Any()) // do i know the itemid => item changed
+                        {
+                            WarframeItem updateItem = sameItem.First();
+                            if (updateItem.Price != item.Price) updateItem.Price = item.Price;
+                            if (updateItem.Count != item.Count) updateItem.Count = item.Count;
+                            if (updateItem.ModRank != item.ModRank) updateItem.ModRank = item.ModRank;
+                            if (updateItem.Name != item.Name) updateItem.Name = item.Name; // not sure if this case can happen 
+                        }
+                        else
+                        {
+                            item.Id = id;
+                            ApplicationState.getInstance().BuyItems.Add(item);
+
+                        }
                     }
 
                 }

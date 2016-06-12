@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -32,8 +33,7 @@ namespace WarframeMarketClient.Logic
             text.Add(DateTime.Now.ToString() + " :");
             text.Add(args.Exception.Message);
             text.Add(args.Exception.StackTrace);
-            text.Add(args.Exception.ToString());
-            text.Add(args.Exception.InnerException.ToString());
+            text.Add(JsonConvert.SerializeObject(args.Exception));
             // targetSite
 
 

@@ -263,14 +263,29 @@ namespace WarframeMarketClient.Model
 
             if (result == MessageDialogResult.Affirmative)
             {
-                backUp = null;
-                OnPropertyChanged(nameof(IsEditing));
-                Task.Factory.StartNew(() =>
+                if (backUp.Name != Name)
                 {
-                    ApplicationState.getInstance().Market.EditItem(this);
-                    ApplicationState.getInstance().Market.UpdateListing();
-                });
-                Console.WriteLine("Changes Committed!");
+                    backUp.RemoveItem();
+                    Id = "";
+                    Task.Factory.StartNew(() =>
+                    {
+                        ApplicationState.getInstance().Market.AddItem(this);
+                        ApplicationState.getInstance().Market.UpdateListing();
+                        OnPropertyChanged(nameof(IsEditing));
+                    });
+                }
+                else
+                {
+
+                    OnPropertyChanged(nameof(IsEditing));
+                    Task.Factory.StartNew(() =>
+                    {
+                        ApplicationState.getInstance().Market.EditItem(this);
+                        ApplicationState.getInstance().Market.UpdateListing();
+                    });
+                    Console.WriteLine("Changes Committed!");
+                }
+                    backUp = null;
             }
          }
 
