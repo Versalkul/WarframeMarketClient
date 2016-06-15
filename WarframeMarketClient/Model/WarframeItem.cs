@@ -13,10 +13,18 @@ namespace WarframeMarketClient.Model
 {
     public class WarframeItem : INotifyPropertyChanged, IDataErrorInfo, IEditableObject, IEquatable<WarframeItem>
     {
+        
+        private WarframeItem backUp;
+
         /// <summary>
         /// Backup for Editing
         /// </summary>
-        private WarframeItem backUp;
+        public WarframeItem BackUp
+        {
+            get { return backUp; }
+            set { backUp = value;OnPropertyChanged(nameof(IsEditing)); }
+        }
+
 
         #region Properties
 
@@ -36,7 +44,7 @@ namespace WarframeMarketClient.Model
                 {
                     Task.Factory.StartNew(() => ItemMap.getTypeMap());
                     // if MapNotLoaded and NameUnknown=> wait till i can be sure about it
-                    while (!ItemMap.initialized) System.Threading.Thread.Yield();
+                    while (!ItemMap.initialized) System.Threading.Thread.Yield(); // may Block the gui
                 }
 
                 if (ItemMap.IsValidItemName(value))
@@ -44,8 +52,6 @@ namespace WarframeMarketClient.Model
                     name = value;
                     ModRank = Math.Min(0, ItemMap.GetMaxModRank(value));
                 }
-                //name = value;
-                // else name = ""; // Keep old name
                 OnPropertyChanged(nameof(Category));
                 OnPropertyChanged(nameof(MaxRank));
                 OnPropertyChanged(nameof(ModRank));
@@ -76,7 +82,7 @@ namespace WarframeMarketClient.Model
 
         /// <summary>
         /// Offer Id from Website
-        /// Null if Item only local ( not yet synced )
+        /// Null or Empty if Item only local ( not yet synced )
         /// </summary>
         public string Id { get; set; }
         #endregion
@@ -97,9 +103,19 @@ namespace WarframeMarketClient.Model
         
         public List<string> AllItemNames { get { return ItemMap.GetValidItemNames(); } }
 
-        public bool IsEditing { get { return backUp != null; } }
+        public bool IsEditing { get { return BackUp != null; } }
 
-        public bool HasChanged { get { return IsEditing && !Equals(backUp); } }
+        public bool HasChanged { get { return IsEditing && !Equals(BackUp); } }
+
+
+        private bool isUpdating;
+
+        public bool IsUpdating
+        {
+            get { return isUpdating; }
+            set { isUpdating = value;OnPropertyChanged(nameof(IsUpdating)); }
+        }
+
 
         #endregion
 
@@ -189,6 +205,11 @@ namespace WarframeMarketClient.Model
             this.ModRank = modRank;
         }
 
+        public WarframeItem(WarframeItem item):this(item.Name,item.Price,item.Count,item.ModRank,item.IsSellOffer,item.Id)
+        {
+
+        }
+
         #endregion
 
 
@@ -198,36 +219,34 @@ namespace WarframeMarketClient.Model
 
         public void BeginEdit()
         {
-            if (backUp != null) return;
-            backUp = new WarframeItem(Name, Price, Count, ModRank, IsSellOffer, Id);
+            if (BackUp != null) return;
+            BackUp = new WarframeItem(Name, Price, Count, ModRank, IsSellOffer, Id);
             Console.WriteLine("Begin Edit");
-            OnPropertyChanged(nameof(IsEditing));
         }
 
         public void EndEdit()
         {
             if (!HasChanged)
             {
-                backUp = null;
-                OnPropertyChanged(nameof(IsEditing));
+                BackUp = null;
             }
             Console.WriteLine("Commit Edit");
         }
 
         public void CancelEdit()
         {
-            if (backUp == null) return;
-            lock (backUp)
+            if (BackUp == null) return;
+            lock (BackUp)
             {
-                if (backUp == null) return;
-                Name = backUp.Name;
-                Price = backUp.Price;
-                Count = backUp.Count;
-                ModRank = backUp.ModRank;
-                backUp = null;
+                if (BackUp == null) return;
+                Name = BackUp.Name;
+                Price = BackUp.Price;
+                Count = BackUp.Count;
+                ModRank = BackUp.ModRank;
+                BackUp = null;
             }
             Console.WriteLine("Cancel Edit");
-            OnPropertyChanged(nameof(IsEditing));
+
         }
 
         #endregion
@@ -242,12 +261,14 @@ namespace WarframeMarketClient.Model
 
             if (result == MessageDialogResult.Affirmative)
             {
-                backUp = null;
+               
+                IsUpdating = true;
                 Task.Factory.StartNew(() =>
                 {
                     ApplicationState.getInstance().Market.AddItem(this);
                     ApplicationState.getInstance().Market.UpdateListing();
-                    OnPropertyChanged(nameof(IsEditing));
+                    IsUpdating = false;
+                    BackUp = null;
                 });
                 Console.WriteLine("Added!");
             }
@@ -263,29 +284,35 @@ namespace WarframeMarketClient.Model
 
             if (result == MessageDialogResult.Affirmative)
             {
-                if (backUp.Name != Name)
+                IsUpdating = true;
+                if (BackUp.Name != Name)
                 {
-                    backUp.RemoveItem();
+                    BackUp.RemoveItem();
                     Id = "";
+                    
                     Task.Factory.StartNew(() =>
                     {
                         ApplicationState.getInstance().Market.AddItem(this);
                         ApplicationState.getInstance().Market.UpdateListing();
-                        OnPropertyChanged(nameof(IsEditing));
+                        IsUpdating = false;
+                        BackUp = null;
+
                     });
                 }
                 else
                 {
 
-                    OnPropertyChanged(nameof(IsEditing));
+                    
                     Task.Factory.StartNew(() =>
                     {
                         ApplicationState.getInstance().Market.EditItem(this);
                         ApplicationState.getInstance().Market.UpdateListing();
+                        IsUpdating = false;
+                        BackUp = null;
                     });
                     Console.WriteLine("Changes Committed!");
                 }
-                    backUp = null;
+                
             }
          }
 
@@ -316,12 +343,21 @@ namespace WarframeMarketClient.Model
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
 
- 
+
+
+
 
         public bool Equals(WarframeItem item)
         {
             return (item.Id ?? "") == (Id ?? "") && (item.Name ?? "") == (Name ?? "") && item.Count == Count && item.Price == Price && ModRank==item.ModRank && item.IsSellOffer == IsSellOffer;
         }
+
+        public override string ToString()
+        {
+            return $"Itemname: {Name} Price: {Price} ID: {Id} Count: {Count} Modrank:{ModRank} IsSellOffer: {IsSellOffer} ";
+        }
+
+
 
         #endregion
 

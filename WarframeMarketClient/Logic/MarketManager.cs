@@ -116,7 +116,7 @@ namespace WarframeMarketClient.Logic
             Task.Factory.StartNew(ForceUserStateSynchronous);
             Task.Factory.StartNew(EnsureSocketState);
             if (timerCount % 5 == 4) {
-                Task.Factory.StartNew(UpdateListing);
+                 Task.Factory.StartNew(UpdateListing);
                 
             }
         }
@@ -405,14 +405,15 @@ namespace WarframeMarketClient.Logic
             List<WarframeItem> itemsAll = items.ToList(); // cloning that list;
             ApplicationState.getInstance().BuyItems.ToList().ForEach(x => items.Remove(x)); // all identical items dont need to be looked at
             ApplicationState.getInstance().SellItems.ToList().ForEach(x => items.Remove(x));
-            foreach (WarframeItem item in items)
+            foreach (WarframeItem it in items)
             {
+                WarframeItem item = new WarframeItem(it); // creating a clone of the object so i dont edit it in the list
                 string id = item.Id;
                 item.Id = "";
                 if (item.IsSellOffer) 
                 {
                     int itemIndex = ApplicationState.getInstance().SellItems.IndexOf(item);
-                    if (itemIndex>0) // i just added the item i just need to add its id
+                    if (itemIndex>=0) // i just added the item i just need to add its id
                     {
                         ApplicationState.getInstance().SellItems[itemIndex].Id = id;
                     }
@@ -440,7 +441,8 @@ namespace WarframeMarketClient.Logic
                 else
                 {
                     int itemIndex = ApplicationState.getInstance().BuyItems.IndexOf(item);
-                    if (itemIndex > 0)
+
+                    if (itemIndex >= 0)
                     {
                         ApplicationState.getInstance().BuyItems[itemIndex].Id = id;
                     }
@@ -465,7 +467,8 @@ namespace WarframeMarketClient.Logic
 
                 }
             }
-            foreach(WarframeItem item in ApplicationState.getInstance().BuyItems.ToList().Where(x=>x.Id!=""))
+
+            foreach (WarframeItem item in ApplicationState.getInstance().BuyItems.Where(x => x.Id != ""))
             {
 
                 if (!itemsAll.Contains(item)) ApplicationState.getInstance().BuyItems.Remove(item);

@@ -16,6 +16,7 @@
         <converter:WarframeItemToVisibilityConverter x:Key="WarframeItemToVisibilityConverter"/>
         <converter:ModRankToStringConverter x:Key="ModRankToStringConverter"/>
         <converter:ModRankToBooleanConverter x:Key="ModRankToBooleanConverter"/>
+        <converter:BoolToNegatedBoolConverter x:Key="BoolToNegatedBoolConverter"/>
     </UserControl.Resources>
     
     <Grid Background="White" DataContext="{Binding ElementName=self}">
@@ -114,7 +115,8 @@
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="E">
                                             <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>
-                                            <Binding Path="IsEditing"/> <!-- Binding needed for updating on changes -->
+                                            <Binding Path="IsEditing"/>
+                                            <!-- Binding needed for updating on changes -->
                                         </MultiBinding>
                                     </Button.Visibility>
                                 </Button>
