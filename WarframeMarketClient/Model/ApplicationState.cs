@@ -57,7 +57,7 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
-            logger = new Logger();
+            Logger = new Logger();
             ItemMap.LoadMap();
             (new SaveLoadFile()).ExtractStandartSounds();
             Settings = new Settings();
@@ -72,7 +72,7 @@ namespace WarframeMarketClient.Model
         #region Properties
 
 
-        private Logger logger;
+        public Logger Logger { get; private set; }
 
         private event EventHandler<List<ChatMessage>> newMessage;
 

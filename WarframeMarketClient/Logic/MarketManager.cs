@@ -275,6 +275,9 @@ namespace WarframeMarketClient.Logic
                     ChatViewModel chat = new ChatViewModel(new User(user), msg);
                     chat.HasInfo = true;
                     ApplicationState.getInstance().Chats.Insert(0,chat);
+
+                    ApplicationState.getInstance().Logger.Log(" Getting a new chat ");
+
                     ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
                     elem--;
                 }
@@ -313,6 +316,7 @@ namespace WarframeMarketClient.Logic
                         if (newMsg.Any()) 
                         {
                             chatView.HasInfo = true;
+                            ApplicationState.getInstance().Logger.Log(" Getting a new chatmessage " + newMsg.Last().Time + "  "+ newMsg.Last().MessageFrom+": "+ newMsg.Last().Message);
                             ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
                         }
                    }
@@ -363,9 +367,12 @@ namespace WarframeMarketClient.Logic
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     string json = reader.ReadToEnd();
-                    if (!json.Contains("200")) return new List<ChatMessage>();
+                    if (!json.Contains("200")) return new List<ChatMessage>(); // need to check befor the Deserialize Method (else crash in Deserialize)
                     JsonFrame<List<ChatMessage>> result = JsonConvert.DeserializeObject<JsonFrame<List<ChatMessage>>>(json);
-                    result.response.ForEach(x => x.Time = x.Time + timeOffset);
+                    result.response.ForEach(x => { // fixing Time and newlines
+                        x.Time = x.Time + timeOffset;
+                        x.Message = x.Message.Replace("{{br}}", System.Environment.NewLine);
+                    });
 
                     return result.response;
 
@@ -382,7 +389,7 @@ namespace WarframeMarketClient.Logic
 
         public void SendMessage(string to, string text)
         {
-            socket.sendMessage(to, text);
+            socket.sendMessage(to, text.Replace(System.Environment.NewLine,"<br>"));
         }
 
         public void CloseChat(string user)

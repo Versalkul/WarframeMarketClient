@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Logic
 {
-    class Logger
+    public class Logger
     {
 
         string folderPath;
@@ -25,20 +25,30 @@ namespace WarframeMarketClient.Logic
         }
 
 
-        public void GotException(object o, FirstChanceExceptionEventArgs args)
+        private void GotException(object o, FirstChanceExceptionEventArgs args)
         {
 
             List<string> text = new List<string>();
 
-            text.Add(DateTime.Now.ToString() + " :");
+            text.Add("EXCEPTION: "+DateTime.Now.ToString() + " :");
             text.Add(args.Exception.Message);
-            text.Add(args.Exception.StackTrace);
             text.Add(JsonConvert.SerializeObject(args.Exception));
             // targetSite
-
+            text.Add((new StackTrace(true)).ToString());
 
             File.AppendAllLines(filePath,text);
+        }
 
+        public void Log(string s)
+        {
+
+            List<string> text = new List<string>();
+
+            text.Add("EVENT: " + DateTime.Now.ToString() + " :");
+            text.Add(s);
+            text.Add((new StackTrace(true)).ToString());
+
+            File.AppendAllLines(filePath, text);
         }
     }
 }
