@@ -95,7 +95,9 @@
                                     Padding="4,5"
                                     Margin="0,0,5,0"
                                     Click="Add"
-                                    Background="#FFA">
+                                    Background="#FFA"
+                                    IsEnabled="{Binding IsUpdating, Converter={StaticResource BoolToNegatedBoolConverter}}"
+                                    >
                                     <Button.Visibility>
                                         <MultiBinding Converter="{StaticResource WarframeItemToVisibilityConverter}" ConverterParameter="PA">
                                             <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=toolkitGrid:DataGridRow}" Path="DataContext"/>

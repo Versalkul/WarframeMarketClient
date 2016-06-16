@@ -11,6 +11,8 @@ namespace WarframeMarketClient.Logic
 {
     class SocketManager : IDisposable
     {
+
+        bool disposed = false;
         WebSocket socket;
         public event EventHandler<PmArgs> recievedPM;
 
@@ -143,7 +145,15 @@ namespace WarframeMarketClient.Logic
 
         public void Dispose()
         {
+            if (disposed) return;
+            disposed = true;
             setOffline();
+            socket.Dispose();
+        }
+
+        ~SocketManager()
+        {
+           if(!disposed) Dispose();
         }
     }
 }

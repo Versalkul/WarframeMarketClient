@@ -30,8 +30,8 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TabItem}">
-                            <Grid x:Name="Panel" Margin="0" SnapsToDevicePixels="True" UseLayoutRounding="True">
-                                <Border x:Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0" SnapsToDevicePixels="True" Padding="10,5">
+                            <Grid x:Name="Panel" Margin="0" UseLayoutRounding="True">
+                                <Border x:Name="Border" Background="White" BorderThickness="0,0,1,1" BorderBrush="{StaticResource BorderBrush}" Margin="0" Padding="10,5">
                                     <ContentPresenter x:Name="ContentSite"
 										VerticalAlignment="Center"
 										HorizontalAlignment="Stretch"
@@ -39,15 +39,18 @@
 										ContentSource="Header"
 										Margin="{Binding TabNameMargin, RelativeSource={RelativeSource AncestorType={x:Type gui:FancyTabControl}}}"/>
                                 </Border>
+                                <!-- Margin is neccessary to make sure the Border is hidden behind the path
+                                    Some systems unfortunately Layout-Round to fraction numbers (Win10 scaling the GUI)-->
                                 <Path x:Name="BorderPath"
-									Margin="0"
+									Margin="0,0,-1,0"
 									Stroke="{StaticResource BorderBrush}"
 									Fill="White"
 									StrokeThickness="1"
-									Data="M0,0 L-10,10 0,20"
+									Data="M0,0 L-11,10 0,20"
 									HorizontalAlignment="Right"
 									Visibility="Hidden"
-									VerticalAlignment="Center" />
+									VerticalAlignment="Center" 
+                                    SnapsToDevicePixels="False"/>
                             </Grid>
                             <ControlTemplate.Triggers>
                                 <Trigger Property="IsSelected" Value="True">
@@ -104,7 +107,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type gui:FancyTabControl}">
                     <!-- UseLayoutRounding has opposite effect on Win10?! Need to investigate further -->
-                    <Grid SnapsToDevicePixels="True" UseLayoutRounding="True">
+                    <Grid UseLayoutRounding="True">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition Width="*"/>
@@ -149,24 +152,27 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                    <Border x:Name="Border" Background="{TemplateBinding Background}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
                         <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center" />
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
-                            <Setter TargetName="border" Property="Background">
+                            <Setter TargetName="Border" Property="Background">
                                 <Setter.Value>
                                     <SolidColorBrush Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.5"/>
                                 </Setter.Value>
                             </Setter>
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="border" Property="Background">
+                            <Setter TargetName="Border" Property="Background">
                                 <Setter.Value>
                                     <SolidColorBrush Color="{Binding Background.Color, RelativeSource={RelativeSource TemplatedParent}}" Opacity="0.2"/>
                                 </Setter.Value>
                             </Setter>
-                            <Setter TargetName="border" Property="BorderBrush" Value="#aaa" />
+                            <Setter TargetName="Border" Property="BorderBrush" Value="#aaa" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Border" Property="Opacity" Value="0.3" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

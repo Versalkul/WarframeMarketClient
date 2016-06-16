@@ -484,7 +484,7 @@ namespace WarframeMarketClient.Logic
             foreach (WarframeItem item in ApplicationState.getInstance().SellItems.Where(x => x.Id != "")) 
             {
 
-                if (!itemsAll.Contains(item)) ApplicationState.getInstance().SellItems.ToList().Remove(item);
+                if (!itemsAll.Contains(item)) ApplicationState.getInstance().SellItems.Remove(item);
 
             }
 
@@ -546,17 +546,12 @@ namespace WarframeMarketClient.Logic
         #endregion
 
 
-
-
- 
-
-
         public void Dispose()
         {
-            this.diposed = true;
+            if (diposed) return;
+            diposed = true;
             SaveMsg saver = new SaveMsg();
             saver.SaveMessages();
-            setOffline();
             onlineChecker.Dispose();
             socket.Dispose();
         }
