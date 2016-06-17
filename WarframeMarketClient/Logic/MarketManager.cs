@@ -316,7 +316,7 @@ namespace WarframeMarketClient.Logic
                         if (newMsg.Any()) 
                         {
                             chatView.HasInfo = true;
-                            ApplicationState.getInstance().Logger.Log(" Getting a new chatmessage " + newMsg.Last().Time + "  "+ newMsg.Last().MessageFrom+": "+ newMsg.Last().Message);
+                            ApplicationState.getInstance().Logger.Log(" Getting a new chatmessage " + newMsg.Last().Time + " Count of new Messages "+newMsg.Count );
                             ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
                         }
                    }
@@ -335,7 +335,7 @@ namespace WarframeMarketClient.Logic
             IEnumerable<ChatViewModel> chatList = appState.Chats.Where(chat => chat.User.Name == args.fromUser);
             ChatMessage chatMsg = new ChatMessage()
             {
-                Message = args.message,
+                Message = args.message.Replace("<br>", System.Environment.NewLine),
                 MessageFrom = args.fromUser,
                 SendMinute = DateTime.Now.Minute.ToString(),
                 SendHour = DateTime.Now.Hour.ToString()
@@ -355,7 +355,6 @@ namespace WarframeMarketClient.Logic
                 Task.Factory.StartNew(UpdateChatOnlineState);
             }
                 ApplicationState.getInstance().InvokeNewMessage(this, new List<ChatMessage>() { chatMsg });
-            // set Has Info
         }
 
         public List<ChatMessage> GetMessages(string user)
