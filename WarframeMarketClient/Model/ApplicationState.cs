@@ -64,6 +64,7 @@ namespace WarframeMarketClient.Model
             Settings.LoadSettings();
             Task.Factory.StartNew(() => { ItemMap.getTypeMap();ItemMap.SaveMap(); }); // inits the webapi and gets an usefull result
             Plimper = new SoundViewModel();
+            Task.Factory.StartNew(() => Settings.UpdateAvailable = Webhelper.CheckUpdate());
         }
 
         #endregion

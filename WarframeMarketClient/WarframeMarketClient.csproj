@@ -16,6 +16,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -28,7 +29,6 @@
     <MapFileExtensions>true</MapFileExtensions>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -51,6 +51,10 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>PlaceHolderIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, PublicKeyToken=e2091e5cc31f01f1, processorArchitecture=MSIL">
@@ -113,7 +117,7 @@
     <Compile Include="GUI\Converter\ModRankToBooleanConverter.cs" />
     <Compile Include="GUI\Converter\ModRankToStringConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToColumnConverter.cs" />
-    <Compile Include="GUI\Converter\ValidatingToVisibilityConverter.cs" />
+    <Compile Include="GUI\Converter\BoolToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\WarframeItemToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\TabInfoToHasInfoConverter.cs" />
     <Compile Include="GUI\Converter\OnlineStateToVisibilityConverter.cs" />
@@ -140,6 +144,7 @@
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\Logger.cs" />
     <Compile Include="Logic\SaveMsg.cs" />
+    <Compile Include="Logic\Updater.cs" />
     <Compile Include="ViewModel\Settings.cs" />
     <Compile Include="ViewModel\SoundViewModel.cs" />
     <Compile Include="ViewModel\Validation\ItemValidation.cs" />

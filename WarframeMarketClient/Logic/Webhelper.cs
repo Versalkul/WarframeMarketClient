@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +28,7 @@ namespace WarframeMarketClient.Logic
 
                 HttpWebRequest page = HttpWebRequest.CreateHttp(url);
                 page.CookieContainer = new CookieContainer();
-                if (ApplicationState.getInstance().SessionToken.Length<page.CookieContainer.MaxCookieSize&& ApplicationState.getInstance().SessionToken.Length>10) 
+                if (ApplicationState.getInstance().SessionToken.Length<page.CookieContainer.MaxCookieSize&& ApplicationState.getInstance().SessionToken.Length>10&&url.ToLower().Contains("http://warframe.market/"))  // being sure just the Warframe market site gets the cookie 
                 {
                     page.CookieContainer.Add(new Uri("https://warframe.market"), new Cookie("session", ApplicationState.getInstance().SessionToken));
                 }
@@ -149,6 +151,34 @@ namespace WarframeMarketClient.Logic
             }
             Console.WriteLine("CSRF Token is:" + csrfToken);
 
+        }
+
+        public static bool CheckUpdate()
+        {
+            Version version = Assembly.GetEntryAssembly().GetName().Version;
+            return true; // temp fix because ip request limit
+            using (HttpWebResponse response = Webhelper.GetPage("https://github.com/repos/Versalkul/WarframeMarketClient/releases/latest"))
+            {
+                if (response == null) return false;
+                using (StreamReader reader = new StreamReader(response.GetResponseStream()))
+                {
+                    dynamic json = JObject.Parse(reader.ReadToEnd());
+                    if (json.GetType().GetProperty("tag_name") == null) return false;
+                    string vers = json.tag_name;
+                    try // incase the tag name contains bullshit
+                    {
+                        return !(new Version(vers)).Equals(version);
+
+                    }
+                    catch
+                    {
+                        return true;
+                    }
+
+                }
+
+
+            }
         }
 
     }

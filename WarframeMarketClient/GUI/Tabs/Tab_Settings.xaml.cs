@@ -9,6 +9,8 @@ using WarframeMarketClient.Logic;
 using System.ComponentModel;
 using Microsoft.Win32;
 using System.Windows.Media;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -87,9 +89,14 @@ namespace WarframeMarketClient.GUI.Tabs
                 if (dialogResult == true && ApplicationState.Settings.ImportSound(dialog.FileName))
                 {
                     Console.WriteLine("New Sound Loaded");
-
                 }
                
+        }
+
+        private void updateButton_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/Versalkul/WarframeMarketClient/blob/master/README.md");
+
         }
     }
 }

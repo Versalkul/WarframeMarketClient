@@ -56,7 +56,9 @@ namespace WarframeMarketClient.ViewModel
 
         public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
 
-        #endregion
+     
+
+
 
         private string choosenSoundFile="";
 
@@ -83,6 +85,16 @@ namespace WarframeMarketClient.ViewModel
             set { volume = value;ApplicationState.getInstance().Plimper?.SetVolume(value); OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings(); }
         }
 
+
+        private bool updateAvailable;
+
+        public bool UpdateAvailable
+        {
+            get { return updateAvailable; }
+            set { updateAvailable = value; OnPropertyChanged(nameof(UpdateAvailable)); }
+        }
+
+        #endregion
 
         public void SaveSettings() // also SettingsChanged
         {
