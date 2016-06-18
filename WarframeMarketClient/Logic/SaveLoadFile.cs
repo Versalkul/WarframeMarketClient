@@ -14,7 +14,7 @@ namespace WarframeMarketClient.Logic
 {
     class SaveLoadFile
     {
-        private static String IDENTIFIER = "WarframeMarketClient";
+        private const string IDENTIFIER = "WarframeMarketClient";
 
         #region dataclass
 
@@ -58,7 +58,7 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <param name="i"></param>
-        public void saveInt(String name, int i)
+        public void SaveInt(String name, int i)
         {
             dat.ints.Add(name, i);
         }
@@ -67,7 +67,7 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public int loadInt(String name)
+        public int LoadInt(String name)
         {
             if (!dat.ints.ContainsKey(name))
             {
@@ -81,7 +81,7 @@ namespace WarframeMarketClient.Logic
 
         #region doubles
         
-        public void saveDouble(String name, double d)
+        public void SaveDouble(String name, double d)
         {
             dat.doubles.Add(name, d);
         }
@@ -90,7 +90,7 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public double loadDouble(String name)
+        public double LoadDouble(String name)
         {
             if (!dat.doubles.ContainsKey(name))
             {
@@ -108,7 +108,7 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <param name="b"></param>
-        public void saveBool(String name, bool b)
+        public void SaveBool(String name, bool b)
         {
             dat.bools.Add(name, b);
         }
@@ -117,7 +117,7 @@ namespace WarframeMarketClient.Logic
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
-        public bool loadBool(String name)
+        public bool LoadBool(String name)
         {
 
             if (!dat.bools.ContainsKey(name))
@@ -132,12 +132,12 @@ namespace WarframeMarketClient.Logic
 
         #region strings
 
-        public void saveString(String name, string s)
+        public void SaveString(String name, string s)
         {
             dat.strings.Add(name, s);
         }
 
-        public string loadString(String name)
+        public string LoadString(String name)
         {
 
             if (!dat.strings.ContainsKey(name))
@@ -199,7 +199,7 @@ namespace WarframeMarketClient.Logic
         /// Manages the autostart
         /// </summary>
         /// <param name="set"></param>
-        public void autostart(bool set)
+        public void Autostart(bool set)
         {
             if (set)
             {
@@ -207,7 +207,7 @@ namespace WarframeMarketClient.Logic
             }
             else
             {
-                if(isAutostart()) autoReg.DeleteValue(IDENTIFIER);
+                if(IsAutostart()) autoReg.DeleteValue(IDENTIFIER);
             }
         }
 
@@ -216,7 +216,7 @@ namespace WarframeMarketClient.Logic
         /// is the Autostart enabled
         /// </summary>
         /// <returns></returns>
-        public bool isAutostart()
+        public bool IsAutostart()
         {
             return ((string)autoReg.GetValue(IDENTIFIER) == Assembly.GetEntryAssembly().Location);
         }
@@ -225,17 +225,22 @@ namespace WarframeMarketClient.Logic
         /// <summary>
         /// updates the autostart aka updates the programm path 
         /// </summary>
-        public void updateAutostart()
+        public void UpdateAutostart()
         {
             if ((string)autoReg.GetValue(IDENTIFIER) != null
                 && (string)autoReg.GetValue(IDENTIFIER) != Assembly.GetEntryAssembly().Location)
             {
-                autostart(false);
-                autostart(true);
+                Autostart(false);
+                Autostart(true);
             }
         }
 
         #endregion autostart
+
+        public void RemoveRegEntry()
+        {
+            Autostart(false);
+        }
 
         #region SoundStuff
 
@@ -274,6 +279,7 @@ namespace WarframeMarketClient.Logic
             }
             return false;
         }
+
 
         public List<string> GetSounds()
         {

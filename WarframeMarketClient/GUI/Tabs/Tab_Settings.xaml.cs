@@ -11,6 +11,7 @@ using Microsoft.Win32;
 using System.Windows.Media;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using WarframeMarketClient.Extensions;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -97,6 +98,28 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             System.Diagnostics.Process.Start("https://github.com/Versalkul/WarframeMarketClient/blob/master/README.md");
 
+        }
+
+        private void openFolder_Click(object sender, RoutedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(AppDomain.CurrentDomain.BaseDirectory);
+        }
+
+        private async void removeProgramm_Click(object sender, RoutedEventArgs e)
+        {
+            MetroWindow window = (MetroWindow)Application.Current.MainWindow;
+            MessageDialogResult result = await window.ShowMessageAsync("Remove Files", "This will remove all the files the programm saved in Appdata\\Roaming and close the Programm\nIf you want the Application itself removed just delete the exe afer removing the files\nDo you want to remove the files?", MessageDialogStyle.AffirmativeAndNegative);
+
+            if (result == MessageDialogResult.Affirmative)
+            {
+                ApplicationState.SessionToken = "";
+                ApplicationState.Market?.Dispose();
+                ApplicationState.Plimper.Dispose();
+                ApplicationState.Logger.Dispose();
+                new SaveLoadFile().RemoveRegEntry();
+                (new System.IO.DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient"))).Empty();
+                Application.Current.Shutdown();
+            }
         }
     }
 }

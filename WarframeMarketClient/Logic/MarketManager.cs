@@ -551,8 +551,8 @@ namespace WarframeMarketClient.Logic
             diposed = true;
             SaveMsg saver = new SaveMsg();
             saver.SaveMessages();
-            onlineChecker.Dispose();
-            socket.Dispose();
+            onlineChecker?.Dispose();
+            socket?.Dispose();
         }
 
 

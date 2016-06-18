@@ -102,13 +102,13 @@ namespace WarframeMarketClient.ViewModel
             init = false;
             if (loading) return;
             SaveLoadFile saver = new SaveLoadFile();
-            saver.autostart(Autostart);
-            saver.saveBool(nameof(ToTray),ToTray);
-            saver.saveBool(nameof(LimitAutoComplete), LimitAutoComplete);
-            saver.saveBool(nameof(DefaultOnline), DefaultOnline);
-            saver.saveString("Token",ApplicationState.getInstance().SessionToken);
-            saver.saveString(nameof(ChoosenSoundFile),ChoosenSoundFile);
-            saver.saveDouble(nameof(Volume), Volume);
+            saver.Autostart(Autostart);
+            saver.SaveBool(nameof(ToTray),ToTray);
+            saver.SaveBool(nameof(LimitAutoComplete), LimitAutoComplete);
+            saver.SaveBool(nameof(DefaultOnline), DefaultOnline);
+            saver.SaveString("Token",ApplicationState.getInstance().SessionToken);
+            saver.SaveString(nameof(ChoosenSoundFile),ChoosenSoundFile);
+            saver.SaveDouble(nameof(Volume), Volume);
             saver.Save();
         }
 
@@ -121,12 +121,12 @@ namespace WarframeMarketClient.ViewModel
                 loader.Read();
                 Autostart = loader.isAutostart();
                 if (Autostart) loader.updateAutostart();
-                ToTray = loader.loadBool(nameof(ToTray));
-                LimitAutoComplete = loader.loadBool(nameof(LimitAutoComplete));
-                DefaultOnline = loader.loadBool(nameof(DefaultOnline));
-                ChoosenSoundFile = loader.loadString(nameof(ChoosenSoundFile));
-                Volume = loader.loadDouble(nameof(Volume));
-                ApplicationState.getInstance().SessionToken = loader.loadString("Token");
+                ToTray = loader.LoadBool(nameof(ToTray));
+                LimitAutoComplete = loader.LoadBool(nameof(LimitAutoComplete));
+                DefaultOnline = loader.LoadBool(nameof(DefaultOnline));
+                ChoosenSoundFile = loader.LoadString(nameof(ChoosenSoundFile));
+                Volume = loader.LoadDouble(nameof(Volume));
+                ApplicationState.getInstance().SessionToken = loader.LoadString("Token");
             }
             if (!AvailableSounds.Contains(ChoosenSoundFile) & AvailableSounds.Any()) ChoosenSoundFile = AvailableSounds.First();
             

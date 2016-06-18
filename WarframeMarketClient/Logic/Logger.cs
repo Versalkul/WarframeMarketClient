@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Logic
 {
-    public class Logger
+    public class Logger:IDisposable
     {
 
         string folderPath;
@@ -70,6 +70,10 @@ namespace WarframeMarketClient.Logic
             log.Enqueue(logmsg);
             lock (this) Monitor.Pulse(this);
         }
-        
+
+        public void Dispose()
+        {
+            AppDomain.CurrentDomain.FirstChanceException -= GotException;
+        }
     }
 }

@@ -9,7 +9,7 @@ using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
 {
-    public class SoundViewModel
+    public class SoundViewModel:IDisposable
     {
         private MediaPlayer PlimPlayer = new MediaPlayer();
         private string folderPath = Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient"), "Sounds");
@@ -36,5 +36,9 @@ namespace WarframeMarketClient.ViewModel
             PlimPlayer.Volume = vol;
         }
 
+        public void Dispose()
+        {
+            PlimPlayer.Close();
+        }
     }
 }
