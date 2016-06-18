@@ -119,8 +119,8 @@ namespace WarframeMarketClient.ViewModel
             if (loader.FileExists())
             {
                 loader.Read();
-                Autostart = loader.isAutostart();
-                if (Autostart) loader.updateAutostart();
+                Autostart = loader.IsAutostart();
+                if (Autostart) loader.UpdateAutostart();
                 ToTray = loader.LoadBool(nameof(ToTray));
                 LimitAutoComplete = loader.LoadBool(nameof(LimitAutoComplete));
                 DefaultOnline = loader.LoadBool(nameof(DefaultOnline));

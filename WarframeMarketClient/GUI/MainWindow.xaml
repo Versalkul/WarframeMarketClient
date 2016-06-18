@@ -17,7 +17,7 @@
 
         BorderBrush="{DynamicResource AccentColorBrush}"
         BorderThickness="1" 
-        Icon="/WarframeMarketClient;component/PlaceHolderIcon.ico"
+        Icon="/Resources/Icon.ico"
       >
 
 
@@ -74,7 +74,7 @@
             </TabItem>
         </local:FancyTabControl>
 
-        <tb:TaskbarIcon x:Name="TrayIcon" IconSource="/WarframeMarketClient;component/PlaceHolderIcon.ico"  TrayMouseDoubleClick="onTrayClick" ToolTipText="Doubleclick to Mazimize" Visibility="{Binding Settings.ToTray,Converter={StaticResource BooleanToVisibilityConverter}}"  />
+        <tb:TaskbarIcon x:Name="TrayIcon" IconSource="/Resources/Icon.ico"  TrayMouseDoubleClick="onTrayClick" ToolTipText="Doubleclick to Mazimize" Visibility="{Binding Settings.ToTray,Converter={StaticResource BooleanToVisibilityConverter}}"  />
 
     </Grid>
 

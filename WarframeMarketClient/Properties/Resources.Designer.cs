@@ -22,7 +22,7 @@ namespace WarframeMarketClient.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace WarframeMarketClient.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WarframeMarketClient.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace WarframeMarketClient.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -61,9 +61,19 @@ namespace WarframeMarketClient.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        public static System.Drawing.Icon Icon {
+            get {
+                object obj = ResourceManager.GetObject("Icon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage {
+        public static byte[] NewMessage {
             get {
                 object obj = ResourceManager.GetObject("NewMessage", resourceCulture);
                 return ((byte[])(obj));
@@ -73,7 +83,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage2 {
+        public static byte[] NewMessage2 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage2", resourceCulture);
                 return ((byte[])(obj));
@@ -83,7 +93,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage3 {
+        public static byte[] NewMessage3 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage3", resourceCulture);
                 return ((byte[])(obj));
@@ -93,7 +103,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage4 {
+        public static byte[] NewMessage4 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage4", resourceCulture);
                 return ((byte[])(obj));
@@ -103,7 +113,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage5 {
+        public static byte[] NewMessage5 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage5", resourceCulture);
                 return ((byte[])(obj));
@@ -113,7 +123,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage6 {
+        public static byte[] NewMessage6 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage6", resourceCulture);
                 return ((byte[])(obj));
@@ -123,7 +133,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage7 {
+        public static byte[] NewMessage7 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage7", resourceCulture);
                 return ((byte[])(obj));
@@ -133,7 +143,7 @@ namespace WarframeMarketClient.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Byte[].
         /// </summary>
-        internal static byte[] NewMessage8 {
+        public static byte[] NewMessage8 {
             get {
                 object obj = ResourceManager.GetObject("NewMessage8", resourceCulture);
                 return ((byte[])(obj));
