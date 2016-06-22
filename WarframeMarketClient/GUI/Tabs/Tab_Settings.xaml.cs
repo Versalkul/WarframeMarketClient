@@ -108,7 +108,7 @@ namespace WarframeMarketClient.GUI.Tabs
         private async void removeProgramm_Click(object sender, RoutedEventArgs e)
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
-            MessageDialogResult result = await window.ShowMessageAsync("Remove Files", "This will remove all the files the programm saved in Appdata\\Roaming and close the Programm\nIf you want the Application itself removed just delete the exe afer removing the files\nDo you want to remove the files?", MessageDialogStyle.AffirmativeAndNegative);
+            MessageDialogResult result = await window.ShowMessageAsync("Remove Files", "This will remove all the files the program saved in Appdata\\Roaming and close the program.\nIf you want the Application itself removed just delete the exe afterwards.\nDo you really want to remove all traces?", MessageDialogStyle.AffirmativeAndNegative);
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -117,7 +117,7 @@ namespace WarframeMarketClient.GUI.Tabs
                 ApplicationState.Plimper.Dispose();
                 ApplicationState.Logger.Dispose();
                 new SaveLoadFile().RemoveRegEntry();
-                (new System.IO.DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient"))).Empty();
+                (new System.IO.DirectoryInfo(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient"))).Remove();
                 Application.Current.Shutdown();
             }
         }

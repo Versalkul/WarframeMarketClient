@@ -8,10 +8,11 @@ namespace WarframeMarketClient.Extensions
 {
     static class DirektoryInfoFunctions
     {
-        public static void Empty(this System.IO.DirectoryInfo directory)
+        public static void Remove(this System.IO.DirectoryInfo directory)
         {
             foreach (System.IO.FileInfo file in directory.GetFiles()) file.Delete();
             foreach (System.IO.DirectoryInfo subDirectory in directory.GetDirectories()) subDirectory.Delete(true);
+            directory.Delete();
         }
     }
 }
