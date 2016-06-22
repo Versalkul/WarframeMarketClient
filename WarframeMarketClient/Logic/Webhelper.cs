@@ -156,7 +156,8 @@ namespace WarframeMarketClient.Logic
         public static bool CheckUpdate()
         {
             Version version = Assembly.GetEntryAssembly().GetName().Version;
-            return true; // temp fix because ip request limit
+            ApplicationState.getInstance().Logger.Log("Version is" + version.ToString());
+            
             using (HttpWebResponse response = Webhelper.GetPage("https://github.com/repos/Versalkul/WarframeMarketClient/releases/latest"))
             {
                 if (response == null) return false;
@@ -167,7 +168,8 @@ namespace WarframeMarketClient.Logic
                     string vers = json.tag_name;
                     try // incase the tag name contains bullshit
                     {
-                        return !(new Version(vers)).Equals(version);
+                        Version newVersion = new Version(vers);
+                        return (version.Major<newVersion.Major||version.Minor<newVersion.Minor||version.Build<newVersion.Build);
 
                     }
                     catch

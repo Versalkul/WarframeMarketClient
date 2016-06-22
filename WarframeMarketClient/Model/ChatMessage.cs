@@ -80,13 +80,16 @@ namespace WarframeMarketClient.Model
             }
         }
 
+
+        #endregion
+
+        #endregion
+
         public bool Equals(ChatMessage other)
         {
-            return other.Message == Message && other.MessageFrom == MessageFrom &&(other.Time-Time).Duration().Minutes<=1 ; // time socket time may differ a few seconds from server time (if msg was received via socket)
+            return other.Message == Message && other.MessageFrom == MessageFrom && (other.Time - Time).Duration().Minutes <= 1; // time socket time may differ a few seconds from server time (if msg was received via socket)
         }
 
-        #endregion
 
-        #endregion
     }
 }

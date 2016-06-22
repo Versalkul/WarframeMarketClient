@@ -23,9 +23,9 @@ namespace WarframeMarketClient.Logic
         {
             folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
             filePath = Path.Combine(folderPath, "Exceptions.log");
-
+#if DEBUG // disable getting exeptions as im not logging them when not debugging
             AppDomain.CurrentDomain.FirstChanceException += GotException;
-
+#endif
             writer = Task.Factory.StartNew(LogStack);
         }
 
@@ -38,13 +38,16 @@ namespace WarframeMarketClient.Logic
                 {
                     Monitor.Wait(this);
                 }
+
+
                 List<string> logCopy = new List<string>(log.Count);
 
                 while (log.Any())
                     logCopy.Add(log.Dequeue());
-
+#if DEBUG // disable logging when not debugging
                 File.AppendAllLines(filePath, logCopy);
-            }
+#endif
+                }
 
         }
 
