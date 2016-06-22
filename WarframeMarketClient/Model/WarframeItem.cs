@@ -265,10 +265,12 @@ namespace WarframeMarketClient.Model
                 IsUpdating = true;
                 Task.Factory.StartNew(() =>
                 {
-                    ApplicationState.getInstance().Market.AddItem(this);
-                    ApplicationState.getInstance().Market.UpdateListing();
+                    if (ApplicationState.getInstance().Market.AddItem(this))
+                    {
+                        ApplicationState.getInstance().Market.UpdateListing();
+                        BackUp = null;
+                    }
                     IsUpdating = false;
-                    BackUp = null;
                 });
                 Console.WriteLine("Added!");
             }
@@ -280,7 +282,7 @@ namespace WarframeMarketClient.Model
         public async void CommitEdit()
         {
             MetroWindow window = (MetroWindow)Application.Current.MainWindow;
-            MessageDialogResult result = await window.ShowMessageAsync("Confirm offer change", "Do you want to place the " + (IsSellOffer ? "SELL" : "BUY") + $" offer for \n - {Name}" + (ModRank >= 0 ? " (Rank " + ModRank + ")" : "") + $"\n - {Count} times for\n - {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
+            MessageDialogResult result = await window.ShowMessageAsync("Confirm offer change", "Do you want to change the " + (IsSellOffer ? "SELL" : "BUY") + $" offer to \n - {Name}" + (ModRank >= 0 ? " (Rank " + ModRank + ")" : "") + $"\n - {Count} times for\n - {Price} Platinum to the Market ? ", MessageDialogStyle.AffirmativeAndNegative);
 
             if (result == MessageDialogResult.Affirmative)
             {
@@ -292,10 +294,12 @@ namespace WarframeMarketClient.Model
                     
                     Task.Factory.StartNew(() =>
                     {
-                        ApplicationState.getInstance().Market.AddItem(this);
-                        ApplicationState.getInstance().Market.UpdateListing();
+                        if (ApplicationState.getInstance().Market.AddItem(this))
+                        {
+                            ApplicationState.getInstance().Market.UpdateListing();
+                            BackUp = null;
+                        }
                         IsUpdating = false;
-                        BackUp = null;
 
                     });
                 }
@@ -305,10 +309,12 @@ namespace WarframeMarketClient.Model
                     
                     Task.Factory.StartNew(() =>
                     {
-                        ApplicationState.getInstance().Market.EditItem(this);
-                        ApplicationState.getInstance().Market.UpdateListing();
+                        if (ApplicationState.getInstance().Market.EditItem(this))
+                        {
+                            ApplicationState.getInstance().Market.UpdateListing();
+                            BackUp = null;
+                        }
                         IsUpdating = false;
-                        BackUp = null;
                     });
                     Console.WriteLine("Changes Committed!");
                 }
@@ -318,17 +324,24 @@ namespace WarframeMarketClient.Model
 
         public void DecreaseCount()
         {
-            ApplicationState.getInstance().Market.SoldItem(this);
-            if (count > 1)
+            IsUpdating = true;
+            Task.Factory.StartNew(() =>
             {
-                Count--;
-                OnPropertyChanged(nameof(Count));
-            }
-            else
-            {
-                if (IsSellOffer) ApplicationState.getInstance().SellItems.Remove(this);
-                else ApplicationState.getInstance().BuyItems.Remove(this);
-            }
+
+                if (ApplicationState.getInstance().Market.SoldItem(this))
+                {
+                    if (count > 1)
+                    {
+                        Count--;
+                        OnPropertyChanged(nameof(Count));
+                    }
+                    else
+                    {
+                        RemoveItemFromList();
+                    }
+                }
+                IsUpdating = false;
+            });
         }
 
         public void RemoveItem()
@@ -338,7 +351,18 @@ namespace WarframeMarketClient.Model
                 CancelEdit();
                 return;
             }
-            if(!String.IsNullOrWhiteSpace(Id)) Task.Factory.StartNew(()=> ApplicationState.getInstance().Market.RemoveItem(this));
+            if (!String.IsNullOrWhiteSpace(Id)) Task.Factory.StartNew(() =>
+            {
+                if (ApplicationState.getInstance().Market.RemoveItem(this)) RemoveItemFromList();
+            });
+            else
+            {
+                RemoveItemFromList();
+            }
+        }
+
+        private void RemoveItemFromList()
+        {
             if (IsSellOffer) ApplicationState.getInstance().SellItems.Remove(this);
             else ApplicationState.getInstance().BuyItems.Remove(this);
         }
