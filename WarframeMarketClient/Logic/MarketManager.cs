@@ -308,7 +308,7 @@ namespace WarframeMarketClient.Logic
                 {
                     List<ChatMessage> msg = GetMessages(chatView.User.Name);
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
-                    else // this is not really what i want ...
+                    else // something new
                     {
                         List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe)+1 ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
                         chatView.ChatMessages.Clear(); // not nice but working 
@@ -544,6 +544,14 @@ namespace WarframeMarketClient.Logic
 
         #endregion
 
+        public void InvalidateCookie()
+        {
+            using (HttpWebResponse response = Webhelper.GetPage("http://warframe.market/logout"))
+            {
+
+
+            }
+        }
 
         public void Dispose()
         {

@@ -112,6 +112,10 @@ namespace WarframeMarketClient.GUI.Tabs
 
             if (result == MessageDialogResult.Affirmative)
             {
+
+                MessageDialogResult invalidResult = await window.ShowMessageAsync("Invalidate session cookie", "Do you also want to invalidate your session cookie ?\nThis may also log you out in the browser you used to get your session cookie.", MessageDialogStyle.AffirmativeAndNegative);
+
+                if (invalidResult == MessageDialogResult.Affirmative) ApplicationState.Market?.InvalidateCookie();
                 ApplicationState.SessionToken = "";
                 ApplicationState.Market?.Dispose();
                 ApplicationState.Plimper.Dispose();
