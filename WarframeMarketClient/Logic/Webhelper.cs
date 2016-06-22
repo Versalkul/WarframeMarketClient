@@ -45,16 +45,24 @@ namespace WarframeMarketClient.Logic
                     return response;
 
                 }
-                catch (Exception ex)
+                catch (WebException e)
                 {
-                    Console.WriteLine($"ERROR GETTING RESPONSE from {url} Error is:" + ex.Message);
+
+                    if (e == null) continue;
+                    if (((HttpWebResponse)e.Response) == null) continue; // This is c# saying you got a timeout -.-'
+                    if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.NotFound) // improve this
+                    {
+                        return null;
+                    }
 
                     Thread.Sleep(1000);
                     if (response != null)
                     {
                         response.Close();
                     }
+
                 }
+
             }
             return null;
 
@@ -105,10 +113,11 @@ namespace WarframeMarketClient.Logic
                     if (((HttpWebResponse)e.Response) == null) continue; // This is c# saying you got a timeout -.-'
                     if (((HttpWebResponse)e.Response).StatusCode == HttpStatusCode.BadRequest)
                     {
-
+                        
                         getCsrfToken();
                         continue;
                     }
+                    
                     if (e.Response != null) return (HttpWebResponse) e.Response;
                 }
                 catch(Exception ex)
@@ -156,9 +165,12 @@ namespace WarframeMarketClient.Logic
         public static bool CheckUpdate()
         {
             Version version = Assembly.GetEntryAssembly().GetName().Version;
-            ApplicationState.getInstance().Logger.Log("Version is" + version.ToString());
-            
-            using (HttpWebResponse response = Webhelper.GetPage("https://github.com/repos/Versalkul/WarframeMarketClient/releases/latest"))
+
+#if DEBUG // not checking updates when debugging
+            return true;      
+#endif
+
+            using (HttpWebResponse response = Webhelper.GetPage("https://api.github.com/repos/Versalkul/WarframeMarketClient/releases/latest"))
             {
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
