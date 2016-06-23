@@ -12,7 +12,7 @@ namespace WarframeMarketClient.Model
 
         public ChatMessage()
         {
-            Time = new DateTime();
+            Time = new DateTime(1000, 6, 12);
         }
 
         #region Properties
@@ -87,7 +87,7 @@ namespace WarframeMarketClient.Model
 
         public bool Equals(ChatMessage other)
         {
-            return other.Message == Message && other.MessageFrom == MessageFrom && (other.Time - Time).Duration().Minutes <= 1; // time socket time may differ a few seconds from server time (if msg was received via socket)
+            return other.Message == Message && other.MessageFrom == MessageFrom && Math.Abs(Time.Minute - other.Time.Minute) <= 1 && Math.Abs(Time.Hour - other.Time.Hour) <= 1; // may not be working yet
         }
 
 
