@@ -87,10 +87,6 @@ namespace WarframeMarketClient.Logic
                 else appState.BuyItems.Add(item);
 
             }
-            
-
-            Console.WriteLine("Done paralell init");
-
             onlineChecker = new Timer();
             onlineChecker.Elapsed += new System.Timers.ElapsedEventHandler(StateChecker); // new check regulary not just forceState
             onlineChecker.Interval = 35000;
@@ -310,13 +306,14 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
+                        string log = "Getting a new Chatmassage via JSON api last msg: "+chatView.ChatMessages.Last().ToString()+"\n";
                         List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe)+1 ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
                         chatView.ChatMessages.Clear(); // not nice but working 
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
                         if (newMsg.Any()) 
                         {
                             chatView.HasInfo = true;
-                            ApplicationState.getInstance().Logger.Log(" Getting a new chatmessage " + newMsg.Last().Time + " Count of new Messages "+newMsg.Count );
+                            ApplicationState.getInstance().Logger.Log(log + newMsg.Last().Time + " Count of new Messages "+newMsg.Count+" Last new msg "+newMsg.Last().ToString());
                             ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
                         }
                    }
@@ -386,9 +383,9 @@ namespace WarframeMarketClient.Logic
             return HtmlParser.getChatUser();
         }
 
-        public void SendMessage(string to, string text)
+        public void SendMessage(string message,string sendTo)
         {
-            socket.sendMessage(to, text.Replace(System.Environment.NewLine,"<br>"));
+            socket.sendMessage(message, sendTo);
         }
 
         public void CloseChat(string user)

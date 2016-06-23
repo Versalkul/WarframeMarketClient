@@ -162,6 +162,7 @@
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\Logger.cs" />
     <Compile Include="Logic\SaveMsg.cs" />
+    <Compile Include="Model\SendMessageJson.cs" />
     <Compile Include="ViewModel\Settings.cs" />
     <Compile Include="ViewModel\SoundViewModel.cs" />
     <Compile Include="ViewModel\Validation\ItemValidation.cs" />

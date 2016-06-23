@@ -24,21 +24,16 @@ namespace WarframeMarketClient.Model
         public static ApplicationState getInstance()
         {
 
-
-
-            if (instance == null)
+            if (!init)
             {
-                if (init)
+
+                if (instance == null)
                 {
-                    Console.WriteLine("WARNING SECOND init Instance");
+                    init = true;
+                    instance = new ApplicationState();
+                    instance.Initialize();
                 }
-                init = true;
-                instance = new ApplicationState();
-                instance.Initialize();
-
             }
-
-
 
             return instance;
         }

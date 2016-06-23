@@ -87,7 +87,12 @@ namespace WarframeMarketClient.Model
 
         public bool Equals(ChatMessage other)
         {
-            return other.Message == Message && other.MessageFrom == MessageFrom && Math.Abs(Time.Minute - other.Time.Minute) <= 1 && Math.Abs(Time.Hour - other.Time.Hour) <= 1; // may not be working yet
+            return other.Message == Message && other.MessageFrom == MessageFrom && (Time - other.Time).Minutes <= 1 && (Time - other.Time).Hours == 0; // may not be working yet
+        }
+
+        public override string ToString()
+        {
+            return "Username: " + MessageFrom + " Message: " + Message;
         }
 
 

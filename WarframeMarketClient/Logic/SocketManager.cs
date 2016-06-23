@@ -41,7 +41,7 @@ namespace WarframeMarketClient.Logic
         private void Socket_Closed(object sender, EventArgs e)
         {
 
-            Console.WriteLine("CLOSED");
+            ApplicationState.getInstance().Logger.Log("CLOSED");
             SocketWasClosed = true;
 
         }
@@ -79,17 +79,19 @@ namespace WarframeMarketClient.Logic
             if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE|| ApplicationState.getInstance().OnlineState==OnlineState.DISABLED)
             {
                 socket.Close();
-                //Console.WriteLine("And offline again");
-            }
+                }
             }
         }
 
         #endregion
 
 
-        public void sendMessage(string to, string text)
+        public void sendMessage(string message, string sendTo) // SONDERZEICHEN BEACHTEN
         {
-            sendJson("{\"destination\":\"user.send_message\",\"data\":{\"text\":\"" + text + "\",\"message_to\":\"" + to + "\"}}");
+            string send = new SendMessageJson(message, sendTo).ToString();
+            sendJson(send);
+            ApplicationState.getInstance().Logger.Log("Send Message SocketManager " +message+" to "+sendTo);
+
         }
 
         public void EnsureOpenSocket()

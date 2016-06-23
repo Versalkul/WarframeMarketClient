@@ -47,11 +47,7 @@ namespace WarframeMarketClient.ViewModel
 
         #region Constructor
 
-        public ChatViewModel()
-        {
-            ChatMessages = new ObservableCollection<ChatMessage>();
-            InitLockCollection();
-        }
+
 
         public ChatViewModel(User u,IEnumerable<ChatMessage> messages)
         {
@@ -73,7 +69,7 @@ namespace WarframeMarketClient.ViewModel
 
         public void SendMessage()
         {
-            Task.Factory.StartNew(() => ApplicationState.getInstance().Market.SendMessage(User.Name, NewMessage));
+            Task.Factory.StartNew(() => ApplicationState.getInstance().Market.SendMessage(NewMessage,User.Name));
             ChatMessages.Add(
                 new ChatMessage() {
                     Message = NewMessage,
@@ -81,7 +77,7 @@ namespace WarframeMarketClient.ViewModel
                     SendHour = DateTime.Now.Hour.ToString(),
                     SendMinute = DateTime.Now.Minute.ToString()
                 });
-            Console.WriteLine("Send Message to "+User.Name+" : "+NewMessage);
+            ApplicationState.getInstance().Logger.Log("Send Message ChatViewModel to "+User.Name+" : "+NewMessage);
             NewMessage = "";
         }
 
@@ -89,7 +85,6 @@ namespace WarframeMarketClient.ViewModel
         {
             Task.Factory.StartNew(()=>ApplicationState.getInstance().Market.CloseChat(User.Name));
             ApplicationState.getInstance().Chats.Remove(this);
-            Console.WriteLine("Close Chat with "+User.Name);
         }
 
 
