@@ -17,29 +17,30 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
 
 [.Net4.6] (https://www.microsoft.com/de-DE/download/details.aspx?id=48137) or later
 
-## [Download] (link to latest release)
+## [Download] (https://github.com/Versalkul/WarframeMarketClient/releases)
 
 ## How to use the client
 You need to install .Net 4.6 to use this program, it will not work without! 
 
 Just start the Executable file, like a portable program.  
 Before you can use the program you need to authenticate yourself.  
-Because you wouldnt want to give a program your username and password (looking at the people using steam to authenticate), im using the session-cookie instead.  
-The session-cookie is what your browser uses to "remember you".  
+Because you wouldnt want to give a program your username and password (looking at the people using steam to authenticate), I'm using the session-cookie instead.  
+The session-cookie is what the website uses to "remember you".  
 
 ## How to get your session cookie
+Usually you can find the cookie in your browser. Search for a cookie named *'session'* on warframe.market and copy its content.  
+Start the application and insert the cookie into the Session-Token field.
 
-
+**Don't share this code with anyone as it allows full access to your account as long as you are logged in!**
 
 ## How to Update
-
 This program does **not** update itsself.  
-If an update is available it will display a update button which will link to this page, where you can download the new version.
-
+If an update is available it will display a update button which will link to this page.  
+Just download the new version and replace the executable.
 
 ## How to invalidate your session token
-The program will offer to invalidate your session-cookie when removing the files it created (button in settings tab). (anmerkung an mich: todo).
-If your browser still has this cookie it will activate the same cookie when you log in again with the cookie.
+The program will offer to invalidate your session-cookie (log you out) when removing the files it created (button in settings tab).  
+If your browser still has this cookie it will **activate the same cookie** when you log in again with the cookie.
 If you want a new cookie delete your cookie in the browser.
 
-## Licence
+## License
