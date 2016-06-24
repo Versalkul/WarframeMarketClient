@@ -33,13 +33,19 @@
                     Background="{Binding Path=OnlineStateInfo, Converter={StaticResource OnlineStateToColorConverter}}"/>
 
                 <TextBox 
+                    x:Name="Text"
                     Grid.Column="1"
                     Style="{StaticResource SelectableTextBlockLikeStyle}"
                     Text="{Binding Path=DisplayName, Mode=OneWay}" 
+                    Focusable="False"
                     VerticalAlignment="Center" 
                     />
-                
             </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+                    <Setter TargetName="Text" Property="Focusable" Value="True" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
         </DataTemplate>
     </UserControl.Resources>
     <Grid DataContext="{Binding ElementName=self}">
