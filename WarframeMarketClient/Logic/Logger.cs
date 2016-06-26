@@ -63,12 +63,12 @@ namespace WarframeMarketClient.Logic
             lock(this) Monitor.Pulse(this); 
         }
 
-        public void Log(string s)
+        public void Log(string s, bool stacktrace = true)
         {
             string logmsg = "";
             logmsg += "EVENT: " + DateTime.Now.ToString() + " :" + System.Environment.NewLine;
-            logmsg += s + System.Environment.NewLine;
-            logmsg += (new StackTrace(true)).ToString() + System.Environment.NewLine;
+            logmsg += s;
+           if(stacktrace) logmsg += System.Environment.NewLine + (new StackTrace(true)).ToString() + System.Environment.NewLine;
 
             log.Enqueue(logmsg);
             lock (this) Monitor.Pulse(this);

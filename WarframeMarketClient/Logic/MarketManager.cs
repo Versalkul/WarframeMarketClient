@@ -22,6 +22,7 @@ namespace WarframeMarketClient.Logic
 
         SocketManager socket;
         Timer onlineChecker;
+        SaveMsg saver = new SaveMsg();
         public static TimeSpan timeOffset;
 
         private Dictionary<string, Tuple<DateTime, OnlineState>> userStatusCache = new Dictionary<string, Tuple<DateTime, OnlineState>>(25);
@@ -32,7 +33,7 @@ namespace WarframeMarketClient.Logic
 
             SaveMsg msgSave = new SaveMsg();
             
-            msgSave.loadMessages().ForEach(x => ApplicationState.getInstance().Chats.Add(x));
+            msgSave.LoadMessages().ForEach(x => ApplicationState.getInstance().Chats.Add(x));
             ViewModel.ChatViewModel[] result;
             List<WarframeItem> offers = null;
             ApplicationState appState = ApplicationState.getInstance();
@@ -106,7 +107,14 @@ namespace WarframeMarketClient.Logic
             timerCount++;
             if ((socket.SocketWasClosed||timerCount%5==3)&&ApplicationState.getInstance().OnlineState.IsOnline()) // check for messages every two min 
             {
-                Task.Factory.StartNew(() => { CheckAndUpdateChats(); UpdateChatOnlineState(); });
+                Task.Factory.StartNew(() => {
+
+                    CheckAndUpdateChats();
+                    UpdateChatOnlineState();
+                    saver.SaveMessages(); // fix for Incorrect startup plimp maybe it can be done better isnt working if client is closed to fast 
+
+
+                });
                 socket.SocketWasClosed = false;
             }
             Task.Factory.StartNew(ForceUserStateSynchronous);
@@ -554,14 +562,15 @@ namespace WarframeMarketClient.Logic
         {
             if (diposed) return;
             diposed = true;
-            SaveMsg saver = new SaveMsg();
+            ApplicationState.getInstance()?.Logger?.Log("Disposing Everything");
+            
             saver.SaveMessages();
             onlineChecker?.Dispose();
             socket?.Dispose();
         }
 
 
-        ~MarketManager() // finalizer Garbage Collector calls it when collecting the old object
+        ~MarketManager() // finalizer Garbage Collector calls it when collecting the old object WARNING may be problematic when shutting down windows
         {
            if(!this.diposed) Dispose();
         }

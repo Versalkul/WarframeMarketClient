@@ -46,13 +46,14 @@ namespace WarframeMarketClient.Logic
             string json = JsonConvert.SerializeObject(getMsg());
             using (StreamWriter WriteStream = new StreamWriter(new GZipStream(new FileStream(path+"2", FileMode.Create), CompressionLevel.Optimal)))
             {
+                
                 WriteStream.WriteLine(json);
             }
             if(File.Exists(path))File.Delete(path);
             File.Move(path + "2", path);
             
         }
-        public List<ChatViewModel> loadMessages()
+        public List<ChatViewModel> LoadMessages()
         {
             if (File.Exists(path + 2)) // may lead to problems when crash WHILE saveing 
             {

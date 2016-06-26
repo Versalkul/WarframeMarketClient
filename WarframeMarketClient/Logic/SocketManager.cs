@@ -29,6 +29,7 @@ namespace WarframeMarketClient.Logic
             socket.Error += new EventHandler<SuperSocket.ClientEngine.ErrorEventArgs>(onError);
             socket.MessageReceived += new EventHandler<MessageReceivedEventArgs>(onMessage);
             socket.Closed += Socket_Closed;
+            socket.EnableAutoSendPing = false;
 
         }
 
@@ -41,7 +42,7 @@ namespace WarframeMarketClient.Logic
         private void Socket_Closed(object sender, EventArgs e)
         {
 
-            ApplicationState.getInstance().Logger.Log("CLOSED");
+            ApplicationState.getInstance().Logger.Log("CLOSED SOCKET",false);
             SocketWasClosed = true;
 
         }
@@ -78,7 +79,8 @@ namespace WarframeMarketClient.Logic
 
             if (ApplicationState.getInstance().OnlineState == OnlineState.OFFLINE|| ApplicationState.getInstance().OnlineState==OnlineState.DISABLED)
             {
-                socket.Close();
+                    ApplicationState.getInstance().Logger.Log("CLOSING SOCKET after opening", false);
+                    socket.Close();
                 }
             }
         }
@@ -86,7 +88,7 @@ namespace WarframeMarketClient.Logic
         #endregion
 
 
-        public void sendMessage(string message, string sendTo) // SONDERZEICHEN BEACHTEN
+        public void sendMessage(string message, string sendTo)
         {
             string send = new SendMessageJson(message, sendTo).ToString();
             sendJson(send);
@@ -143,6 +145,7 @@ namespace WarframeMarketClient.Logic
                 if (socket.State == WebSocketState.Open && jsonsToSend.Count == 0)
                     socket.Close();
             }
+            ApplicationState.getInstance().Logger.Log("CLOSING SOCKET GOING OFFLINE");
         }
 
         public void Dispose()
