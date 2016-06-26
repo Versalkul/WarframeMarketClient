@@ -47,8 +47,6 @@ namespace WarframeMarketClient.ViewModel
 
         #region Constructor
 
-
-
         public ChatViewModel(User u,IEnumerable<ChatMessage> messages)
         {
             User = u;
