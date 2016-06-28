@@ -175,18 +175,18 @@ namespace WarframeMarketClient.Logic
                 if (response == null) return false;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
-                    dynamic json = JObject.Parse(reader.ReadToEnd());
-                    if (json.GetType().GetProperty("tag_name") == null) return false;
-                    string vers = json.tag_name;
+                    JObject json = JObject.Parse(reader.ReadToEnd());
+                    JToken vNum = json.GetValue("tag_name");
+                    if (vNum == null) return false;
                     try // incase the tag name contains bullshit
                     {
-                        Version newVersion = new Version(vers);
+                        Version newVersion = new Version(vNum.ToString());
                         return (version.Major<newVersion.Major||version.Minor<newVersion.Minor||version.Build<newVersion.Build);
 
                     }
                     catch
                     {
-                        return true;
+                        return false;
                     }
 
                 }
