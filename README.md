@@ -29,6 +29,8 @@ The session-cookie is what the website uses to "remember you".
 
 ## How to get your session cookie
 Usually you can find the cookie in your browser. Search for a cookie named *'session'* on warframe.market and copy its content.  
+[How to get your session cookie in firefox] (http://imgur.com/7tamenv)
+[How to get your session cookie in chrome] (http://imgur.com/NddsKgc)
 Start the application and insert the cookie into the Session-Token field.
 
 **Don't share this code with anyone as it allows full access to your account as long as you are logged in!**

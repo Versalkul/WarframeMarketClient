@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WarframeMarketClient.Extensions;
 using WarframeMarketClient.Model;
 using WebSocket4Net;
 
@@ -31,19 +32,22 @@ namespace WarframeMarketClient.Logic
             socket.Closed += Socket_Closed;
             socket.EnableAutoSendPing = false;
 
+
         }
-
-
-
-
 
         #region events
 
         private void Socket_Closed(object sender, EventArgs e)
         {
 
-            ApplicationState.getInstance().Logger.Log("CLOSED SOCKET",false);
+            ApplicationState.getInstance().Logger.Log("CLOSED SOCKET was active " +socket.LastActiveTime,false);
             SocketWasClosed = true;
+            if (ApplicationState.getInstance().OnlineState.IsOnline())
+            {
+                ApplicationState.getInstance().Market.EnsureSocketState(); // hacky solution for socket closing every 30 min (+-3 min)
+                ApplicationState.getInstance().Logger.Log("REOPENING CLOSED SOCKET", false);
+
+            }
 
         }
 
@@ -100,8 +104,7 @@ namespace WarframeMarketClient.Logic
         {
             lock (socket)
             {
-
-            if (socket.State == WebSocketState.Closed||socket.State==WebSocketState.None) socket.Open();
+                if (socket.State == WebSocketState.Closed||socket.State==WebSocketState.None) socket.Open();
             }
         }
 

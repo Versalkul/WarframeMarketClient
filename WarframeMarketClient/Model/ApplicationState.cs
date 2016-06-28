@@ -52,6 +52,7 @@ namespace WarframeMarketClient.Model
 
         private void Initialize() // Initializes that need the ApplicationState
         {
+            if (Logger != null) return; // just to be sure
             Logger = new Logger();
             ItemMap.LoadMap();
             (new SaveLoadFile()).ExtractStandartSounds();

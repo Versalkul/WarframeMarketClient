@@ -127,7 +127,7 @@ namespace WarframeMarketClient.Logic
 
 
 
-        public void UpdateState() // change to parralell invoke
+        public void UpdateState()
         {
             if (socket.SocketWasClosed&&ApplicationState.getInstance().OnlineState.IsOnline())
             {
@@ -277,12 +277,16 @@ namespace WarframeMarketClient.Logic
                 {
                     List<ChatMessage> msg = GetMessages(user); // the init with the chat messages is part of the forech below
                     ChatViewModel chat = new ChatViewModel(new User(user), msg);
-                    chat.HasInfo = true;
                     ApplicationState.getInstance().Chats.Insert(0,chat);
-
                     ApplicationState.getInstance().Logger.Log(" Getting a new chat ");
 
-                    ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
+                    if (!chat.ChatMessages.Last().IsFromMe)
+                    {
+                        chat.HasInfo = true;
+                        ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
+
+                    }
+
                     elem--;
                 }
 

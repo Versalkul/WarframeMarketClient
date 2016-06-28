@@ -247,7 +247,9 @@ namespace WarframeMarketClient.Logic
         public void ExtractStandartSounds()
         {
 
-           
+           try
+            {
+
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage.mp3"),Properties.Resources.NewMessage);
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage2.mp3"), Properties.Resources.NewMessage2);
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage3.mp3"), Properties.Resources.NewMessage3);
@@ -256,6 +258,14 @@ namespace WarframeMarketClient.Logic
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage6.mp3"), Properties.Resources.NewMessage6);
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage7.mp3"), Properties.Resources.NewMessage7);
             File.WriteAllBytes(Path.Combine(soundFolderPath, "NewMessage8.mp3"), Properties.Resources.NewMessage8);
+            }
+
+            catch(Exception e)
+            {
+                // will get logged automatically
+                //should not happen if not running from visual studio
+                //Thanks XDesProc -.-'
+            }
 
 
         }
