@@ -10,7 +10,7 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
  - Change your orders, like mark them sold, change listings or add new listings
 
 ### What it can **not** do
- 
+ - **Change the Offline/Online switch in your browser**
  - Search for offers on the market
 
 ## Requirements
