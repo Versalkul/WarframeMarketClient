@@ -47,3 +47,4 @@ If your browser still has this cookie it will **reactivate the same cookie** whe
 If you want a new cookie delete your cookie in the browser.
 
 ## License
+MIT Licence
