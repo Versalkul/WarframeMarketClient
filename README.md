@@ -4,8 +4,8 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
 ## Features
 ### What it can do
 
- - Automatically sets your status to ingame when you start warframe, and back offline close warframe 
- - sets your status to offline when you are afk (longer than 5 minutes)
+ - Automatically sets your status to ingame when you start warframe, and back offline when you close warframe 
+ - Sets your status to offline when you are afk (longer than 5 minutes)
  - Chat 
  - Change your orders, like mark them sold, change listings or add new listings
 
@@ -47,3 +47,4 @@ If your browser still has this cookie it will **reactivate the same cookie** whe
 If you want a new cookie delete your cookie in the browser.
 
 ## License
+MIT Licence
