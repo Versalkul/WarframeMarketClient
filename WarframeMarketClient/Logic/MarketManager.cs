@@ -270,7 +270,7 @@ namespace WarframeMarketClient.Logic
             bool first = true;
             int elem = 0; // what elem am i looking at relevant for 2. foreach loop
             users.Reverse();// oldest usernames checked first because if i get the newest last i can just Insert at 0
-            foreach(string user in users)
+            foreach(string user in users) // check if new chat 
             {
 
                 if (!ApplicationState.getInstance().Chats.ToList().Exists(x => x.User.Name == user))
@@ -295,7 +295,14 @@ namespace WarframeMarketClient.Logic
             if (elem < 0) UpdateChatOnlineState();
             List<ChatViewModel> closedChats = new List<ChatViewModel>();
 
-            foreach(ChatViewModel chatView  in ApplicationState.getInstance().Chats)
+           // ApplicationState.getInstance().Chats.Where(x => !users.Contains(x.User.Name) && x.ChatMessages.Count != 0).ToList().ForEach(x => ApplicationState.getInstance().Chats.Remove(x)); // should remove old closed chats 
+            users.Reverse();
+
+            for(int i = 0; i < users.Count; i++) if (users[i] != ApplicationState.getInstance().Chats[i].User.Name) ApplicationState.getInstance().Chats.Move(ApplicationState.getInstance().Chats.Select((item, index) => new { Item = item, Index = index }).First(x => x.Item.User.Name == users[i]).Index, i); // Line of death is moving the element that should be here to this place removed Chats are on the end of the list
+
+
+
+            foreach (ChatViewModel chatView  in ApplicationState.getInstance().Chats) // should iterate over Recieved chats
             {
 
                 if (elem < 0) // added this one milisecond before i dont want to check it 
@@ -315,6 +322,8 @@ namespace WarframeMarketClient.Logic
                 if (first) // check for new chats
                 {
                     List<ChatMessage> msg = GetMessages(chatView.User.Name);
+
+
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
