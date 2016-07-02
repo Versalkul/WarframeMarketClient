@@ -268,56 +268,68 @@ namespace WarframeMarketClient.Logic
 
             List<string> users = GetChatUser();
             bool first = true;
-            int elem = 0; // what elem am i looking at relevant for 2. foreach loop
-            users.Reverse();// oldest usernames checked first because if i get the newest last i can just Insert at 0
-            foreach(string user in users) // check if new chat 
+            bool addedNewChat = false;
+            int drafts = 0;
+
+            System.Collections.ObjectModel.ObservableCollection<ChatViewModel> Chats = ApplicationState.getInstance().Chats;
+
+            for (int i = 0; i < Chats.Count; i++) // gets the new Created chats
+            {
+                if (Chats[i].ChatMessages.Count == 0)
+                {
+                    if (!users.Contains(Chats[i].User.Name))
+                    {
+                        if (i != drafts)
+                            Chats.Move(i, drafts); // if one contact writes you a msg while you are writing him 
+                        drafts++;
+                    }
+                }
+                else break;
+            }
+
+            for (int i = 0; i < users.Count; i++)
             {
 
-                if (!ApplicationState.getInstance().Chats.ToList().Exists(x => x.User.Name == user))
+                if (users[i] != Chats[drafts+i].User.Name)
                 {
-                    List<ChatMessage> msg = GetMessages(user); // the init with the chat messages is part of the forech below
-                    ChatViewModel chat = new ChatViewModel(new User(user), msg);
-                    ApplicationState.getInstance().Chats.Insert(0,chat);
-                    ApplicationState.getInstance().Logger.Log(" Getting a new chat ");
+                    int currentIndex = -1;
 
-                    if (!chat.ChatMessages.Last().IsFromMe)
+                    for (int j = drafts+i; j < Chats.Count; j++) 
                     {
-                        chat.HasInfo = true;
-                        ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
-
+                        if (users[i] == Chats[j].User.Name)
+                        {
+                            currentIndex = j; // where the user should be
+                            break;
+                        }
                     }
 
-                    elem--;
+                    if (currentIndex < 0) // not found adding new chat
+                    {
+                        List<ChatMessage> msg = GetMessages(users[i]); // the init with the chat messages is part of the forech below
+                        ChatViewModel chat = new ChatViewModel(new User(users[i]), msg);
+                        ApplicationState.getInstance().Chats.Insert(drafts+i, chat);
+                        ApplicationState.getInstance().Logger.Log(" Getting a new chat ");
+                        addedNewChat = true;
+                        if (!chat.ChatMessages.Last().IsFromMe)
+                        {
+                            chat.HasInfo = true;
+                            ApplicationState.getInstance().InvokeNewMessage(this, chat.ChatMessages.ToList());
+                        }
+                    }
+                    else
+                    {
+                        Chats.Move(currentIndex, drafts+i); // move chat to correct position
+                    }
                 }
 
             }
 
-            if (elem < 0) UpdateChatOnlineState();
-            List<ChatViewModel> closedChats = new List<ChatViewModel>();
+            if (addedNewChat) UpdateChatOnlineState();
 
-           // ApplicationState.getInstance().Chats.Where(x => !users.Contains(x.User.Name) && x.ChatMessages.Count != 0).ToList().ForEach(x => ApplicationState.getInstance().Chats.Remove(x)); // should remove old closed chats 
-            users.Reverse();
-
-            for(int i = 0; i < users.Count; i++) if (users[i] != ApplicationState.getInstance().Chats[i].User.Name) ApplicationState.getInstance().Chats.Move(ApplicationState.getInstance().Chats.Select((item, index) => new { Item = item, Index = index }).First(x => x.Item.User.Name == users[i]).Index, i); // Line of death is moving the element that should be here to this place removed Chats are on the end of the list
-
-
-
-            foreach (ChatViewModel chatView  in ApplicationState.getInstance().Chats) // should iterate over Recieved chats
+            for (int i = drafts;i<Chats.Count;i++) // should iterate over Recieved chats
             {
 
-                if (elem < 0) // added this one milisecond before i dont want to check it 
-                {
-                    elem++;
-                    continue;
-                }
-
-                if (chatView.ChatMessages.Count == 0) continue;
-
-                if (!users.Contains(chatView.User.Name))  // user closed chat
-                {
-                   closedChats.Add(chatView); // cant remove elements in a foreach loop will do that later 
-                    continue;
-                }
+                ChatViewModel chatView = Chats[i];
 
                 if (first) // check for new chats
                 {
@@ -327,22 +339,24 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
-                        string log = "Getting a new Chatmassage via JSON api last msg: "+chatView.ChatMessages.Last().ToString()+"\n";
-                        List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe)+1 ).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
+                        string log = "Getting a new Chatmassage via JSON api last msg: " + chatView.ChatMessages.Last().ToString() + "\n";
+                        List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) + 1).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
                         chatView.ChatMessages.Clear(); // not nice but working 
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
-                        if (newMsg.Any()) 
+                        if (newMsg.Any())
                         {
                             chatView.HasInfo = true;
-                            ApplicationState.getInstance().Logger.Log(log + newMsg.Last().Time + " Count of new Messages "+newMsg.Count+" Last new msg "+newMsg.Last().ToString());
-                            ApplicationState.getInstance().InvokeNewMessage(this,newMsg);
+                            ApplicationState.getInstance().Logger.Log(log + newMsg.Last().Time + " Count of new Messages " + newMsg.Count + " Last new msg " + newMsg.Last().ToString());
+                            ApplicationState.getInstance().InvokeNewMessage(this, newMsg);
                         }
-                   }
+                    }
 
                 }
+                else break;
 
             }
-           closedChats.ForEach(x => ApplicationState.getInstance().Chats.Remove(x));
+            while (Chats.Count > drafts + users.Count)
+                Chats.RemoveAt(Chats.Count - 1); // removes closed chats
 
         }
 
