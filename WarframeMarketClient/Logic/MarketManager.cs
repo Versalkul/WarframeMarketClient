@@ -120,8 +120,7 @@ namespace WarframeMarketClient.Logic
             Task.Factory.StartNew(ForceUserStateSynchronous);
             Task.Factory.StartNew(EnsureSocketState);
             if (timerCount % 5 == 4) {
-                 Task.Factory.StartNew(UpdateListing);
-                
+                Task.Factory.StartNew(UpdateListing);
             }
         }
 
@@ -439,10 +438,12 @@ namespace WarframeMarketClient.Logic
 
         public void UpdateListing() 
         {
+            Console.WriteLine("Updating listings");
             List<WarframeItem> items = getOffers();
             List<WarframeItem> itemsAll = items.ToList(); // cloning that list;
             ApplicationState.getInstance().BuyItems.ToList().ForEach(x => items.Remove(x)); // all identical items dont need to be looked at
             ApplicationState.getInstance().SellItems.ToList().ForEach(x => items.Remove(x));
+            
             foreach (WarframeItem it in items)
             {
                 WarframeItem item = new WarframeItem(it); // creating a clone of the object so i dont edit it in the list
@@ -505,19 +506,20 @@ namespace WarframeMarketClient.Logic
 
                 }
             }
-
-            foreach (WarframeItem item in ApplicationState.getInstance().BuyItems.Where(x => x.Id != ""))
+            
+            foreach (WarframeItem item in ApplicationState.getInstance().BuyItems.ToList().Where(x => !String.IsNullOrWhiteSpace( x.Id )))
             {
 
                 if (!itemsAll.Contains(item)) ApplicationState.getInstance().BuyItems.Remove(item);
 
             }
-            foreach (WarframeItem item in ApplicationState.getInstance().SellItems.Where(x => x.Id != "")) 
+            foreach (WarframeItem item in ApplicationState.getInstance().SellItems.ToList().Where(x => !String.IsNullOrWhiteSpace(x.Id))) 
             {
 
                 if (!itemsAll.Contains(item)) ApplicationState.getInstance().SellItems.Remove(item);
 
             }
+            return;
 
         }
 

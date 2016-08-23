@@ -81,6 +81,8 @@ namespace WarframeMarketClient.GUI.Tabs
                 TextBox textbox = (sender as AutoCompleteBox).Template.FindName("Text", sender as AutoCompleteBox) as TextBox;
                 if (textbox != null) textbox.Focus();
             }
+
+
         }
 
         /// <summary>
@@ -129,8 +131,14 @@ namespace WarframeMarketClient.GUI.Tabs
         }
         private void Remove(object sender, RoutedEventArgs e)
         {
+            
             ItemList.CancelEdit();
-            ((sender as Button).DataContext as WarframeItem).RemoveItem();
+            object context = ItemList.DataContext;// Horrible workaround for reset 
+            ItemList.DataContext = null;
+            ItemList.DataContext = context;
+            WarframeItem item = ((sender as Button).DataContext as WarframeItem);
+            item.IsSellOffer = TabName == "Sell";
+            item.RemoveItem();
         }
 
 

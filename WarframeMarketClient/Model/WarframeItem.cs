@@ -56,6 +56,7 @@ namespace WarframeMarketClient.Model
                 OnPropertyChanged(nameof(MaxRank));
                 OnPropertyChanged(nameof(ModRank));
                 OnPropertyChanged(nameof(ModRanks));
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -346,11 +347,12 @@ namespace WarframeMarketClient.Model
 
         public void RemoveItem()
         {
-            if (HasChanged)
+            if (HasChanged&&!String.IsNullOrWhiteSpace(Id))
             {
                 CancelEdit();
                 return;
             }
+
             if (!String.IsNullOrWhiteSpace(Id)) Task.Factory.StartNew(() =>
             {
                 if (ApplicationState.getInstance().Market.RemoveItem(this)) RemoveItemFromList();
