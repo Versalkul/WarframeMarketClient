@@ -15,7 +15,7 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
 
 ## Requirements
 
-[.Net4.6] (https://www.microsoft.com/de-DE/download/details.aspx?id=48137) or later
+[.Net4.6] (https://www.microsoft.com/en-us/download/details.aspx?id=48130) or later
 
 ## [Download] (https://github.com/Versalkul/WarframeMarketClient/releases/latest)
 
