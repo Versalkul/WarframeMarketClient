@@ -44,7 +44,7 @@ Just download the new version and replace the executable.
 ## How to invalidate your session cookie
 The program will offer to invalidate your session-cookie (log you out) when removing the files it created (button in settings tab).  
 If your browser still has this cookie it will **reactivate the same cookie** when you log in again.
-If you want a new cookie delete your cookie in the browser.
+If you want a new cookie delete your cookie in the browser while you are logged out.
 
 ## License
 MIT Licence
