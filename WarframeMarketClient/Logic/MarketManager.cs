@@ -561,8 +561,9 @@ namespace WarframeMarketClient.Logic
         public bool AddItem(WarframeItem item)
         {
             if (!ItemMap.IsValidItemName(item.Name)) return false;
+            string modRank = item.ModRank >= 0 ? $"core_mod_lvl={item.ModRank}&" : "";
             string sellType = item.IsSellOffer ? "sell" : "buy";
-            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={item.Category}&action_type={sellType}&item_quantity={item.Count}&platina={item.Price}";
+            string postData = $"item_name={item.Name.Replace(' ', '+')}&item_type={item.Category}&action_type={sellType}&{modRank}item_quantity={item.Count}&platina={item.Price}";
 
 
             using (HttpWebResponse response = Webhelper.PostPage("http://warframe.market/api/place_order", postData))

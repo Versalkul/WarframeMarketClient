@@ -73,7 +73,7 @@
                             <ComboBox
                                 IsEditable="False"
                                 IsEnabled="{Binding Path=ModRank, Converter={StaticResource ModRankToBooleanConverter}}"
-                                SelectedIndex="{Binding Path=ModRank}"
+                                SelectedIndex="{Binding Path=ModRank,UpdateSourceTrigger=PropertyChanged}"
                                 ItemsSource="{Binding Path=ModRanks}"
                                 Loaded="EditView_Loaded" />
                         </DataTemplate>
