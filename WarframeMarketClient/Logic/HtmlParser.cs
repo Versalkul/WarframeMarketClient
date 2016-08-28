@@ -82,10 +82,10 @@ namespace WarframeMarketClient.Logic
                         else if (line.Contains("<td>") && line.Contains("</td>")) // got name info step=>2
                         {
                             stepcount++;
-                            name = line.Replace("<td>", "").Replace("</td>", "").Trim();
+                            name = line.Replace("<td>", "").Replace("</td>", "").Replace("&#39;","'").Trim(); // remove line and get the correct '
 
                         }
-                        else if (line.Contains("<span>") && line.Contains("</span>")) //step=> 3-5
+                        else if ((line.Contains("<span>") && line.Contains("</span>"))||line.Contains("select")) //step=> 3-5
                         {
                             line = line.Replace("<span>", "").Replace("</span>", "").Trim();
                             stepcount++;
@@ -99,8 +99,16 @@ namespace WarframeMarketClient.Logic
 
                                     break;
                                 case 5:
-                                    if (line.Length < 1) modrank = -1;
-                                    else modrank = Convert.ToInt32(line);
+                                    break;
+                                case 6:
+                                    int position = line.IndexOf("selected");
+                                    if (position<0) modrank = -1;
+                                    else
+                                    {
+                                        line = line.Substring(position+9,2).Replace("<","");
+                                        modrank = Convert.ToInt32(line);
+                                    }
+
                                     stepcount = 0;
                                     offers.Add(new WarframeItem(name, price, count, modrank, sell, id));
                                     break;

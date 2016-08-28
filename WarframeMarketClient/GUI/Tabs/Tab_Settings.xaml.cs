@@ -96,7 +96,7 @@ namespace WarframeMarketClient.GUI.Tabs
 
         private void updateButton_Click(object sender, RoutedEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/Versalkul/WarframeMarketClient/blob/master/README.md");
+            System.Diagnostics.Process.Start("https://github.com/Versalkul/WarframeMarketClient/releases/latest");
 
         }
 
