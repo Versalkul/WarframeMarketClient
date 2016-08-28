@@ -1,4 +1,4 @@
-# WarframeMarketClient
+# WarframeMarketClient <img src="https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Icon.ico" width="50" alt="MarframeMarketClient Icon" title="Our current Icon">
 The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.market) without having to keep the browser open.
 
 ## Features
@@ -15,9 +15,10 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
 
 ## Requirements
 
-[.Net4.6] (https://www.microsoft.com/de-DE/download/details.aspx?id=48137) or later
+[.Net4.6] (https://www.microsoft.com/en-us/download/details.aspx?id=48130) or later (it is preinstalled on Windows 10)
 
-## [Download] (https://github.com/Versalkul/WarframeMarketClient/releases)
+## [Download] (https://github.com/Versalkul/WarframeMarketClient/releases/latest)
+The executable downloads are in the release section (no need to clone or compile yourself ;) )
 
 ## How to use the client
 You need to install .Net 4.6 to use this program, it will not work without! 
@@ -34,17 +35,17 @@ Usually you can find the cookie in your browser. Search for a cookie named *'ses
 [How to get your session cookie in firefox] (http://imgur.com/7tamenv)  
 [How to get your session cookie in chrome] (http://imgur.com/NddsKgc)  
 
-**Don't share this code with anyone as it allows full access to your account as long as you are logged in!**
+**Don't share this code with anyone as it allows full access to your account (as long as you are logged in/ until you invalidate the cookie (see below))!**
 
 ## How to Update
 This program does **not** update itsself.  
 If an update is available it will display a update button which will link to this page.  
 Just download the new version and replace the executable.
 
-## How to invalidate your session token
+## How to invalidate your session cookie
 The program will offer to invalidate your session-cookie (log you out) when removing the files it created (button in settings tab).  
 If your browser still has this cookie it will **reactivate the same cookie** when you log in again.
-If you want a new cookie delete your cookie in the browser.
+If you want a new cookie delete your cookie in the browser while you are logged out.
 
 ## License
 MIT Licence
