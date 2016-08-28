@@ -18,6 +18,7 @@ The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.mar
 [.Net4.6] (https://www.microsoft.com/en-us/download/details.aspx?id=48130) or later (it is preinstalled on Windows 10)
 
 ## [Download] (https://github.com/Versalkul/WarframeMarketClient/releases/latest)
+The executable downloads are in the release section (no need to clone or compile yourself ;) )
 
 ## How to use the client
 You need to install .Net 4.6 to use this program, it will not work without! 
