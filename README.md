@@ -1,4 +1,4 @@
-# WarframeMarketClient <img src="https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Icon.ico" width="50" alt="MarframeMarketClient Icon" title="Our current Icon">
+# WarframeMarketClient <img src="https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Icon.ico" width="50" alt="MarframeMarketClient Icon" title="Our current Icon"> [![Download latest release](https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Download.png)](https://github.com/Versalkul/WarframeMarketClient/releases/latest)
 The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.market) without having to keep the browser open.
 
 ## Features
