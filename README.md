@@ -34,6 +34,7 @@ The session cookie will be only recognized as valid if the session the cookie is
 Usually you can find the cookie in your browser. Search for a cookie named *'session'* on warframe.market and copy its content.  
 [How to get your session cookie in firefox] (http://imgur.com/7tamenv)  
 [How to get your session cookie in chrome] (http://imgur.com/NddsKgc)  
+[How to get your session cookie in opera (thanks to /u/KingYoshiLuca)](https://i.imgur.com/1FEOPMu.gifv)
 
 **Don't share this code with anyone as it allows full access to your account (as long as you are logged in/ until you invalidate the cookie (see below))!**
 
