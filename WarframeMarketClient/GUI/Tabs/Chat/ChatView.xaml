@@ -52,13 +52,12 @@
             BorderThickness="0,1,0,0"
             BorderBrush="{StaticResource BorderBrush}">
             <ListView
-            x:Name="ChatList"
-            ItemsSource="{Binding ChatMessages}"
-            ItemTemplate="{StaticResource ChatItemTemplate}"
-            HorizontalContentAlignment="Stretch"
-            BorderThickness="0"
-            VerticalAlignment="Bottom"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                x:Name="ChatList"
+                ItemsSource="{Binding ChatElements}"
+                HorizontalContentAlignment="Stretch"
+                BorderThickness="0"
+                VerticalAlignment="Bottom"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Focusable" Value="False"></Setter>

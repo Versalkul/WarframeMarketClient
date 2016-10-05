@@ -141,6 +141,7 @@
     <Compile Include="GUI\Converter\ModRankToStringConverter.cs" />
     <Compile Include="GUI\Converter\FromMeToColumnConverter.cs" />
     <Compile Include="GUI\Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="GUI\Converter\BooleanToFColorConverter.cs" />
     <Compile Include="GUI\Converter\WarframeItemToVisibilityConverter.cs" />
     <Compile Include="GUI\Converter\TabInfoToHasInfoConverter.cs" />
     <Compile Include="GUI\Converter\OnlineStateToVisibilityConverter.cs" />
@@ -168,6 +169,8 @@
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\Logger.cs" />
     <Compile Include="Logic\SaveMsg.cs" />
+    <Compile Include="Model\ChatElement.cs" />
+    <Compile Include="Model\ChatInfo.cs" />
     <Compile Include="Model\SendMessageJson.cs" />
     <Compile Include="ViewModel\Settings.cs" />
     <Compile Include="ViewModel\SoundViewModel.cs" />

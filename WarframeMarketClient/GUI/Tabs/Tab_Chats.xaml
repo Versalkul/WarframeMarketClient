@@ -13,6 +13,7 @@
     <UserControl.Resources>
         <converter:OnlineStateToColorConverter x:Key="OnlineStateToColorConverter"/>
         <converter:OnlineStateToVisibilityConverter x:Key="OnlineStateToVisibilityConverter"/>
+        <converter:BooleanToFColorConverter x:Key="BooleanToFColorConverter"/>
         
         <!-- Displays Name and OnlineStatus of User in the TabItem -->
         <DataTemplate x:Key="ChatTabItemTemplate">
@@ -36,7 +37,8 @@
                     x:Name="Text"
                     Grid.Column="1"
                     Style="{StaticResource SelectableTextBlockLikeStyle}"
-                    Text="{Binding Path=DisplayName, Mode=OneWay}" 
+                    Text="{Binding Path=DisplayName, Mode=OneWay}"
+                    Foreground="{Binding Path=Closed, Converter={StaticResource BooleanToFColorConverter}}"
                     Focusable="False"
                     VerticalAlignment="Center" 
                     />

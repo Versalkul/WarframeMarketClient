@@ -34,9 +34,26 @@ namespace WarframeMarketClient.ViewModel
             OnPropertyChanged(nameof(OnlineStateInfo));
         }
 
+        public Boolean Closed { get; set; } = true;
+
         public ObservableCollection<ChatMessage> ChatMessages { get; private set; }
 
-        
+        public ReadOnlyObservableCollection<ChatElement> ChatElements
+        {
+            get
+            {
+                ObservableCollection<ChatElement> tmp =
+                    ChatMessages == null ?
+                        new ObservableCollection<ChatElement>() :
+                        new ObservableCollection<ChatElement>(ChatMessages);
+                tmp.Insert(0, new ChatInfo("Chat opened with\n"+user.Name));
+                if (Closed)
+                    tmp.Add(new ChatInfo("Chat was closed"));
+                return new ReadOnlyObservableCollection<ChatElement>(tmp);
+            }
+        }
+
+
         private string newMessage;
         public string NewMessage
         {

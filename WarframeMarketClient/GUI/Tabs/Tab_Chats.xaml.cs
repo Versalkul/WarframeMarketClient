@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -93,6 +94,11 @@ namespace WarframeMarketClient.GUI.Tabs
             IsVisibleChanged += Tab_Chats_IsVisibleChanged;
         }
 
+
+        public void test(object sender, KeyEventArgs e)
+        {
+            Console.WriteLine("Typed");
+        }
 
         #region Tab Events
         private void Tab_Chats_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)

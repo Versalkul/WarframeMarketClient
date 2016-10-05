@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace WarframeMarketClient.Model
 {
-    public class ChatMessage: IEquatable<ChatMessage>
+    public class ChatMessage: ChatElement, IEquatable<ChatMessage>
     {
 
         public ChatMessage()
