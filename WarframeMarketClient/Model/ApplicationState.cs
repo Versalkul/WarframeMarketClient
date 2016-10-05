@@ -121,7 +121,6 @@ namespace WarframeMarketClient.Model
                     OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
-                   // Task.Factory.StartNew(DebugFunctions.OnlineOfflineCheck); //REMOVE
 
                 });
             }

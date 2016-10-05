@@ -57,7 +57,7 @@ namespace WarframeMarketClient.ViewModel
         public bool PerserveChats
         {
             get { return perserveChats; }
-            set { perserveChats = value; OnPropertyChanged(nameof(perserveChats)); SaveSettings(); }
+            set { perserveChats = value; OnPropertyChanged(nameof(PerserveChats)); SaveSettings(); }
         }
 
         public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
