@@ -53,11 +53,24 @@
             BorderBrush="{StaticResource BorderBrush}">
             <ListView
                 x:Name="ChatList"
-                ItemsSource="{Binding ChatElements}"
                 HorizontalContentAlignment="Stretch"
                 BorderThickness="0"
                 VerticalAlignment="Bottom"
                 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListBox.Resources>
+                    <CollectionViewSource x:Key="ColOldChats" Source="{Binding OldChatElements}"/>
+                    <CollectionViewSource x:Key="ColInfoOpen" Source="{Binding InfoOpen}"/>
+                    <CollectionViewSource x:Key="ColChats" Source="{Binding ChatMessages}"/>
+                    <CollectionViewSource x:Key="ColInfoClose" Source="{Binding InfoClose}"/>
+                </ListBox.Resources>
+                <ListView.ItemsSource>
+                    <CompositeCollection>
+                        <CollectionContainer Collection="{Binding Source={StaticResource ColOldChats}}"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource ColInfoOpen}}"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource ColChats}}"/>
+                        <CollectionContainer Collection="{Binding Source={StaticResource ColInfoClose}}"/>
+                    </CompositeCollection>
+                </ListView.ItemsSource>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Focusable" Value="False"></Setter>

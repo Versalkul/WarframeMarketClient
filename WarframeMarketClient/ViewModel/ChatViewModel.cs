@@ -13,6 +13,8 @@ namespace WarframeMarketClient.ViewModel
     public class ChatViewModel : ChatTabContentViewModel, IEquatable<ChatViewModel>
     {
 
+        private ChatInfo CIOpen, CIClose;
+
         #region TabProperties
         public override string DisplayName { get { return User.Name; } }
         
@@ -39,26 +41,26 @@ namespace WarframeMarketClient.ViewModel
         public Boolean Closed
         {
             get { return closed; }
-            set { closed = value; OnPropertyChanged("Closed"); }
+            set {
+                // might get called from another dimension or so...
+                System.Windows.Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    closed = value;
+                    InfoClose.Remove(CIClose);
+                    if (closed)
+                        InfoClose.Add(CIClose);
+                    OnPropertyChanged("Closed");
+                }));
+            }
         }
 
 
         public ObservableCollection<ChatMessage> ChatMessages { get; private set; }
 
-        public ReadOnlyObservableCollection<ChatElement> ChatElements
-        {
-            get
-            {
-                ObservableCollection<ChatElement> tmp =
-                    ChatMessages == null ?
-                        new ObservableCollection<ChatElement>() :
-                        new ObservableCollection<ChatElement>(ChatMessages);
-                tmp.Insert(0, new ChatInfo("Chat opened with\n"+user.Name));
-                if (Closed)
-                    tmp.Add(new ChatInfo("Chat was closed"));
-                return new ReadOnlyObservableCollection<ChatElement>(tmp);
-            }
-        }
+        public ObservableCollection<ChatElement> OldChatElements { get; private set; }
+
+        public ObservableCollection<ChatElement> InfoOpen { get; private set; } = new ObservableCollection<ChatElement>();
+        public ObservableCollection<ChatElement> InfoClose { get; private set; } = new ObservableCollection<ChatElement>();
 
 
         private string newMessage;
@@ -75,7 +77,12 @@ namespace WarframeMarketClient.ViewModel
         {
             User = u;
             ChatMessages = new ObservableCollection<ChatMessage>(messages);
-            ChatMessages.CollectionChanged += ChatUpdated;
+
+            CIOpen = new ChatInfo("Chat opened with\n" + u.Name);
+            CIClose = new ChatInfo("Chat was closed\nSend Message to reopen");
+
+            InfoOpen.Add(CIOpen);
+
             InitLockCollection();
         }
 
@@ -89,14 +96,15 @@ namespace WarframeMarketClient.ViewModel
             col.Task.GetAwaiter().GetResult(); // you shall not deadlock ^^
         }
 
-        private void ChatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            OnPropertyChanged("ChatElements");
-        }
         #endregion
 
         public void SendMessage()
         {
+            if (Closed)
+            {
+                Closed = false;
+                ArchiveCurrentChat();
+            }
             Task.Factory.StartNew(() => ApplicationState.getInstance().Market.SendMessage(NewMessage,User.Name));
             ChatMessages.Add(
                 new ChatMessage() {
@@ -107,6 +115,20 @@ namespace WarframeMarketClient.ViewModel
                 });
             ApplicationState.getInstance().Logger.Log("Send Message ChatViewModel to "+User.Name+" : "+NewMessage);
             NewMessage = "";
+        }
+
+        /// <summary>
+        /// Move all ChatMessages to OldChatMessages and clear the current list
+        /// </summary>
+        public void ArchiveCurrentChat()
+        {
+            OldChatElements = new ObservableCollection<ChatElement>(ChatMessages);
+            OldChatElements.Insert(0, CIOpen);
+            OldChatElements.Add(CIClose);
+
+            OnPropertyChanged("OldChatElements");
+
+            ChatMessages.Clear();
         }
 
         public void CloseChat()
