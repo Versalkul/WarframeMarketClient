@@ -342,8 +342,7 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
-                        if (msg == null) continue;
-
+                        if (!msg.Any()) continue;
                         addedNewChat = true;
                         string log = "Getting a new Chatmassage via JSON api last msg: " + chatView.ChatMessages.Last().ToString() + "\n";
                         List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) + 1).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
