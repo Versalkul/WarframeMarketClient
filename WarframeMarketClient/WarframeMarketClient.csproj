@@ -164,7 +164,6 @@
     <Compile Include="GUI\Tabs\Tab_Settings.xaml.cs">
       <DependentUpon>Tab_Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Logic\DebugFunctions.cs" />
     <Compile Include="Logic\ItemMap.cs" />
     <Compile Include="Logic\JsonFrame.cs" />
     <Compile Include="Logic\Logger.cs" />
