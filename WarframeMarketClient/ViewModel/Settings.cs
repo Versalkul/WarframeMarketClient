@@ -60,10 +60,7 @@ namespace WarframeMarketClient.ViewModel
             set { perserveChats = value; OnPropertyChanged(nameof(perserveChats)); SaveSettings(); }
         }
 
-        private ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
-
-     
-
+        public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
 
 
         private string choosenSoundFile="";
