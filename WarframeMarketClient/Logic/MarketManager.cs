@@ -342,7 +342,10 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
-                        if (msg == null) continue;
+                        if (msg == null) {
+                            chatView.Closed = true;
+                            continue;
+                        }
 
                         addedNewChat = true;
                         string log = "Getting a new Chatmassage via JSON api last msg: " + chatView.ChatMessages.Last().ToString() + "\n";

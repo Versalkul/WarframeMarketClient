@@ -34,7 +34,14 @@ namespace WarframeMarketClient.ViewModel
             OnPropertyChanged(nameof(OnlineStateInfo));
         }
 
-        public Boolean Closed { get; set; } = true;
+        private Boolean closed;
+
+        public Boolean Closed
+        {
+            get { return closed; }
+            set { closed = value; OnPropertyChanged("Closed"); }
+        }
+
 
         public ObservableCollection<ChatMessage> ChatMessages { get; private set; }
 
@@ -68,6 +75,7 @@ namespace WarframeMarketClient.ViewModel
         {
             User = u;
             ChatMessages = new ObservableCollection<ChatMessage>(messages);
+            ChatMessages.CollectionChanged += ChatUpdated;
             InitLockCollection();
         }
 
@@ -79,6 +87,11 @@ namespace WarframeMarketClient.ViewModel
                 BindingOperations.EnableCollectionSynchronization(ChatMessages, chatLock);
             }));
             col.Task.GetAwaiter().GetResult(); // you shall not deadlock ^^
+        }
+
+        private void ChatUpdated(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            OnPropertyChanged("ChatElements");
         }
         #endregion
 
