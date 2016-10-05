@@ -177,19 +177,23 @@ namespace WarframeMarketClient.Logic
             if (state.IsOnline()) socket.EnsureOpenSocket();
         }
 
-        public Dictionary<string,OnlineState> getStatusOnSite(List<string> users)
+        public Dictionary<string,OnlineState> getStatusOnSite(List<string> users, bool cacheCheck=true)
         {
 
             lock (userStatusCache)
             {
                 Dictionary<string, OnlineState> result = new Dictionary<string, OnlineState>(users.Count);
-                users.ForEach(x => result.Add(x, OnlineState.ERROR));
-                List<string> userCached = users.Where((username) => userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 30).ToList();
-                List<string> userCheckSite = users.Except(userCached).ToList();
+                if (cacheCheck)
+                {
 
-                userCached.ForEach(s => result[s] = userStatusCache[s].Item2);
+                    users.ForEach(x => result.Add(x, OnlineState.ERROR));
+                    List<string> userCached = users.Where((username) => userStatusCache.ContainsKey(username) && (DateTime.Now - userStatusCache[username].Item1).Seconds < 30).ToList();
+                    List<string> userCheckSite = users.Except(userCached).ToList();
 
-                if (userCheckSite.Count == 0) return result;
+                    userCached.ForEach(s => result[s] = userStatusCache[s].Item2);
+
+                    if (userCheckSite.Count == 0) return result;
+                }
 
                 string param = JsonConvert.SerializeObject(users); // check every user always (better 1 request for 5 than 3 requests for 1 each)
 
@@ -222,10 +226,10 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        public OnlineState getStatusOnSite(string username)
+        public OnlineState getStatusOnSite(string username,bool cacheCheck=true)
         {
 
-            return getStatusOnSite(new List<string>() { username }).Values.First();
+            return getStatusOnSite(new List<string>() { username },cacheCheck).Values.First();
            
         }
 
@@ -338,9 +342,12 @@ namespace WarframeMarketClient.Logic
                     if (chatView.ChatMessages.SequenceEqual(msg)) first = false; // nothing new
                     else // something new
                     {
+                        if (msg == null) continue;
+
+                        addedNewChat = true;
                         string log = "Getting a new Chatmassage via JSON api last msg: " + chatView.ChatMessages.Last().ToString() + "\n";
                         List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) + 1).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
-                        chatView.ChatMessages.Clear(); // not nice but working 
+                        chatView.ChatMessages.Clear(); // not nice but working PROBLEM WHEN PERSERVING MSG
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
                         if (newMsg.Any())
                         {
@@ -354,7 +361,8 @@ namespace WarframeMarketClient.Logic
                 else break;
 
             }
-            while (Chats.Count > drafts + users.Count)
+            if (addedNewChat) saver.SaveMessages();
+            while (Chats.Count > drafts + users.Count&&!ApplicationState.getInstance().Settings.PerserveChats)
                 Chats.RemoveAt(Chats.Count - 1); // removes closed chats
 
         }

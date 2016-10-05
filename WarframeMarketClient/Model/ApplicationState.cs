@@ -99,7 +99,7 @@ namespace WarframeMarketClient.Model
                 #endregion
                 Username = "Temp";
                 OnPropertyChanged(nameof(IsValid));
-                sessionToken = value;
+                sessionToken = value.Replace(";", "").Replace(",", "").Replace("\"","").Trim();
                 ValidationProgress = 5;
                 OnlineState = OnlineState.VALIDATING;
                 Task.Factory.StartNew(() =>
@@ -121,6 +121,8 @@ namespace WarframeMarketClient.Model
                     OnlineChecker = new RunsGameChecker(); 
                     OnlineState = DefaultState;
                     OnPropertyChanged(nameof(IsValid));
+                   // Task.Factory.StartNew(DebugFunctions.OnlineOfflineCheck); //REMOVE
+
                 });
             }
         } 

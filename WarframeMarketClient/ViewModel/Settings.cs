@@ -53,8 +53,14 @@ namespace WarframeMarketClient.ViewModel
             get { return limitAutoComplete; }
             set { limitAutoComplete = value; OnPropertyChanged(nameof(LimitAutoComplete)); SaveSettings(); }
         }
+        private bool perserveChats;
+        public bool PerserveChats
+        {
+            get { return perserveChats; }
+            set { perserveChats = value; OnPropertyChanged(nameof(perserveChats)); SaveSettings(); }
+        }
 
-        public ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
+        private ApplicationState ApplicationState { get { return ApplicationState.getInstance(); } }
 
      
 
@@ -106,6 +112,7 @@ namespace WarframeMarketClient.ViewModel
             saver.SaveBool(nameof(ToTray),ToTray);
             saver.SaveBool(nameof(LimitAutoComplete), LimitAutoComplete);
             saver.SaveBool(nameof(DefaultOnline), DefaultOnline);
+            saver.SaveBool(nameof(PerserveChats), PerserveChats);
             saver.SaveString("Token",ApplicationState.getInstance().SessionToken);
             saver.SaveString(nameof(ChoosenSoundFile),ChoosenSoundFile);
             saver.SaveDouble(nameof(Volume), Volume);
@@ -126,6 +133,7 @@ namespace WarframeMarketClient.ViewModel
                 DefaultOnline = loader.LoadBool(nameof(DefaultOnline));
                 ChoosenSoundFile = loader.LoadString(nameof(ChoosenSoundFile));
                 Volume = loader.LoadDouble(nameof(Volume));
+                PerserveChats = loader.LoadBool(nameof(PerserveChats));
                 ApplicationState.getInstance().SessionToken = loader.LoadString("Token");
             }
             if (!AvailableSounds.Contains(ChoosenSoundFile) & AvailableSounds.Any()) ChoosenSoundFile = AvailableSounds.First();

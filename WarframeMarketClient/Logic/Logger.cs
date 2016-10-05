@@ -22,7 +22,7 @@ namespace WarframeMarketClient.Logic
         public Logger()
         {
             folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "WarframeMarketClient");
-            filePath = Path.Combine(folderPath, "Exceptions.log");
+            filePath = Path.Combine(folderPath, "Log.log");
 #if DEBUG // disable getting exeptions as im not logging them when not debugging
             AppDomain.CurrentDomain.FirstChanceException += GotException;
 #endif
