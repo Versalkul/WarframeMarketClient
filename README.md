@@ -1,4 +1,4 @@
-# WarframeMarketClient <img src="https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Icon.ico" width="50" alt="MarframeMarketClient Icon" title="Our current Icon">
+# WarframeMarketClient <img src="https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Icon.ico" width="50" alt="MarframeMarketClient Icon" title="Our current Icon"> [![Download latest release](https://raw.githubusercontent.com/Versalkul/WarframeMarketClient/master/Download.png)](https://github.com/Versalkul/WarframeMarketClient/releases/latest)
 The WarframeMarketClient allows you to use [Warframe.Market](http://warframe.market) without having to keep the browser open.
 
 ## Features
@@ -32,8 +32,11 @@ The session cookie will be only recognized as valid if the session the cookie is
 
 ## How to get your session cookie
 Usually you can find the cookie in your browser. Search for a cookie named *'session'* on warframe.market and copy its content.  
+If there are invalid characters in the cookie the programm may not work (This will be fixed in the next version)  
+So make sure the cookie doesnt contain whitespaces or one (or more) of the following characters:",;  
 [How to get your session cookie in firefox] (http://imgur.com/7tamenv)  
 [How to get your session cookie in chrome] (http://imgur.com/NddsKgc)  
+[How to get your session cookie in opera (thanks to /u/KingYoshiLuca)](https://i.imgur.com/1FEOPMu.gifv)
 
 **Don't share this code with anyone as it allows full access to your account (as long as you are logged in/ until you invalidate the cookie (see below))!**
 
