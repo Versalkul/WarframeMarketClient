@@ -39,13 +39,12 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel >
                     <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="limitAutocomplete" Margin="0,10,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="limitAutocomplete" Margin="0,5,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                 </StackPanel>
                 <StackPanel Margin="25,0,0,0" Grid.Column="2">
-                    <CheckBox x:Name="autostartBox"  Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-                    <CheckBox x:Name="minimizeBox" Margin="0,10" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="perserveBox" Margin="0,10" Content="Perserve closed chats" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-
+                    <CheckBox x:Name="autostartBox" Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                    <CheckBox x:Name="minimizeBox" Margin="0,5,0,0" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="perserveBox" Margin="0,5" Content="Perserve closed chats" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                 </StackPanel>
             </Grid>
             
@@ -96,7 +95,7 @@
             <Label x:Name="label" Content="Session Cookie:"/>
             <StackPanel  Margin="25,5">
 
-                <TextBox x:Name="tokenBox" Margin="0,10"  Text="{Binding SessionTokenInput, ElementName=self, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                <TextBox x:Name="tokenBox" Margin="0,0,0,10"  Text="{Binding SessionTokenInput, ElementName=self, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToNegatedBoolConverter}}" />
                  <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, ConverterParameter=I, Converter={StaticResource BoolToVisibilityConverter}}"/>
                  <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
