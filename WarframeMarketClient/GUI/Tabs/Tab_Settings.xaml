@@ -40,11 +40,11 @@
                 <StackPanel >
                     <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                     <CheckBox x:Name="limitAutocomplete" Margin="0,5,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="perserveBox" Margin="0,5" Content="Perserve chats closed by other party" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                 </StackPanel>
                 <StackPanel Margin="25,0,0,0" Grid.Column="2">
                     <CheckBox x:Name="autostartBox" Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-                    <CheckBox x:Name="minimizeBox" Margin="0,5,0,0" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="perserveBox" Margin="0,5" Content="Perserve closed chats" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    <CheckBox x:Name="minimizeBox" Margin="0,5" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
                 </StackPanel>
             </Grid>
             
