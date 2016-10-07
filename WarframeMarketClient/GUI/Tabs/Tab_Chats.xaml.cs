@@ -99,7 +99,7 @@ namespace WarframeMarketClient.GUI.Tabs
         {
             
             // Only focus if a char was pressed (yes, thats hacky... ... and it doesn't work for -_ etc...)
-            Console.WriteLine("Key down: "+e.Key+" "+e.Key.IsPrintable() );
+            //Console.WriteLine("Key down: "+e.Key+" "+e.Key.IsPrintable() );
             if (e.Key.IsPrintable() && chatTabs.SelectedContent != null)
                 ((chatTabs.SelectedContent as ContentControl).Content as ChatTabContentViewModel).Focus();
         }
