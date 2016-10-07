@@ -130,8 +130,10 @@ namespace WarframeMarketClient.ViewModel
         {
             if (!(ApplicationState.getInstance().Settings.PerserveChats && ChatMessages.Any())) // Setting not chosen or list empty
                 return;
-            OldChatElements = new ObservableCollection<ChatElement>(OldChatElements.Concat(ChatMessages));
-            OldChatElements.Insert(0, CIOpen);
+            OldChatElements = new ObservableCollection<ChatElement>(
+                OldChatElements.Concat(
+                    new List<ChatElement>() { CIOpen }).Concat(
+                    ChatMessages));
             OldChatElements.Add(CIClose);
 
             OnPropertyChanged("OldChatElements");
