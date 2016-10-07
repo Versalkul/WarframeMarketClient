@@ -122,7 +122,9 @@ namespace WarframeMarketClient.ViewModel
         /// </summary>
         public void ArchiveCurrentChat()
         {
-            OldChatElements = new ObservableCollection<ChatElement>(ChatMessages);
+            if (!(ApplicationState.getInstance().Settings.PerserveChats && ChatMessages.Any())) // Setting not chosen or list empty
+                return;
+            OldChatElements = new ObservableCollection<ChatElement>(OldChatElements.Concat(ChatMessages));
             OldChatElements.Insert(0, CIOpen);
             OldChatElements.Add(CIClose);
 
