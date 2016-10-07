@@ -38,15 +38,17 @@ namespace WarframeMarketClient.Logic
 
         private ChatViewModel GetModelFromKVP(KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>> chats)
         {
-            return new ChatViewModel(new User(chats.Key), chats.Value.Item2,chats.Value.Item1);
+            return new ChatViewModel(new User(chats.Key), chats.Value.Item2, chats.Value.Item1);
         }
 
         public void SaveMessages() // make save Save (new file => delete old => changeName)
         {
-            string json = JsonConvert.SerializeObject(getMsg());
+            string json = JsonConvert.SerializeObject(getMsg(), new JsonSerializerSettings
+                {
+                    TypeNameHandling = TypeNameHandling.Objects
+                });
             using (StreamWriter WriteStream = new StreamWriter(new GZipStream(new FileStream(path+"2", FileMode.Create), CompressionLevel.Optimal)))
             {
-                
                 WriteStream.WriteLine(json);
             }
             if(File.Exists(path))File.Delete(path);
@@ -71,9 +73,12 @@ namespace WarframeMarketClient.Logic
 
             try
             {
-                List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>> chats = JsonConvert.DeserializeObject<List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>>(json);
+                List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>
+                    chats = JsonConvert.DeserializeObject<List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>>(json, new JsonSerializerSettings
+                    {
+                        TypeNameHandling = TypeNameHandling.Objects
+                    });
                 return chats.Select((x) => GetModelFromKVP(x)).ToList();
-
             }
             catch(Exception e)
             {
