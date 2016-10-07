@@ -54,6 +54,7 @@
         <gui:FancyTabControl
             x:Name="chatTabs"
             TabNameMargin="2,2,5,2"
+            KeyDown="OnKeyDown"
             beh:TabItemGeneratorBehavior.ItemsSource="{Binding Tabs}"
             ItemTemplate="{StaticResource ChatTabItemTemplate}"/>
     </Grid>

@@ -10,9 +10,29 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
-        <Label x:Name="label" Content="Open Chat with:" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="Username" Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" Height="23" VerticalAlignment="Top" Width="120" Grid.Row="1" KeyDown="Input_KeyDown"/>
-        <Label x:Name="status" Content="{Binding Status}" HorizontalAlignment="Center" Margin="0,28,0,0" Grid.Row="1" VerticalAlignment="Top" FontSize="10" Foreground="Gray"/>
+        <Label
+            x:Name="label"
+            Content="Open Chat with:"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom"/>
+        <TextBox
+            x:Name="Username"
+            Text="{Binding User, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            HorizontalAlignment="Center"
+            Height="23"
+            VerticalAlignment="Top"
+            Width="120"
+            Grid.Row="1"
+            KeyDown="Input_KeyDown" />
+        <Label
+            x:Name="status"
+            Content="{Binding Status}"
+            HorizontalAlignment="Center"
+            Margin="0,28,0,0"
+            Grid.Row="1"
+            VerticalAlignment="Top"
+            FontSize="10"
+            Foreground="Gray"/>
 
     </Grid>
 </UserControl>

@@ -19,6 +19,17 @@ namespace WarframeMarketClient.GUI.Tabs.Chat
         {
             InitializeComponent();
             ((INotifyCollectionChanged)ChatList.Items).CollectionChanged += OnChatChanged;
+            DataContextChanged += new DependencyPropertyChangedEventHandler(OnDataContextChanged);
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(DataContext != null)
+                (DataContext as ChatTabContentViewModel).Focus = FocusInput;
+        }
+        private void FocusInput()
+        {
+            InputText.Focus();
         }
 
         private void OnChatChanged(object sender, NotifyCollectionChangedEventArgs e)

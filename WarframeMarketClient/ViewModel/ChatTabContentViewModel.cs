@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using WarframeMarketClient.Model;
 
 namespace WarframeMarketClient.ViewModel
@@ -7,6 +8,8 @@ namespace WarframeMarketClient.ViewModel
     {
         public abstract string DisplayName { get; }
         public virtual OnlineState? OnlineStateInfo { get; }
+
+        public Action Focus { get; set; }
 
 
         protected bool hasInfo = false;

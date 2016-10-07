@@ -95,9 +95,12 @@ namespace WarframeMarketClient.GUI.Tabs
         }
 
 
-        public void test(object sender, KeyEventArgs e)
+        public void OnKeyDown(object sender, KeyEventArgs e)
         {
-            Console.WriteLine("Typed");
+            // Only focus if a char was pressed (yes, thats hacky... ... and it doesn't work for -_ etc...)
+            // Console.WriteLine("Key down: "+e.Key);
+            if (e.Key.ToString().Length <= 2 && chatTabs.SelectedContent != null)
+                ((chatTabs.SelectedContent as ContentControl).Content as ChatTabContentViewModel).Focus();
         }
 
         #region Tab Events
