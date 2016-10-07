@@ -30,7 +30,7 @@ namespace WarframeMarketClient.Logic
             List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>> ret = new List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>();
             foreach (ChatViewModel chat  in ApplicationState.getInstance().Chats.ToArray())
             {
-                if(chat.ChatMessages.Any()) ret.Add(new KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>( chat.User.Name, new Tuple<List<ChatElement>, List<ChatMessage>>(chat.OldChatElements.ToList(), chat.ChatMessages.ToList())));
+                if(chat.ChatMessages.Any()||chat.OldChatElements.Any()) ret.Add(new KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>( chat.User.Name, new Tuple<List<ChatElement>, List<ChatMessage>>(chat.OldChatElements.ToList(), chat.ChatMessages.ToList())));
             }
 
             return ret;
