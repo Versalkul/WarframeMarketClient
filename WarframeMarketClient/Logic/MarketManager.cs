@@ -350,6 +350,7 @@ namespace WarframeMarketClient.Logic
                         addedNewChat = true;
                         string log = "Getting a new Chatmassage via JSON api last msg: " + chatView.ChatMessages.Last().ToString() + "\n";
                         List<ChatMessage> newMsg = msg.Skip(msg.FindLastIndex(x => x.IsFromMe) + 1).Except(chatView.ChatMessages).ToList(); // take last notFromMe and just if they werent in the chatView
+                        if (!chatView.ChatMessages[0].Equals(msg[0])) chatView.ArchiveCurrentChat();
                         chatView.ChatMessages.Clear(); // not nice but working PROBLEM WHEN PERSERVING MSG
                         msg.ForEach(x => chatView.ChatMessages.Add(x));
                         if (newMsg.Any())
