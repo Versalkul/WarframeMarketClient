@@ -73,7 +73,12 @@ namespace WarframeMarketClient.ViewModel
 
         #region Constructor
 
-        public ChatViewModel(User u,IEnumerable<ChatMessage> messages)
+        public ChatViewModel(User u, IEnumerable<ChatMessage> messages,IEnumerable<ChatElement> oldChats):this(u,messages)
+        {
+            OldChatElements = new ObservableCollection<ChatElement>(oldChats);
+        }
+
+        public ChatViewModel(User u, IEnumerable<ChatMessage> messages)
         {
             User = u;
             ChatMessages = new ObservableCollection<ChatMessage>(messages);

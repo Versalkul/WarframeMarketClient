@@ -24,21 +24,21 @@ namespace WarframeMarketClient.Logic
         }
         
 
-        private List<KeyValuePair<string,List<ChatMessage>>> getMsg() // returns all messages with users who have 1 or more chats
+        private List<KeyValuePair<string,Tuple<List<ChatElement>, List<ChatMessage>>>> getMsg() // returns all messages with users who have 1 or more chats
         {
 
-            List<KeyValuePair<string, List<ChatMessage>>> ret = new List<KeyValuePair<string, List<ChatMessage>>>();
+            List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>> ret = new List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>();
             foreach (ChatViewModel chat  in ApplicationState.getInstance().Chats.ToArray())
             {
-                if(chat.ChatMessages.Any()) ret.Add(new KeyValuePair<string, List<ChatMessage>>( chat.User.Name, chat.ChatMessages.ToList()));
+                if(chat.ChatMessages.Any()) ret.Add(new KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>( chat.User.Name, new Tuple<List<ChatElement>, List<ChatMessage>>(chat.OldChatElements.ToList(), chat.ChatMessages.ToList())));
             }
 
             return ret;
         }
 
-        private ChatViewModel GetModelFromKVP(KeyValuePair<string, List<ChatMessage>> chats)
+        private ChatViewModel GetModelFromKVP(KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>> chats)
         {
-            return new ChatViewModel(new User(chats.Key), chats.Value);
+            return new ChatViewModel(new User(chats.Key), chats.Value.Item2,chats.Value.Item1);
         }
 
         public void SaveMessages() // make save Save (new file => delete old => changeName)
@@ -68,8 +68,23 @@ namespace WarframeMarketClient.Logic
             {
                 json = readStream.ReadToEnd();
             }
-            List<KeyValuePair<string, List<ChatMessage>>> chats = JsonConvert.DeserializeObject<List<KeyValuePair<string, List<ChatMessage>>>>(json);
-            return chats.Select((x) => GetModelFromKVP(x)).ToList();
+
+            try
+            {
+                List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>> chats = JsonConvert.DeserializeObject<List<KeyValuePair<string, Tuple<List<ChatElement>, List<ChatMessage>>>>>(json);
+                return chats.Select((x) => GetModelFromKVP(x)).ToList();
+
+            }
+            catch(Exception e)
+            {
+                DeleteMessages();
+                return new List<ChatViewModel>();
+            }
+        }
+
+        public void DeleteMessages()
+        {
+            if (File.Exists(path)) File.Delete(path);
         }
 
 
