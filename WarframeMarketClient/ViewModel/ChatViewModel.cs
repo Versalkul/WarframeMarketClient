@@ -73,15 +73,16 @@ namespace WarframeMarketClient.ViewModel
 
         #region Constructor
 
-        public ChatViewModel(User u, IEnumerable<ChatMessage> messages,IEnumerable<ChatElement> oldChats):this(u,messages)
+        public ChatViewModel(User u, IEnumerable<ChatMessage> messages) : this(u, messages, new List<ChatElement>())
         {
-            OldChatElements = new ObservableCollection<ChatElement>(oldChats);
+
         }
 
-        public ChatViewModel(User u, IEnumerable<ChatMessage> messages)
+        public ChatViewModel(User u, IEnumerable<ChatMessage> messages, IEnumerable<ChatElement> oldChats)
         {
             User = u;
             ChatMessages = new ObservableCollection<ChatMessage>(messages);
+            OldChatElements = new ObservableCollection<ChatElement>(oldChats);
 
             CIOpen = new ChatInfo("Chat opened with\n" + u.Name);
             CIClose = new ChatInfo("Chat was closed\nSend Message to reopen");
@@ -129,10 +130,7 @@ namespace WarframeMarketClient.ViewModel
         {
             if (!(ApplicationState.getInstance().Settings.PerserveChats && ChatMessages.Any())) // Setting not chosen or list empty
                 return;
-            if (OldChatElements == null)
-                OldChatElements = new ObservableCollection<ChatElement>(ChatMessages);
-            else
-                OldChatElements = new ObservableCollection<ChatElement>(OldChatElements.Concat(ChatMessages));
+            OldChatElements = new ObservableCollection<ChatElement>(OldChatElements.Concat(ChatMessages));
             OldChatElements.Insert(0, CIOpen);
             OldChatElements.Add(CIClose);
 
