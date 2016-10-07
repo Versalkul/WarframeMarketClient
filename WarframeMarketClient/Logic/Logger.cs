@@ -39,7 +39,6 @@ namespace WarframeMarketClient.Logic
                     Monitor.Wait(this);
                 }
 
-
                 List<string> logCopy = new List<string>(log.Count);
 
                 while (log.Any())
@@ -50,6 +49,7 @@ namespace WarframeMarketClient.Logic
                 }
 
         }
+
 
         private void GotException(object o, FirstChanceExceptionEventArgs args)
         {

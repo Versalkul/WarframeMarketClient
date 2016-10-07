@@ -8,6 +8,7 @@ using WarframeMarketClient.Model;
 using WarframeMarketClient.ViewModel;
 using System.Linq;
 using System.Windows.Input;
+using WarframeMarketClient.Extensions;
 
 namespace WarframeMarketClient.GUI.Tabs
 {
@@ -94,12 +95,12 @@ namespace WarframeMarketClient.GUI.Tabs
             IsVisibleChanged += Tab_Chats_IsVisibleChanged;
         }
 
-
         public void OnKeyDown(object sender, KeyEventArgs e)
         {
+            
             // Only focus if a char was pressed (yes, thats hacky... ... and it doesn't work for -_ etc...)
-            // Console.WriteLine("Key down: "+e.Key);
-            if (e.Key.ToString().Length <= 2 && chatTabs.SelectedContent != null)
+            Console.WriteLine("Key down: "+e.Key+" "+e.Key.IsPrintable() );
+            if (e.Key.IsPrintable() && chatTabs.SelectedContent != null)
                 ((chatTabs.SelectedContent as ContentControl).Content as ChatTabContentViewModel).Focus();
         }
 

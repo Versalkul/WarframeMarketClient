@@ -132,6 +132,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Extensions\DirektoryInfoFunctions.cs" />
+    <Compile Include="Extensions\KeyExtensions.cs" />
     <Compile Include="Extensions\OnlineStateFunctions.cs" />
     <Compile Include="GUI\AttachedProperties\ListBoxExtenders.cs" />
     <Compile Include="GUI\Converter\BoolToNegatedBoolConverter.cs" />
