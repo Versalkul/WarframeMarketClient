@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Timers;
 using WarframeMarketClient.Model;
+using System.Linq;
 
 namespace WarframeMarketClient.Logic
 {
@@ -66,7 +67,10 @@ namespace WarframeMarketClient.Logic
         private void checker(object o,EventArgs args)
         {
 
-            GameOnline = Process.GetProcessesByName("Warframe.x64").Length > 0 || Process.GetProcessesByName("Warframe").Length > 0;
+
+            Process[] GameX64 = Process.GetProcessesByName("Warframe.x64");
+            Process[] GameX86 = Process.GetProcessesByName("Warframe");
+            GameOnline = GameX64.Where(g => g.MainWindowTitle.ToLower().Equals("warframe")).Any() || GameX86.Where(g => g.MainWindowTitle.ToLower().Equals("warframe")).Any();
             if (!isAFK&& GameOnline && ApplicationState.getInstance().OnlineState != OnlineState.INGAME) ApplicationState.getInstance().OnlineState = OnlineState.INGAME;
             if(!isAFK && !GameOnline && ApplicationState.getInstance().OnlineState == OnlineState.INGAME) ApplicationState.getInstance().OnlineState = ApplicationState.getInstance().DefaultState;
             LASTINPUTINFO lastInputInfo = new LASTINPUTINFO();

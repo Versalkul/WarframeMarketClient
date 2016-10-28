@@ -216,7 +216,7 @@ namespace WarframeMarketClient.Model
             }
         }
 
-        public Boolean UpdateAvailable
+        public bool UpdateAvailable
         {
             get
             {
