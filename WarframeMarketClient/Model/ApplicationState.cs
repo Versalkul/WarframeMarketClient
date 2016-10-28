@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using WarframeMarketClient.Logic;
@@ -60,7 +57,7 @@ namespace WarframeMarketClient.Model
             Settings.LoadSettings();
             Task.Factory.StartNew(() => { ItemMap.getTypeMap();ItemMap.SaveMap(); }); // inits the webapi and gets an usefull result
             Plimper = new SoundViewModel();
-            Task.Factory.StartNew(() => Settings.UpdateAvailable = Webhelper.CheckUpdate());
+            Task.Factory.StartNew(() => LatestVersion = Webhelper.CheckUpdate());
         }
 
         #endregion
@@ -68,13 +65,7 @@ namespace WarframeMarketClient.Model
 
         #region Properties
 
-
-        public Logger Logger { get; private set; }
-
-        private event EventHandler<List<ChatMessage>> newMessage;
-
-        public event EventHandler<List<ChatMessage>> NewMessage { add { newMessage += value; } remove { newMessage -= value; } }
-
+        #region SessionToken
         private string sessionToken="";
 
         public string SessionToken
@@ -124,14 +115,12 @@ namespace WarframeMarketClient.Model
 
                 });
             }
-        } 
-
-        
-        public MarketManager Market { get; private set; }
+        }
+        #endregion
 
         public string Username { get; set; } = "";
 
-
+        #region OnlineState
         private OnlineState onlineState;
         public OnlineState OnlineState { get
             {
@@ -152,7 +141,13 @@ namespace WarframeMarketClient.Model
             get { return defaultState; }
             set { defaultState = value; OnPropertyChanged(nameof(DefaultState)); if (OnlineState == OnlineState.ONLINE || OnlineState == OnlineState.OFFLINE) OnlineState = DefaultState; }
         }
+        #endregion
 
+        #region Items n Chats
+
+        private event EventHandler<List<ChatMessage>> newMessage;
+
+        public event EventHandler<List<ChatMessage>> NewMessage { add { newMessage += value; } remove { newMessage -= value; } }
 
 
         private ObservableCollection<WarframeItem> sellItems;
@@ -187,6 +182,8 @@ namespace WarframeMarketClient.Model
                 OnPropertyChanged(nameof(Chats));
             }
         }
+        #endregion
+
         #region Validating etc props
 
         public bool HasUsername { get { return !String.IsNullOrWhiteSpace(instance.Username); } }
@@ -204,11 +201,41 @@ namespace WarframeMarketClient.Model
         }
 
         #endregion
+
+        #region Version
+        public Version Version { get { return System.Reflection.Assembly.GetEntryAssembly().GetName().Version; } }
+
+        private Version latestVersion;
+        public Version LatestVersion
+        {
+            get { return latestVersion; }
+            set {
+                latestVersion = value;
+                OnPropertyChanged("LatestVersion");
+                OnPropertyChanged("UpdateAvailable");
+            }
+        }
+
+        public Boolean UpdateAvailable
+        {
+            get
+            {
+                return LatestVersion != null &&
+                    (Version.Major < LatestVersion.Major || Version.Minor < LatestVersion.Minor || Version.Build < LatestVersion.Build);
+            }
+        }
+
+        #endregion
+
+        public MarketManager Market { get; private set; }
+
         public RunsGameChecker OnlineChecker { get; private set; }
 
         public Settings Settings { get; set; } 
 
-        public SoundViewModel Plimper { get; set; } 
+        public SoundViewModel Plimper { get; set; }
+
+        public Logger Logger { get; private set; }
 
         #endregion
 

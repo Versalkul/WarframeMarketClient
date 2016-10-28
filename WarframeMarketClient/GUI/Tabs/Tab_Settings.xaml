@@ -7,97 +7,96 @@
              xmlns:converter="clr-namespace:WarframeMarketClient.GUI.Converter"
              mc:Ignorable="d" 
              x:Name="self"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="600" d:DesignWidth="400">
     <UserControl.Resources>
         <converter:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:BoolToNegatedBoolConverter x:Key="BoolToNegatedBoolConverter"/>
     </UserControl.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Disabled">
-        
+        <StackPanel>
 
-        <Grid>
-        <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            
-        </Grid.RowDefinitions>
-            <StackPanel  Grid.Row="0" Margin="10,0" >
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="General settings:" Grid.Column="0"/>
-                    <Button x:Name="updateButton" Content="Update available" Grid.Column="1" Visibility="{Binding UpdateAvailable,Converter={StaticResource BoolToVisibilityConverter}}" Click="updateButton_Click" />
-            </Grid>
-         
-            <Grid Margin="25,5,0,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <StackPanel >
-                    <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="limitAutocomplete" Margin="0,5,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                    <CheckBox x:Name="perserveBox" Margin="0,5" Content="Perserve chats closed by other party" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                </StackPanel>
-                <StackPanel Margin="25,0,0,0" Grid.Column="2">
-                    <CheckBox x:Name="autostartBox" Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-                    <CheckBox x:Name="minimizeBox" Margin="0,5" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
-                </StackPanel>
-            </Grid>
-            
-            <Label Content="Sound when receiving new Message:"/>
-            <Grid Margin="25,5,25,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <ComboBox   x:Name="soundBox"
-                            Margin="0,0"
-                            Grid.Column="0"
-                            IsEditable="False"
-                            IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"
-                            ItemsSource="{Binding Path=AvailableSounds}"
-                            SelectedValue="{Binding ChoosenSoundFile}"
+            <StackPanel Margin="10,0" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="General settings:" Grid.Column="0"/>
+                    <Button x:Name="updateButton"
+                            Content="{Binding Path=ApplicationState.LatestVersion}"
+                            ContentStringFormat="Update available: {0}"
+                            Grid.Column="1"
+                            Visibility="{Binding ApplicationState.UpdateAvailable, Converter={StaticResource BoolToVisibilityConverter}}"
+                            Click="updateButton_Click"/>
+                </Grid>
+
+                <Grid Margin="25,5,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel >
+                        <CheckBox x:Name="defaultOnline"  Content="Online on Site when game not running" IsChecked="{Binding DefaultOnline}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                        <CheckBox x:Name="limitAutocomplete" Margin="0,5,0,0" Content="Limit Autocomplete to 7 elements" IsChecked="{Binding LimitAutoComplete}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                        <CheckBox x:Name="perserveBox" Margin="0,5" Content="Perserve chats closed by other party" IsChecked="{Binding PerserveChats}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    </StackPanel>
+                    <StackPanel Margin="25,0,0,0" Grid.Column="2">
+                        <CheckBox x:Name="autostartBox" Content="Autostart" IsChecked="{Binding Autostart}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                        <CheckBox x:Name="minimizeBox" Margin="0,5" Content="Minimize to Tray" IsChecked="{Binding ToTray}" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"/>
+                    </StackPanel>
+                </Grid>
+
+                <Label Content="Sound when receiving new Message:"/>
+                <Grid Margin="25,5,25,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <ComboBox   x:Name="soundBox"
+                                Margin="0,0"
+                                Grid.Column="0"
+                                IsEditable="False"
+                                IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}"
+                                ItemsSource="{Binding Path=AvailableSounds}"
+                                SelectedValue="{Binding ChoosenSoundFile}"
+                                />
+                    <Button x:Name="importSound" Content="Add Own Sound File" Grid.Column="1" Margin="10,0,0,0" Click="importSound_Click" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                </Grid>
+
+                <Grid Margin="25,5,25,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Content="Volume" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0"></Label>
+                    <Slider Value="{Binding Volume}" 
+                            Grid.Column="1" 
+                            VerticalAlignment="Center" 
+                            Minimum="0" Maximum="1" 
+                            IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" 
+                            TickFrequency="0.01" 
+                            LargeChange="0.1" 
+                            SmallChange="0.05" 
+                            IsMoveToPointEnabled="True" 
+                            AutoToolTipPlacement="TopLeft" 
+                            AutoToolTipPrecision="2"
+                            Focusable="True"
+                            IsTabStop="True"
                             />
-                <Button x:Name="importSound" Content="Add Own Sound File" Grid.Column="1" Margin="10,0,0,0" Click="importSound_Click" IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" />
-            </Grid>
-
-            <Grid Margin="25,5,25,10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <Label Content="Volume" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,10,0"></Label>
-                <Slider Value="{Binding Volume}" 
-                        Grid.Column="1" 
-                        VerticalAlignment="Center" 
-                        Minimum="0" Maximum="1" 
-                        IsEnabled="{Binding ApplicationState.IsValidating,Converter={StaticResource BoolToNegatedBoolConverter}}" 
-                        TickFrequency="0.01" 
-                        LargeChange="0.1" 
-                        SmallChange="0.05" 
-                        IsMoveToPointEnabled="True" 
-                        AutoToolTipPlacement="TopLeft" 
-                        AutoToolTipPrecision="2"
-                        Focusable="True"
-                        IsTabStop="True"
-                        />
-            </Grid>
+                </Grid>
 
 
-        </StackPanel>
+            </StackPanel>
 
-        <StackPanel  Grid.Row="1" Margin="10,5">
-            <Label x:Name="label" Content="Session Cookie:"/>
-            <StackPanel  Margin="25,5">
+            <StackPanel Margin="10,5">
+                <Label x:Name="label" Content="Session Cookie:"/>
+                <StackPanel  Margin="25,5">
 
-                <TextBox x:Name="tokenBox" Margin="0,0,0,10"  Text="{Binding SessionTokenInput, ElementName=self, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToNegatedBoolConverter}}" />
-                 <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, ConverterParameter=I, Converter={StaticResource BoolToVisibilityConverter}}"/>
-                 <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <TextBox x:Name="tokenBox" Margin="0,0,0,10"  Text="{Binding SessionTokenInput, ElementName=self, UpdateSourceTrigger=PropertyChanged}" KeyDown="tokenBox_KeyDown" IsEnabled="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToNegatedBoolConverter}}" />
+                    <Button x:Name="saveButton" Height="22" Content="Save" Click="saveButton_Click" Visibility="{Binding ApplicationState.IsValidating, ConverterParameter=I, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                    <ProgressBar x:Name="progressBar" Height="22" Minimum="0" Maximum="100" Value="{Binding ApplicationState.ValidationProgress}"  Visibility="{Binding ApplicationState.IsValidating, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                     <Grid Margin="0,25,0,0">
                         <Grid.ColumnDefinitions>
@@ -109,9 +108,17 @@
                     </Grid>
 
                 </StackPanel>
+            </StackPanel>
+            
+            <StackPanel Margin="10,0">
+                <Label x:Name="version"
+                       Content="{Binding Path=ApplicationState.Version}"
+                       ContentStringFormat="Version {0}"
+                       Foreground="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                       FontSize="8"
+                       HorizontalAlignment="Right"/>
+            </StackPanel>
+            
         </StackPanel>
-
-    </Grid>
-
     </ScrollViewer>
 </UserControl>

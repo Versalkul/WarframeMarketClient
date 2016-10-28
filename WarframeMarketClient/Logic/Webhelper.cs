@@ -162,36 +162,29 @@ namespace WarframeMarketClient.Logic
 
         }
 
-        public static bool CheckUpdate()
+        public static Version CheckUpdate()
         {
-            Version version = Assembly.GetEntryAssembly().GetName().Version;
-
 #if DEBUG // not checking updates when debugging
-            return true;      
+            return null;      
 #endif
-
             using (HttpWebResponse response = Webhelper.GetPage("https://api.github.com/repos/Versalkul/WarframeMarketClient/releases/latest"))
             {
-                if (response == null) return false;
+                if (response == null) return null;
                 using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                 {
                     JObject json = JObject.Parse(reader.ReadToEnd());
                     JToken vNum = json.GetValue("tag_name");
-                    if (vNum == null) return false;
+                    if (vNum == null) return null;
                     try // incase the tag name contains bullshit
                     {
                         Version newVersion = new Version(vNum.ToString());
-                        return (version.Major<newVersion.Major||version.Minor<newVersion.Minor||version.Build<newVersion.Build);
-
+                        return newVersion;
                     }
                     catch
                     {
-                        return false;
+                        return null;
                     }
-
                 }
-
-
             }
         }
 

@@ -13,7 +13,7 @@ namespace WarframeMarketClient.ViewModel
     {
 
 
-        #region properties
+        #region Properties
 
         private SaveLoadFile saver = new SaveLoadFile();
 
@@ -86,15 +86,6 @@ namespace WarframeMarketClient.ViewModel
         {
             get { return volume; }
             set { volume = value;ApplicationState.getInstance().Plimper?.SetVolume(value); OnPropertyChanged(nameof(ChoosenSoundFile)); SaveSettings(); }
-        }
-
-
-        private bool updateAvailable;
-
-        public bool UpdateAvailable
-        {
-            get { return updateAvailable; }
-            set { updateAvailable = value; OnPropertyChanged(nameof(UpdateAvailable)); }
         }
 
         #endregion
